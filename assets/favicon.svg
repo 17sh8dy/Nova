@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+  <title>Nova</title>
+  <!-- The mark sits on its own disc so it stays legible on a browser
+       tab of any colour, light or dark. -->
+  <rect width="24" height="24" rx="5.5" fill="#0E1120" />
+  <path fill="#7C5CFF"
+        d="M12 3.1c.52 5.46 3.95 8.89 9.41 9.41-5.46.52-8.89 3.95-9.41 9.41-.52-5.46-3.95-8.89-9.41-9.41C8.05 11.99 11.48 8.56 12 3.1Z" />
+</svg>
