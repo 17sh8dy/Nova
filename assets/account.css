@@ -1,0 +1,290 @@
+/* ─────────────────────────────────────────────────────────────
+   Nova — account pages
+
+   An extension of nova.css, not a second design system. Every
+   colour, radius, easing and font here is a token that stylesheet
+   already defines, so the account pages inherit the site's light
+   and dark themes, its motion, and any future change to either
+   without being touched.
+
+   The rule this file follows: if nova.css has a class for it,
+   use that class. Only what genuinely does not exist yet — a
+   form field, a notice, the account chip — is defined here.
+   ───────────────────────────────────────────────────────────── */
+
+/* ── Layout ─────────────────────────────────────────────────── */
+
+.account-shell {
+  padding: clamp(3rem, 9vw, 6.5rem) 0 clamp(4rem, 10vw, 7rem);
+}
+
+.account-wrap {
+  max-width: 34rem;
+}
+
+.account-head {
+  margin-bottom: 1.75rem;
+}
+
+.account-eyebrow {
+  margin: 0 0 .5rem;
+  font-size: .8125rem;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--brand-graphic, var(--ink-3));
+}
+
+.account-title {
+  margin: 0;
+  font-size: clamp(1.75rem, 4.5vw, 2.5rem);
+  line-height: 1.1;
+  letter-spacing: -.02em;
+  color: var(--ink);
+}
+
+.account-lede {
+  margin: .75rem 0 0;
+  color: var(--ink-2);
+  line-height: 1.6;
+}
+
+/* ── Cards ──────────────────────────────────────────────────── */
+
+.account-card {
+  margin-top: 1.25rem;
+  padding: clamp(1.25rem, 3.5vw, 1.75rem);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg, 18px);
+  background: var(--surface, color-mix(in srgb, var(--ground) 92%, var(--ink) 3%));
+}
+
+.account-card-title {
+  margin: 0 0 .5rem;
+  font-size: 1.0625rem;
+  letter-spacing: -.01em;
+  color: var(--ink);
+}
+
+.account-card-lede {
+  margin: 0 0 1rem;
+  color: var(--ink-2);
+  line-height: 1.6;
+  font-size: .9375rem;
+}
+
+.account-card-lede:last-child { margin-bottom: 0; }
+
+/* ── Fields ─────────────────────────────────────────────────── */
+
+.field { margin-bottom: 1rem; }
+
+.field-label {
+  display: block;
+  margin-bottom: .375rem;
+  font-size: .875rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.field-hint {
+  margin: 0 0 .5rem;
+  font-size: .8125rem;
+  line-height: 1.5;
+  color: var(--ink-3);
+}
+
+.field-input {
+  width: 100%;
+  padding: .7rem .85rem;
+  font: inherit;
+  font-size: .9375rem;
+  color: var(--ink);
+  background: var(--ground);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm, 10px);
+  transition: border-color .2s var(--ease, ease), box-shadow .2s var(--ease, ease);
+}
+
+.field-input:focus-visible {
+  outline: none;
+  border-color: var(--brand-graphic, var(--ink-2));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand-graphic, var(--ink-2)) 22%, transparent);
+}
+
+.field--error .field-input { border-color: var(--danger, #C7343B); }
+
+.field-error {
+  margin: .4rem 0 0;
+  font-size: .8125rem;
+  color: var(--danger, #C7343B);
+}
+
+/* ── Notices ────────────────────────────────────────────────── */
+
+.notice {
+  margin: 0 0 1.25rem;
+  padding: .9rem 1.05rem;
+  border: 1px solid var(--line);
+  border-left-width: 3px;
+  border-radius: var(--r-sm, 10px);
+  background: color-mix(in srgb, var(--ground) 92%, var(--ink) 4%);
+}
+
+.notice--error   { border-left-color: var(--danger,  #C7343B); }
+.notice--warning { border-left-color: var(--warning, #B7791F); }
+.notice--ok      { border-left-color: var(--ok,      #2F855A); }
+
+.notice-title {
+  margin: 0 0 .3rem;
+  font-weight: 600;
+  font-size: .9375rem;
+  color: var(--ink);
+}
+
+.notice-body { color: var(--ink-2); font-size: .875rem; line-height: 1.6; }
+.notice-body p { margin: 0; }
+
+/* ── Actions ────────────────────────────────────────────────── */
+
+.account-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .625rem;
+  align-items: center;
+  margin-top: 1.25rem;
+}
+
+.inline-form { display: contents; }
+
+.account-fineprint {
+  margin: 1rem 0 0;
+  font-size: .875rem;
+  color: var(--ink-3);
+}
+
+.account-foot {
+  margin: 1.5rem 0 0;
+  font-size: .875rem;
+  line-height: 1.6;
+  color: var(--ink-3);
+  text-align: center;
+}
+
+/* ── Provider (Google — not available yet) ──────────────────── */
+
+.provider-row { display: grid; }
+
+/* A disabled control must LOOK disabled. It is not a link, it posts nowhere, and there is no
+   route behind it; the styling only makes that visible rather than being the thing that
+   prevents it. */
+.provider-btn {
+  width: 100%;
+  justify-content: center;
+  gap: .55rem;
+  cursor: not-allowed;
+  opacity: .62;
+}
+
+.provider-btn:hover {
+  border-color: var(--line);
+  background: transparent;
+  --lift-y: 0px;
+}
+
+.provider-glyph { width: 18px; height: 18px; fill: currentColor; flex: none; }
+
+.provider-soon {
+  padding: .12rem .45rem;
+  font-size: .6875rem;
+  font-weight: 600;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+}
+
+.provider-note {
+  margin: .6rem 0 0;
+  font-size: .8125rem;
+  color: var(--ink-3);
+  text-align: center;
+}
+
+.or-rule {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: .75rem;
+  margin: 1.25rem 0;
+  color: var(--ink-3);
+  font-size: .8125rem;
+}
+
+.or-rule::before,
+.or-rule::after {
+  content: "";
+  height: 1px;
+  background: var(--line);
+}
+
+/* ── Account facts + ecosystem list ─────────────────────────── */
+
+.account-facts { margin: 0; display: grid; gap: .7rem; }
+
+.account-facts > div {
+  display: grid;
+  grid-template-columns: 9rem 1fr;
+  gap: .75rem;
+  align-items: baseline;
+}
+
+@media (max-width: 30rem) {
+  .account-facts > div { grid-template-columns: 1fr; gap: .15rem; }
+}
+
+.account-facts dt { font-size: .8125rem; color: var(--ink-3); }
+.account-facts dd { margin: 0; font-size: .9375rem; color: var(--ink); word-break: break-word; }
+
+.ecosystem-list { margin: 0; padding: 0; list-style: none; display: grid; gap: .55rem; }
+
+.ecosystem-list li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  align-items: baseline;
+  justify-content: space-between;
+  padding-bottom: .55rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.ecosystem-list li:last-child { border-bottom: 0; padding-bottom: 0; }
+.ecosystem-name { font-size: .9375rem; color: var(--ink); font-weight: 500; }
+.ecosystem-note { font-size: .8125rem; color: var(--ink-3); }
+
+/* ── The masthead chip ──────────────────────────────────────── */
+
+.account-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .34rem .7rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: .875rem;
+  color: var(--ink);
+  transition: border-color .2s var(--ease, ease), background .2s var(--ease, ease);
+  max-width: 12rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.account-chip:hover {
+  border-color: var(--brand-graphic, var(--ink-2));
+  background: var(--brand-soft, transparent);
+}
+
+/* Hidden until the status check answers, so a cached page never shows the wrong state. */
+.account-chip[hidden] { display: none; }

@@ -1,0 +1,17 @@
+{
+  "name": "nova-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "The Nova site — the front door to the Nova ecosystem, and to a Nova Account.",
+  "type": "module",
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "dev": "wrangler pages dev . --d1 DB=nova-help"
+  },
+  "dependencies": {
+    "@nova/accounts": "file:../NovaHelp/packages/nova-accounts"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

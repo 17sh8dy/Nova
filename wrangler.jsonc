@@ -1,0 +1,53 @@
+{
+  // The Nova site — static pages plus the Nova Account front door in functions/.
+  //
+  // NOT DEPLOYED FROM HERE YET. The live site (nova-780.pages.dev) is still the static build
+  // with no Functions. This configuration exists so the account flows can be run and checked
+  // locally with `wrangler pages dev`, and so the bindings a deployment will need are written
+  // down in one place rather than being remembered.
+  //
+  //   npm install                 # links @nova/accounts from ../NovaHelp
+  //   npm test                    # the account flows, against the real package
+  //   npx wrangler pages dev .    # the whole site, with Functions
+  //
+  // ⚠ THE D1 DATABASE AND THE SECRET MUST BE THE SAME ONES NOVA.HELP USES. That is what makes
+  //   this the same Nova Account rather than a second one: same `nova-help` database, same
+  //   NOVA_SECRET. Point this at a different database and you have built exactly the thing
+  //   this work exists to avoid.
+  "name": "nova",
+  "compatibility_date": "2026-08-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "pages_build_output_dir": ".",
+
+  "d1_databases": [
+    {
+      // Bound as env.DB. The SAME database Nova.Help binds — one accounts table, one identity.
+      "binding": "DB",
+      "database_name": "nova-help",
+      // Placeholder, exactly as in NovaHelp/wrangler.jsonc. Replaced by the real id from
+      // `wrangler d1 create` when there is one. Nothing is deployed until then.
+      "database_id": "00000000-0000-0000-0000-000000000000"
+    }
+  ],
+
+  // Rate limiting, by the same Durable Object class and the same windows Nova.Help uses.
+  // Without this binding the site refuses to pretend it is throttling — see limiterFor().
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "RATE_LIMITER",
+        "class_name": "RateLimiterObject",
+        // The class is defined and deployed by the Nova.Help Worker; this binds to it rather
+        // than declaring a second copy, so both front doors share one set of counters.
+        "script_name": "nova-help"
+      }
+    ]
+  }
+
+  // NOVA_SECRET is a secret, never a var:  npx wrangler pages secret put NOVA_SECRET
+  // It MUST equal Nova.Help's NOVA_HELP_SECRET, or sessions minted here will not verify there.
+  //
+  // NOVA_COOKIE_DOMAIN is set once Nova and Nova.Help share a registrable domain — e.g.
+  // ".nova.xyz" — and is what turns one account into one sign-in across the ecosystem.
+  // Leave it unset while the sites are on different domains; a browser would reject it.
+}

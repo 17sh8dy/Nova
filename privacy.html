@@ -21,6 +21,7 @@
 
 <script>document.documentElement.classList.add("js");</script>
 <link rel="stylesheet" href="assets/nova.css" />
+<link rel="stylesheet" href="assets/account.css" />
 </head>
 <body>
 
@@ -37,6 +38,7 @@
     <nav class="masthead-nav" aria-label="Primary">
       <a href="index.html">Home</a>
       <a href="ecosystem.html">Ecosystem</a>
+      <a class="account-chip account-chip--guest" href="/account/sign-in" data-account-chip>Sign in</a>
     </nav>
   </div>
 </header>
@@ -88,15 +90,17 @@
           <section id="summary">
             <h2>1. The short version</h2>
             <p>
-              <strong>This website does not collect personal information.</strong> It has no
-              accounts, no sign-in, no contact forms, no analytics and no tracking scripts. It
-              sets no cookies and stores nothing in your browser.
+              <strong>This website collects nothing about you unless you make a Nova
+              Account.</strong> There are no contact forms, no analytics and no tracking
+              scripts, and browsing it sets no cookies. A Nova Account is optional; if you
+              create one, a single cookie keeps you signed in and section 3 lists everything
+              that is stored.
             </p>
             <p>
               <strong>Nova products keep your work on your own machine.</strong> Files,
               projects, settings and history stay in local storage on your computer. Ordinary
-              use does not send them anywhere, and there is no account for them to be attached
-              to.
+              use does not send them anywhere, and a Nova Account does not change that — it
+              identifies you, it does not collect your work.
             </p>
             <p>
               The rest of this page explains that in more detail, and describes what would
@@ -123,12 +127,30 @@
           <section id="account">
             <h2>3. Account information</h2>
             <p>
-              <strong>There are no Nova accounts.</strong> You cannot register, and we hold no
-              usernames, passwords, profiles or contact records.
+              <strong>A Nova Account is optional.</strong> You can read this site, and use Nova
+              products, without one. It exists so that one identity works across the Nova
+              ecosystem instead of each product asking you to register separately.
             </p>
             <p>
-              If a Nova product introduces accounts, this section will describe exactly what is
-              collected at sign-up and why, before that feature ships.
+              When you create one, we hold: your <strong>email address</strong>; a
+              <strong>scrypt hash of your password</strong>, never the password itself, from
+              which the password cannot be recovered; an optional <strong>display name</strong>
+              if you give one; a list of your <strong>active sessions</strong>, so that signing
+              out actually ends them; and, for as long as one is outstanding, a
+              <strong>hashed password-reset token</strong>, which is deleted the moment it is
+              used or expires. We also record <strong>which Nova products the account has been
+              used with</strong> — a product name and a date, nothing about what you did there.
+            </p>
+            <p>
+              The same account is used by Nova.Help when you file a support ticket while signed
+              in. It is one account, not a copy per product, and it is the same record described
+              here wherever you meet it.
+            </p>
+            <p>
+              We do not sell it, we do not profile you with it, and we do not use it to track
+              you between sites. If you want it deleted, ask through
+              <a href="https://nova.help/">Nova.Help</a> and we will remove the account and
+              everything listed above.
             </p>
           </section>
 
@@ -161,8 +183,16 @@
           <section id="cookies">
             <h2>6. Cookies</h2>
             <p>
-              <strong>This website sets no cookies.</strong> It uses no local storage, no
-              session storage, and no similar tracking technology.
+              <strong>This website sets one cookie, and only if you sign in.</strong> Browsing
+              it sets none at all. When you sign in to a Nova Account we set a single cookie
+              that keeps you signed in; it is <em>HttpOnly</em>, so no script on the page can
+              read it, and <em>SameSite=Lax</em>, so it is not sent from other sites.
+            </p>
+            <p>
+              It is a session cookie and nothing else — it identifies your sign-in, and it is
+              not used for analytics, advertising or tracking you between sites. Signing out
+              deletes it and ends the session on our side, so a copy of it stops working too.
+              There is no local storage, no session storage, and no other tracking technology.
             </p>
             <p>
               The site follows your system's light or dark appearance setting. That preference
@@ -258,9 +288,10 @@
               personal information from children.
             </p>
             <p>
-              There is no sign-up on this site and no account system, so there is no route by
-              which a child could give us personal information. If you believe a child has
-              provided us with information, please contact us and we will delete it.
+              The only personal information this site can collect is what somebody types into
+              the Nova Account sign-up form. If you believe a child has provided us with
+              information, please contact us and we will delete the account and everything held
+              with it.
             </p>
           </section>
 
@@ -355,6 +386,7 @@
 </footer>
 
 <script src="assets/nova.js"></script>
+<script src="assets/account.js"></script>
 
 </body>
 </html>

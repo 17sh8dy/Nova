@@ -1,3 +1,7 @@
 ﻿node_modules/
 .DS_Store
 Thumbs.db
+
+# Cloudflare local state and secrets - never commit either.
+.dev.vars
+.wrangler/
