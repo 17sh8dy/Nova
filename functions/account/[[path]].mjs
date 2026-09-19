@@ -163,7 +163,7 @@ const createBody = ({ values = {}, errors = {}, next = '' }) => `
 
 const PRODUCTS = [
   { name: 'Nova', note: 'This site', href: '/' },
-  { name: 'Nova.Help', note: 'Support for every Nova product', href: 'https://nova.help/' },
+  { name: 'Nova.Help', note: 'Support for every Nova product', href: 'https://nova-help.17sh8dy.workers.dev/' },
   { name: 'NovaCut', note: 'Coming soon', href: null },
   { name: 'Replay.GG', note: 'Coming soon', href: null },
   { name: 'Atlas', note: 'Coming soon', href: null },

@@ -15,7 +15,7 @@ import { fileURLToPath } from 'node:url';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
 const DISCORD = 'https://discord.gg/XBhER9Z6EB';
-const SUPPORT = 'https://nova.help/';
+const SUPPORT = 'https://nova-help.17sh8dy.workers.dev/';
 
 async function pages() {
   const files = (await readdir(root)).filter((f) => f.endsWith('.html'));
@@ -70,9 +70,35 @@ test('the footer note no longer claims nothing has been renamed', async () => {
 test('the ecosystem page points at help that exists rather than sites that do not', async () => {
   const html = await readFile(path.join(root, 'ecosystem.html'), 'utf8');
 
-  assert.match(html, /nova\.help/, 'Nova.Help covers every product on this page');
+  assert.match(html, /nova-help\.17sh8dy\.workers\.dev/, 'Nova.Help covers every product on this page');
   assert.match(html, /\/account/, 'and one account works across them');
   /* Every "Learn more" on this page is deliberately inert until the product sites exist. This
      pins that: a placeholder href is how a dead link gets shipped. */
   assert.equal(/href="#"/.test(html), false, 'no placeholder links');
+});
+
+test('the homepage numbers add up to the statuses on the ecosystem page', async () => {
+  const eco = await readFile(path.join(root, 'ecosystem.html'), 'utf8');
+  const home = await readFile(path.join(root, 'index.html'), 'utf8');
+  const count = (cls) => (eco.match(new RegExp(`class="status status-${cls}"`, 'g')) ?? []).length;
+
+  const inBuild = count('alpha') + count('dev') + count('production');
+  const onTheWay = count('planned');
+  const fact = (label) => Number(new RegExp(`<b>([0-9]+)</b><span>${label}`).exec(home)?.[1]);
+
+  assert.equal(fact('In build today'), inBuild, 'in build');
+  assert.equal(fact('On the way'), onTheWay, 'on the way');
+  assert.equal(fact('Products &amp; platforms'), inBuild + onTheWay, 'total');
+});
+
+test('the support link resolves to a real address, not the unregistered nova.help', async () => {
+  for (const { file, html } of await pages()) {
+    assert.equal(/https?:\/\/nova\.help/.test(html), false, `${file} links to nova.help, which has no DNS`);
+  }
+});
+
+test('the site uses American spelling', async () => {
+  for (const { file, html } of await pages()) {
+    assert.equal(/\b(centre|colour|customis\w+|licence|organis\w+|authorised)\b/i.test(html), false, file);
+  }
 });
