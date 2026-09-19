@@ -1803,3 +1803,81 @@ html:not(.js) .masthead-nav a[aria-current="page"] {
   opacity: .5;
   user-select: none;
 }
+
+/* ── community links: icons only, the addresses live in the href ───────── */
+
+.masthead-social { display: flex; align-items: center; gap: 2px; margin-inline: 6px 4px; }
+
+.masthead-nav .social-link {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+}
+
+.social-link svg { display: block; width: 17px; height: 17px; fill: currentColor; }
+
+/* ── real product logos, taken from each product's own repository ─────── */
+
+.brand { display: block; flex: none; width: 44px; height: 44px; border-radius: 22%; }
+.brand--sm { width: 22px; height: 22px; }
+
+.card-icon--brand,
+.card:hover .card-icon--brand {
+  border: 0;
+  background: none;
+  box-shadow: none;
+  overflow: hidden;
+}
+.card-icon .brand { width: 44px; height: 44px; }
+
+/* ── real screenshots ──────────────────────────────────────────────────── */
+
+.card-plate--shot { min-height: 220px; background: var(--panel); }
+.card-plate--shot::before,
+.card-plate--shot::after { display: none; }
+.card-plate--shot img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 0;
+}
+@media (max-width: 860px) { .card-plate--shot { aspect-ratio: 16 / 10; } }
+
+.plate--shot img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 0; }
+
+/* two narrow windows side by side */
+.plate--pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  aspect-ratio: auto;
+  border: 0;
+  background: none;
+  overflow: visible;
+}
+.plate--pair img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+}
+@media (max-width: 520px) { .plate--pair { grid-template-columns: 1fr; } }
+
+.shot-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(16px, 3vw, 32px);
+  margin-top: clamp(28px, 4vw, 48px);
+}
+@media (max-width: 760px) { .shot-row { grid-template-columns: 1fr; } }
+
+.shot { margin: 0; }
+.shot img { display: block; width: 100%; height: auto; border: 1px solid var(--rule); border-radius: 3px; }
+.shot figcaption { margin-top: 10px; color: var(--ink-3); font-size: .9rem; line-height: 1.5; }
+
+.connection .brand--sm { width: 22px; height: 22px; }
