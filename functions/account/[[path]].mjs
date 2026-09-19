@@ -164,8 +164,8 @@ const createBody = ({ values = {}, errors = {}, next = '' }) => `
 const PRODUCTS = [
   { name: 'Nova', note: 'This site', href: '/' },
   { name: 'Nova.Help', note: 'Support for every Nova product', href: 'https://nova.help/' },
-  { name: 'Online Earth', note: 'Coming soon', href: null },
-  { name: 'Open Cut', note: 'Coming soon', href: null },
+  { name: 'NovaCut', note: 'Coming soon', href: null },
+  { name: 'Replay.GG', note: 'Coming soon', href: null },
   { name: 'Atlas', note: 'Coming soon', href: null },
 ];
 
