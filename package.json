@@ -9,7 +9,7 @@
     "dev": "wrangler pages dev . --d1 DB=nova-help"
   },
   "dependencies": {
-    "@nova/accounts": "file:../NovaHelp/packages/nova-accounts"
+    "@nova/accounts": "file:./packages/nova-accounts"
   },
   "engines": {
     "node": ">=20"
