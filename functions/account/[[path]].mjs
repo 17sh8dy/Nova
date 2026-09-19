@@ -22,7 +22,7 @@
  * rate limiter; splitting them across Pages Functions files would mean re-importing and
  * re-deciding those seven times, and the routing table is easier to check when it is a list.
  */
-import { SESSION_COOKIE, SESSION_TTL_SECONDS } from '@nova/accounts';
+import { SESSION_COOKIE, SESSION_TTL_SECONDS } from '../../packages/nova-accounts/index.mjs';
 
 import { accountsFor } from '../_lib/accounts.mjs';
 import { ecosystemNote, esc, field, googleSoon, html, notice, page, redirect } from '../_lib/shell.mjs';

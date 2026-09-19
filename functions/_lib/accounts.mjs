@@ -21,8 +21,8 @@
  * NovaHelp/docs/PASSWORD-RESET.md; when a transport is chosen it is configured in both places
  * and the shared package does the rest.
  */
-import { createAccounts, createLogMailer } from '@nova/accounts';
-import { createD1AccountStore } from '@nova/accounts/d1Store';
+import { createAccounts, createLogMailer } from '../../packages/nova-accounts/index.mjs';
+import { createD1AccountStore } from '../../packages/nova-accounts/d1Store.mjs';
 
 /**
  * Build the account service for one request.
