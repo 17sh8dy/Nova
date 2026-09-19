@@ -1881,3 +1881,10 @@ html:not(.js) .masthead-nav a[aria-current="page"] {
 .shot figcaption { margin-top: 10px; color: var(--ink-3); font-size: .9rem; line-height: 1.5; }
 
 .connection .brand--sm { width: 22px; height: 22px; }
+
+/* the language selector sits in the masthead beside the community icons */
+.masthead-lang { display: inline-flex; align-items: center; margin-inline-end: 4px; }
+
+@media (max-width: 560px) {
+  .masthead-nav > a:not(.account-chip) { display: none; }
+}

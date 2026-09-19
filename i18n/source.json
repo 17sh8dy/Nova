@@ -1,0 +1,1656 @@
+{
+  "site": "nova",
+  "pages": 7,
+  "strings": [
+    "[Company/Legal Entity Name]",
+    "[Effective Date]",
+    "<1>A Nova Account is optional.</1> You can read this site, and use Nova products, without one. It exists so that one identity works across the Nova ecosystem instead of each product asking you to register separately.",
+    "<1>About this page.</1> This is an informational template written for the Nova website while the products are being built. It is not legal advice, and it has not been reviewed by a lawyer. It describes only what Nova actually does today — where a practice does not exist yet, the page says so instead of claiming one. The bracketed values are placeholders for details that have not been decided yet, and Nova itself is a brand direction still under review.",
+    "<1>About this page.</1> This is an informational template written for the Nova website while the products are being built. It is not legal advice, and it has not been reviewed by a lawyer. The bracketed values above are placeholders for details that have not been decided yet. Nova is also a brand direction still under review — nothing has been renamed or rebranded.",
+    "<1>Atlas</1> — a local-first assistant with memory and context.",
+    "<1>Atlas</1> — the assistant, on your own hardware",
+    "<1>From Nova products — nothing sent to us.</1> They read and write files on your machine and do not report back.",
+    "<1>From this website — nothing.</1> It is a set of static pages with no data collection built in.",
+    "<1>Home</1> <2>Ecosystem</2>",
+    "<1>If you email us</1> at the address below, we will have your email address and whatever you chose to write, for as long as it takes to deal with your message.",
+    "<1>Legal requirements</1>, where we are required to respond to a valid legal request.",
+    "<1>Nova does not currently offer user accounts.</1> Nothing on this site asks you to register, sign in, or create a profile.",
+    "<1>Nova does not currently require or offer an account.</1> The software runs without signing in. If a product introduces accounts later, you will be responsible for the accuracy of your details, for keeping your credentials secure, and for what happens under your account.",
+    "<1>Nova does not run analytics.</1> We do not measure page views, build usage profiles, record sessions, or track you between visits or between products.",
+    "<1>Nova products keep your work on your own machine.</1> Files, projects, settings and history stay in local storage on your computer. Ordinary use does not send them anywhere, and a Nova Account does not change that — it identifies you, it does not collect your work.",
+    "<1>NovaCut</1> — desktop video and photo editing.",
+    "<1>Products</1> <2>Ecosystem</2> <3>Why we exist</3>",
+    "<1>Protecting people</1>, where sharing is genuinely necessary to prevent harm.",
+    "<1>Replay.GG</1> — capture that hands its clips straight to the editor",
+    "<1>Service providers</1> we rely on to run the site or a service, and only what they need to provide it.",
+    "<1>This website collects nothing about you unless you make a Nova Account.</1> There are no contact forms, no analytics and no tracking scripts, and browsing it sets no cookies. A Nova Account is optional; if you create one, a single cookie keeps you signed in and section 3 lists everything that is stored.",
+    "<1>This website sets one cookie, and only if you sign in.</1> Browsing it sets none at all. When you sign in to a Nova Account we set a single cookie that keeps you signed in; it is <2>HttpOnly</2>, so no script on the page can read it, and <3>SameSite=Lax</3>, so it is not sent from other sites.",
+    "<1>Using a Nova product or service means you agree to these terms.</1> That includes downloading and running the software, and using any hosted service Nova operates.",
+    "<1>What you make with Nova is yours.</1> Projects, edits, recordings, notes and files you create using Nova software belong to you, and we claim no ownership of them.",
+    "<1>Your work stays yours.</1> Nova claims no ownership of the projects, media, code or notes you create with its products.",
+    "1. Accepting these terms",
+    "1. The short version",
+    "1. Your agreement",
+    "10. Changes to Nova",
+    "10. Data retention",
+    "10. Suspension and termination",
+    "11. Termination and suspension",
+    "11. Third-party services",
+    "11. Your rights",
+    "12. Children's privacy",
+    "12. Disclaimers",
+    "13. Liability",
+    "13. Limitation of liability",
+    "13. Third-party services",
+    "14. Changes to this policy",
+    "14. Contact",
+    "14. Updates to these terms",
+    "15. Contact",
+    "2. Using Nova",
+    "2. What Nova provides",
+    "2. What we may collect",
+    "3. Account information",
+    "3. Accounts",
+    "3. Eligibility and accounts",
+    "4. Acceptable use",
+    "4. Usage information",
+    "4. Your responsibilities",
+    "5. Device and technical information",
+    "5. Prohibited activities",
+    "5. Things you may not do",
+    "6. Content and uploads",
+    "6. Cookies",
+    "6. Intellectual property",
+    "7. Content you create",
+    "7. Copyright and intellectual property",
+    "7. Copyright and IP",
+    "7. How information is used",
+    "8. Abuse and security",
+    "8. Third-party services and links",
+    "8. When information is shared",
+    "9. Data security",
+    "9. Service availability",
+    "9. Service changes",
+    "A community platform to share and discover, with real trust &amp; safety tooling behind it.",
+    "A dedicated home for Atlas, separate from the ecosystem page.",
+    "A dedicated home for NovaCut, separate from the ecosystem page.",
+    "A desktop toolkit for customizing and modding your games.",
+    "A local-first assistant with memory and context, reaching for your hardware first.",
+    "A multi-track timeline built for cutting, not for demos.",
+    "A photo editor sharing the same document model as the timeline.",
+    "A search-first knowledge backend, with an AI layer on top of it.",
+    "Accounts are not available",
+    "All products",
+    "Alpha",
+    "Also in the ecosystem",
+    "Always-on capture, so the moment is already recorded.",
+    "An account already uses that address. Sign in instead.",
+    "An AI assistant designed around your own computer.",
+    "Anything a Nova product stores locally stays until you delete it. Uninstalling a product, or clearing its data from within it, removes it.",
+    "Architecture chosen for the codebase that exists in five years.",
+    "Ask for another link",
+    "Ask in your own words.",
+    "Atlas",
+    "Atlas home: a greeting, recent activity and a message box.",
+    "Atlas is a local-first assistant with memory and context — built to work wherever Nova software runs, not tied to any one app.",
+    "Atlas listing what it can help with: search the web, open something, control the PC, find something, work with notes, get something done.",
+    "Atlas listing what it can help with: search, open, control the PC, find, notes.",
+    "Atlas Website",
+    "Attack, overload, or attempt to gain unauthorised access to Nova systems or anyone else's.",
+    "Aware of the product it is inside, and able to drive it.",
+    "Back to Nova",
+    "Back to sign in",
+    "Because so little is collected, the list is short. Information you do give us is used to:",
+    "Break the law, or help someone else break it.",
+    "Build things<1/>",
+    "Building software and experiences, within the terms of the relevant license.",
+    "Calm interfaces",
+    "Change password",
+    "Check the email address and password and try again. If you have never made a Nova Account, create one below.",
+    "Check your email",
+    "Choose a new password",
+    "Choose a new password.",
+    "Choose a password.",
+    "Circumvent a technical limit, license check, or safety measure.",
+    "Color, transitions and treatments applied without leaving the edit.",
+    "Coming soon",
+    "Connected to",
+    "Contact",
+    "Content that breaks these terms may be removed.",
+    "Create a Nova Account",
+    "Creating, editing and organizing your own work.",
+    "Creative software for editing and creating.",
+    "Data on your own machine is protected by your machine. Please use the account security, disk encryption and backups your operating system provides.",
+    "Dedicated sites are being built alongside the products themselves. Until they exist, every product on this page links to the one place that can already help with it — its section of <1>Nova.Help</1> — rather than to a <2>Learn more</2> that goes nowhere. One <3>Nova Account</3> works across all of them, and none of them require one.",
+    "Depending on where you live, you may have rights over personal information held about you — to ask what is held, to have it corrected, or to have it deleted.",
+    "Desktop video and photo editing that runs on your machine and keeps your files. A timeline that stays responsive, and exports that finish.",
+    "Discord",
+    "Distribute malware, or use Nova to deliver it.",
+    "Distribute malware, spyware, or code designed to damage or take control of someone's system.",
+    "Distribute pirated, leaked or stolen material, or anything else you do not hold the rights to.",
+    "Ecosystem",
+    "Effective",
+    "Effects",
+    "Email and password",
+    "Enter the email address you want on the account.",
+    "Enter your email address.",
+    "Enter your password.",
+    "Every product built to stand on its own, and to be better because the others exist.",
+    "Explore the ecosystem",
+    "Exploring and learning.",
+    "Export",
+    "Export to MP4 with the resolution, codec and quality set in one place.",
+    "Featured",
+    "Filters apply to the selected clip, and the inspector keeps the controls.",
+    "Footer",
+    "For a significant change we will make an effort to flag it rather than relying on you to notice. Continuing to use Nova after an update means you accept the updated terms.",
+    "For what does reach us — an email, a bug report — we take reasonable steps to protect it. No method of transmission or storage is completely secure, and we cannot guarantee absolute security.",
+    "Forgotten your password?",
+    "Four positions we hold to, and the reason the products look the way they do.",
+    "Get help with this",
+    "getnovasupport@gmail.com",
+    "GitHub",
+    "Give it a moment and try again.",
+    "Harass, threaten, defame or stalk another person.",
+    "Home",
+    "If a future Nova service lets you upload or publish content, then for that service:",
+    "If a Nova product introduces accounts in the future, this section will describe how they work. At that point you would be responsible for keeping your login details private and for activity that happens under your account, and you should tell us promptly if you believe someone else has access to it.",
+    "If you do not agree, please do not use the site or the software. Individual Nova products may also have their own terms — where a product's own terms say something more specific, those apply to that product.",
+    "If you find a security vulnerability in a Nova product, please report it to <1>getnovasupport@gmail.com</1> rather than publishing it or exploiting it. We would rather hear about it early.",
+    "Impersonate Nova, or present modified software as though it were an official release.",
+    "In build today",
+    "In development",
+    "Independent software studio",
+    "Independent software studio <1>Two in build <2/></1>",
+    "Investigate a bug, security issue or copyright report you raised.",
+    "It detects the game, picks the encoder your graphics card actually has, and hands finished clips to <1>NovaCut</1> for editing.",
+    "It is a session cookie and nothing else — it identifies your sign-in, and it is not used for analytics, advertising or tracking you between sites. Signing out deletes it and ends the session on our side, so a copy of it stops working too. There is no local storage, no session storage, and no other tracking technology.",
+    "It may have been used already, replaced by a newer one, or copied incompletely from the email. Asking for another will fix it.",
+    "It runs natively on your machine, keeps your media where you put it, and does not ask for a monthly fee to open a file you already made. Buy it once and it keeps working.",
+    "Keep your own backups of work that matters to you.",
+    "Keeps what matters between sessions instead of starting over each time.",
+    "Keyboard-first, undo you can trust, and projects that reopen cleanly.",
+    "Layers",
+    "Legal",
+    "Local first",
+    "Local models",
+    "Local-first architecture",
+    "Make sure you have the rights to any content you bring into a Nova product.",
+    "Meet a legal obligation, where one applies.",
+    "Memory",
+    "Misrepresent modified software as an official Nova release.",
+    "Modern workflow",
+    "Natural commands",
+    "No shortcuts",
+    "Not configured",
+    "Not found",
+    "Not set — use “Forgotten your password?” to choose one",
+    "Nothing here limits liability that cannot legally be limited.",
+    "NOVA",
+    "Nova — back to top",
+    "Nova — home",
+    "Nova — Independent software studio",
+    "Nova builds connected software for exploring, creating and building digital worlds. The products described on this site include:",
+    "Nova creates connected software for exploring, creating, and building digital worlds.",
+    "Nova creates connected software for exploring, creating, and building digital worlds. NovaCut and Atlas, with more on the way.",
+    "Nova does not knowingly host or distribute material that infringes someone else's copyright. If you believe something made available through a Nova service infringes your rights, contact <1>getnovasupport@gmail.com</1> with enough detail to identify the material and your claim, and we will look into it and remove infringing material where appropriate.",
+    "Nova Forge",
+    "Nova Games",
+    "Nova integration",
+    "Nova is actively being built. Products, features and this website will change, and some things described here may be added, altered, or removed.",
+    "Nova is provided on an \"as is\" and \"as available\" basis, without warranties of any kind, whether express or implied, to the fullest extent permitted by law.",
+    "Nova is still being built, and this policy will be updated as the products change — particularly if a product ever adds accounts, uploads, or a hosted service.",
+    "Nova is under active development. Features will be added, changed and sometimes removed, and products may move between alpha, development and release.",
+    "Nova on Discord",
+    "Nova on GitHub",
+    "Nova Privacy Policy",
+    "Nova products and services are provided \"as is\" and \"as available\", without warranties of any kind, express or implied, to the fullest extent permitted by law.",
+    "Nova products are built to run on your own machine. Unless a specific product says otherwise, you do not need an account to use them, and using them does not require you to send us anything.",
+    "Nova products are designed to keep your work on your own machine, in formats you can open elsewhere. Where a future product lets you publish or share something publicly, you would be giving us only the permission needed to host and display it for that purpose — and you would keep ownership of it.",
+    "Nova products are designed to run on your own hardware. Where a product works without a network connection, we intend to keep it that way.",
+    "Nova products can work alongside services we do not control. Atlas, for example, can be connected to an external model provider using a key you supply — that connection is optional, off by default, and governed by that provider's own terms.",
+    "Nova products read information about your own computer where a feature needs it — for example, checking available disk space, listing installed applications so you can open one, or choosing a suitable graphics setting.",
+    "Nova software that runs on your own machine keeps working whether or not this website is up. That is deliberate, and it is one of the reasons the products are built the way they are.",
+    "Nova Store",
+    "Nova Terms of Service",
+    "Nova Terms of Use",
+    "Nova.Help",
+    "Nova.Information",
+    "Nova.Loom",
+    "Nova's products are not directed at children, and we do not knowingly collect personal information from children.",
+    "NovaCut",
+    "NovaCut is a desktop video and photo editor for real projects — a timeline that stays responsive as the project grows, and exports that finish.",
+    "NovaCut Website",
+    "NovaCut with a color filter applied to a clip, and its intensity in the inspector.",
+    "NovaLegal",
+    "On the way",
+    "On this page",
+    "One family of software.",
+    "One family of software. Built to work together — NovaCut and Atlas, with more on the way.",
+    "One family of software. Built to work together.",
+    "One Nova Account, one password, everywhere. You never need a separate account for a Nova product — including Nova.Help, where you can already use this one.",
+    "One place to find, get and update Nova software.",
+    "Own the foundations",
+    "Password",
+    "Planned",
+    "Please do not test the security of Nova systems in ways that could affect other people — that includes denial-of-service testing and automated attacks.",
+    "Please do not:",
+    "Please keep it under 80 characters.",
+    "Please keep your own backups. Nothing in these terms limits liability that cannot legally be limited.",
+    "Primary",
+    "Privacy Policy",
+    "Privacy questions can be sent to <1>getnovasupport@gmail.com</1>, addressed to <2>[Company/Legal Entity Name]</2>.",
+    "Probe, scan, overload or otherwise interfere with Nova services or the systems of others.",
+    "Produce, seek or share sexual content involving minors. This is prohibited absolutely, and any report of it is treated as a critical safety matter.",
+    "Products",
+    "Products &amp; platforms",
+    "Products are at different stages. Some are in alpha, some are still in development, and some are planned. A product being described here is not a promise that it will ship, or that it will work in the way described when it does.",
+    "Published by",
+    "Questions about these terms can be sent to <1>getnovasupport@gmail.com</1>.",
+    "Questions, copyright reports and security reports can all be sent to <1>getnovasupport@gmail.com</1>.",
+    "Real capabilities it can invoke, not just answers about them.",
+    "Remove or obscure copyright notices, licences, or attribution.",
+    "Replay.GG",
+    "Replay.GG home: ready to capture, with record, instant replay and clip shortcuts.",
+    "Replay.GG records your gameplay and holds the last few minutes in a rolling buffer, so a great play is saved by pressing one key after it happens, not before.",
+    "Reply to a message you sent us.",
+    "Resell or redistribute Nova software as your own product.",
+    "Reset links last an hour, so this one has lapsed. Ask for another and it will arrive with a fresh hour on it.",
+    "Reset your password",
+    "Respect other people's rights, including their privacy and their copyright.",
+    "Runs against models on your machine, with nothing leaving it by default.",
+    "Save the play after it happens.",
+    "Say what you want in a sentence; it works out the steps.",
+    "Scrape or bulk-collect from Nova services in a way that degrades them for other people.",
+    "Scroll",
+    "See the ecosystem",
+    "Separately, when <1>you</1> choose to connect a Nova product to an outside service — see <2>Third-party services</2> — information goes to that service directly, on your instruction.",
+    "Set",
+    "Share sexual content involving minors, or anything that sexualises a child. This is never permitted, in any context.",
+    "Sign in",
+    "Sign in to Nova",
+    "Sign out",
+    "Sign-in methods",
+    "Signed in",
+    "Skip to content",
+    "Skip to the products",
+    "Software should be owned, not rented.",
+    "Some jurisdictions do not allow certain warranties to be excluded. Where that is the case, this section applies only as far as the law allows.",
+    "Some Nova products can be connected to outside services, by your choice. The clearest example is Atlas: it works fully with nothing connected, and can optionally be given a key for an external model provider. If you do that, whatever you send through that feature goes to the provider you chose, under that provider's terms and privacy policy.",
+    "Some Nova products keep a local history so a feature can work — recently opened files, a command history, an assistant's memory of what you told it. That information stays on your machine, and you can delete it there.",
+    "Support",
+    "Take responsibility for the files, projects and data you create or open with it.",
+    "Terms of Service",
+    "Terms of Use",
+    "That did not sign you in",
+    "That does not look like an email address.",
+    "That information is used on your machine, for that feature, at that moment. It is not collected, aggregated, or transmitted to us.",
+    "That is longer than 256 characters.",
+    "that last.",
+    "That link cannot be used",
+    "That link has expired",
+    "That page is not here.",
+    "That password is one of the first anybody guesses. Please pick another.",
+    "The ecosystem",
+    "The effective date at the top shows when the current version took effect. If a change means we would start collecting something we do not collect today, we will say so plainly rather than burying it in an update.",
+    "The launcher for Nova's games.",
+    "The legal center for the Nova ecosystem — terms, privacy, one place to find both.",
+    "The next step is in your inbox.",
+    "The Nova Account system is not configured on this deployment yet.",
+    "The Nova Ecosystem",
+    "The Nova Ecosystem — NovaCut, Atlas",
+    "The Nova name, logo, website and software are owned by <1>[Company/Legal Entity Name]</1> or its licensors. Where a component is released under an open-source license, that license governs it.",
+    "The Nova name, logo, website, written content and software are owned by <1>[Company/Legal Entity Name]</1> or its licensors, and are protected by copyright and trade mark law.",
+    "The NovaCut editor: a media library, live preview, inspector and a three-track timeline with a title applied.",
+    "The NovaCut editor: media library, preview, inspector and a three-track timeline.",
+    "The NovaCut export dialog with resolution, frame rate, codec and quality choices.",
+    "The only personal information this site can collect is what somebody types into the Nova Account sign-up form. If you believe a child has provided us with information, please contact us and we will delete the account and everything held with it.",
+    "The point is not a chat window. It is an assistant that understands what you are looking at, remembers what you were doing, and can act on it — reaching for a model on your own hardware before one somewhere else.",
+    "The rest of this page explains that in more detail, and describes what would change if a future product needed more.",
+    "The rules for using the Nova website and the software we make available.",
+    "The rules governing use of Nova's products and services — NovaCut and Atlas.",
+    "The rules governing use of Nova's products and services.",
+    "The rules that govern Nova's products and the services behind them.",
+    "The same account is used by Nova.Help when you file a support ticket while signed in. It is one account, not a copy per product, and it is the same record described here wherever you meet it.",
+    "The same applies to any link you open from a Nova product or from this site. Once you leave, that destination's own policies apply. We are not responsible for how other services handle your information.",
+    "The site follows your system's light or dark appearance setting. That preference is read from your browser as you view the page; it is not stored or sent anywhere.",
+    "The strongest protection here is structural: information that is never collected cannot be leaked from us. Keeping your work on your own machine is the main privacy decision in every Nova product, and it is deliberate.",
+    "The support center for every Nova product, and one place to file a ticket.",
+    "The terms that apply when you use the Nova website and the software Nova makes available.",
+    "The two passwords do not match.",
+    "These Terms of Use apply when you visit the Nova website or use software that Nova makes available. By using either, you agree to them.",
+    "These terms sit alongside the <1>Terms of Use</1>, which cover the Nova website more generally. Where an individual product publishes its own terms or license, that document governs that product.",
+    "This account works across Nova",
+    "This one is ours, not yours.",
+    "This website and Nova products may link to, or work alongside, services we do not control — an operating system, a hardware driver, a website you choose to open, or a model provider you choose to connect.",
+    "This website is provided as it is, and may be unavailable at times — for maintenance, for technical reasons, or for reasons outside our control.",
+    "Those services have their own terms and their own privacy practices. We are not responsible for them, and linking to something is not an endorsement of it.",
+    "Timeline",
+    "To the fullest extent permitted by law, <1>[Company/Legal Entity Name]</1> is not liable for indirect, incidental, special or consequential losses arising from your use of Nova products or services — including lost profits, lost data, or lost work.",
+    "To the fullest extent permitted by law, <1>[Company/Legal Entity Name]</1> is not liable for indirect, incidental, special or consequential losses arising from your use of Nova, including lost profits, lost data, or lost work.",
+    "Today, in ordinary use:",
+    "Today, Nova products store your work on your own machine. There is no upload step, and nothing is sent to us as part of ordinary use.",
+    "Too many attempts",
+    "Tools",
+    "Tools appear when the moment calls for them, then step back.",
+    "Two in build",
+    "Two products, one foundation.",
+    "Upload, share or distribute content you do not have the rights to.",
+    "Use at least 10 characters. A short sentence works well.",
+    "Use it lawfully, and in the ways these terms describe.",
+    "Use Nova products for what they are for. In practice that means:",
+    "Use Nova to break the law, or to help anyone else break it.",
+    "Using material you own, or that you are licensed or permitted to use.",
+    "Using Nova does not transfer any of that ownership to you. Where a Nova product or component is released under an open-source license, that license governs what you may do with it, and it overrides this section for that component.",
+    "Video editing",
+    "We do not promise that the website or the software will be uninterrupted, error-free, or fit for a particular purpose, and we do not promise that it will meet every requirement you have. Software in alpha or in development is especially likely to change and to contain defects.",
+    "We do not sell it, we do not profile you with it, and we do not use it to track you between sites. If you want it deleted, ask through <1>Nova.Help</1> and we will remove the account and everything listed above.",
+    "We do not sell personal information, and we do not use it for advertising or profiling.",
+    "We do not share personal information as part of normal operation, because we do not hold any. Where something is unavoidable, it would be limited to:",
+    "We do not warrant that a product will be uninterrupted, error-free, or suitable for a particular purpose. Alpha and in-development software should be treated as exactly that: keep backups, and do not rely on it for anything you cannot afford to lose.",
+    "We keep correspondence only as long as it is useful for handling the matter it relates to, or as long as a legal obligation requires.",
+    "We may also update these terms. When we do, we will change the effective date at the top of this page. If a change is significant, we will try to make that clear rather than leaving you to spot it. Continuing to use Nova after an update means you accept the updated terms.",
+    "We may suspend or end access to a hosted Nova service if it is being used in a way that breaks these terms, harms other users, or creates legal risk. Where possible we will say why, and where the breach is minor we would rather resolve it than remove access.",
+    "We may suspend or withdraw access to this website, or to a hosted service we run, if it is being used in a way that breaks these terms or puts other people at risk. Where a Nova product runs entirely on your own machine, this does not reach into it.",
+    "We may update these terms as the products change. The effective date at the top of the page shows when the current version took effect.",
+    "Welcome back.",
+    "What information Nova collects, what it does not collect, and why the products are built to keep your work on your own machine.",
+    "What information Nova collects, what it does not collect, and why.",
+    "What is in it",
+    "What Nova collects, what it does not, and why the answer is mostly \"nothing\".",
+    "When you choose to use a third-party service, its terms and privacy practices apply to what it does. We are not responsible for those services.",
+    "When you create one, we hold: your <1>email address</1>; a <2>scrypt hash of your password</2>, never the password itself, from which the password cannot be recovered; an optional <3>display name</3> if you give one; a list of your <4>active sessions</4>, so that signing out actually ends them; and, for as long as one is outstanding, a <5>hashed password-reset token</5>, which is deleted the moment it is used or expires. We also record <6>which Nova products the account has been used with</6> — a product name and a date, nothing about what you did there.",
+    "When you use Nova, you agree to:",
+    "Where a Nova product includes a feature for reporting a problem or a piece of content, we ask that you use it rather than working around it.",
+    "Where the law where you live does not allow a warranty to be excluded, this section applies only as far as the law allows.",
+    "Where the platform sets the ceiling, we build it ourselves.",
+    "Where we can, we will give notice of a change that would break something you rely on. Software already installed on your machine keeps working as installed until you choose to update it.",
+    "Why we exist",
+    "Working draft — Nova is a brand direction under review. Two renames have shipped: the engine (Open Engine is now Nova Engine) and the editor (Open Cut is now NovaCut). Every other name shown here is still a proposal.",
+    "You are responsible for having the rights to whatever you bring into a Nova product or share through one.",
+    "You are signed in on this device. Everything else has been signed out, on Nova and on every Nova product. If you did not do this, change the password again immediately and secure your email account.",
+    "You are signed in. This account works across every Nova product.",
+    "You can exercise those rights by writing to <1>getnovasupport@gmail.com</1>. In practice the answer for most people will be that we hold nothing about them at all. For data held locally by a Nova product, you already have direct control: it is on your machine, and you can delete it yourself.",
+    "You can stop using Nova at any time, and you can uninstall the software whenever you like.",
+    "You choose what is public, and what is not.",
+    "You confirm you have the rights, licences or permissions needed to share it.",
+    "You grant only the permission needed to store, display and deliver it for the purpose you chose.",
+    "You keep ownership of what you upload.",
+    "You may not use Nova products or services to:",
+    "You may read this website, and you may download, install and use Nova software that is offered for download, for your own personal or business purposes.",
+    "You may stop using Nova at any time, and you may uninstall the software whenever you like.",
+    "You must be old enough to enter into an agreement where you live in order to accept these terms. If you are using Nova on behalf of an organization, you are confirming you have the authority to accept these terms for it.",
+    "Your Nova Account",
+    "Your Nova Account is ready",
+    "Your password cannot be your email address.",
+    "Your password has been changed",
+    "Your password has not been changed and your account is untouched.",
+    "Your project, your files, your machine.",
+    "Your web hosting and network providers can still see that a request was made — that is how the internet works, and it is outside anything Nova controls. Where the provider serving this site keeps standard access logs, those logs are that provider's, kept under that provider's policy.",
+    "Your work happens on your hardware, in formats you can open anywhere."
+  ],
+  "where": {
+    "[Company/Legal Entity Name]": [
+      "/privacy.html",
+      "/terms-of-service.html",
+      "/terms-of-use.html"
+    ],
+    "[Effective Date]": [
+      "/privacy.html",
+      "/terms-of-service.html",
+      "/terms-of-use.html"
+    ],
+    "<1>A Nova Account is optional.</1> You can read this site, and use Nova products, without one. It exists so that one identity works across the Nova ecosystem instead of each product asking you to register separately.": [
+      "/privacy.html"
+    ],
+    "<1>About this page.</1> This is an informational template written for the Nova website while the products are being built. It is not legal advice, and it has not been reviewed by a lawyer. It describes only what Nova actually does today — where a practice does not exist yet, the page says so instead of claiming one. The bracketed values are placeholders for details that have not been decided yet, and Nova itself is a brand direction still under review.": [
+      "/privacy.html"
+    ],
+    "<1>About this page.</1> This is an informational template written for the Nova website while the products are being built. It is not legal advice, and it has not been reviewed by a lawyer. The bracketed values above are placeholders for details that have not been decided yet. Nova is also a brand direction still under review — nothing has been renamed or rebranded.": [
+      "/terms-of-service.html",
+      "/terms-of-use.html"
+    ],
+    "<1>Atlas</1> — a local-first assistant with memory and context.": [
+      "/terms-of-service.html"
+    ],
+    "<1>Atlas</1> — the assistant, on your own hardware": [
+      "/ecosystem.html"
+    ],
+    "<1>From Nova products — nothing sent to us.</1> They read and write files on your machine and do not report back.": [
+      "/privacy.html"
+    ],
+    "<1>From this website — nothing.</1> It is a set of static pages with no data collection built in.": [
+      "/privacy.html"
+    ],
+    "<1>Home</1> <2>Ecosystem</2>": [
+      "/ecosystem.html",
+      "/privacy.html",
+      "/terms-of-service.html",
+      "/terms-of-use.html"
+    ],
+    "<1>If you email us</1> at the address below, we will have your email address and whatever you chose to write, for as long as it takes to deal with your message.": [
+      "/privacy.html"
+    ],
+    "<1>Legal requirements</1>, where we are required to respond to a valid legal request.": [
+      "/privacy.html"
+    ],
+    "<1>Nova does not currently offer user accounts.</1> Nothing on this site asks you to register, sign in, or create a profile.": [
+      "/terms-of-use.html"
+    ],
+    "<1>Nova does not currently require or offer an account.</1> The software runs without signing in. If a product introduces accounts later, you will be responsible for the accuracy of your details, for keeping your credentials secure, and for what happens under your account.": [
+      "/terms-of-service.html"
+    ],
+    "<1>Nova does not run analytics.</1> We do not measure page views, build usage profiles, record sessions, or track you between visits or between products.": [
+      "/privacy.html"
+    ],
+    "<1>Nova products keep your work on your own machine.</1> Files, projects, settings and history stay in local storage on your computer. Ordinary use does not send them anywhere, and a Nova Account does not change that — it identifies you, it does not collect your work.": [
+      "/privacy.html"
+    ],
+    "<1>NovaCut</1> — desktop video and photo editing.": [
+      "/terms-of-service.html"
+    ],
+    "<1>Products</1> <2>Ecosystem</2> <3>Why we exist</3>": [
+      "/index.html"
+    ],
+    "<1>Protecting people</1>, where sharing is genuinely necessary to prevent harm.": [
+      "/privacy.html"
+    ],
+    "<1>Replay.GG</1> — capture that hands its clips straight to the editor": [
+      "/ecosystem.html"
+    ],
+    "<1>Service providers</1> we rely on to run the site or a service, and only what they need to provide it.": [
+      "/privacy.html"
+    ],
+    "<1>This website collects nothing about you unless you make a Nova Account.</1> There are no contact forms, no analytics and no tracking scripts, and browsing it sets no cookies. A Nova Account is optional; if you create one, a single cookie keeps you signed in and section 3 lists everything that is stored.": [
+      "/privacy.html"
+    ],
+    "<1>This website sets one cookie, and only if you sign in.</1> Browsing it sets none at all. When you sign in to a Nova Account we set a single cookie that keeps you signed in; it is <2>HttpOnly</2>, so no script on the page can read it, and <3>SameSite=Lax</3>, so it is not sent from other sites.": [
+      "/privacy.html"
+    ],
+    "<1>Using a Nova product or service means you agree to these terms.</1> That includes downloading and running the software, and using any hosted service Nova operates.": [
+      "/terms-of-service.html"
+    ],
+    "<1>What you make with Nova is yours.</1> Projects, edits, recordings, notes and files you create using Nova software belong to you, and we claim no ownership of them.": [
+      "/terms-of-use.html"
+    ],
+    "<1>Your work stays yours.</1> Nova claims no ownership of the projects, media, code or notes you create with its products.": [
+      "/terms-of-service.html"
+    ],
+    "1. Accepting these terms": [
+      "/terms-of-use.html"
+    ],
+    "1. The short version": [
+      "/privacy.html"
+    ],
+    "1. Your agreement": [
+      "/terms-of-service.html"
+    ],
+    "10. Changes to Nova": [
+      "/terms-of-use.html"
+    ],
+    "10. Data retention": [
+      "/privacy.html"
+    ],
+    "10. Suspension and termination": [
+      "/terms-of-service.html"
+    ],
+    "11. Termination and suspension": [
+      "/terms-of-use.html"
+    ],
+    "11. Third-party services": [
+      "/terms-of-service.html"
+    ],
+    "11. Your rights": [
+      "/privacy.html"
+    ],
+    "12. Children's privacy": [
+      "/privacy.html"
+    ],
+    "12. Disclaimers": [
+      "/terms-of-service.html",
+      "/terms-of-use.html"
+    ],
+    "13. Liability": [
+      "/terms-of-service.html"
+    ],
+    "13. Limitation of liability": [
+      "/terms-of-use.html"
+    ],
+    "13. Third-party services": [
+      "/privacy.html"
+    ],
+    "14. Changes to this policy": [
+      "/privacy.html"
+    ],
+    "14. Contact": [
+      "/terms-of-use.html"
+    ],
+    "14. Updates to these terms": [
+      "/terms-of-service.html"
+    ],
+    "15. Contact": [
+      "/privacy.html",
+      "/terms-of-service.html"
+    ],
+    "2. Using Nova": [
+      "/terms-of-use.html"
+    ],
+    "2. What Nova provides": [
+      "/terms-of-service.html"
+    ],
+    "2. What we may collect": [
+      "/privacy.html"
+    ],
+    "3. Account information": [
+      "/privacy.html"
+    ],
+    "3. Accounts": [
+      "/terms-of-use.html"
+    ],
+    "3. Eligibility and accounts": [
+      "/terms-of-service.html"
+    ],
+    "4. Acceptable use": [
+      "/terms-of-service.html"
+    ],
+    "4. Usage information": [
+      "/privacy.html"
+    ],
+    "4. Your responsibilities": [
+      "/terms-of-use.html"
+    ],
+    "5. Device and technical information": [
+      "/privacy.html"
+    ],
+    "5. Prohibited activities": [
+      "/terms-of-service.html"
+    ],
+    "5. Things you may not do": [
+      "/terms-of-use.html"
+    ],
+    "6. Content and uploads": [
+      "/terms-of-service.html"
+    ],
+    "6. Cookies": [
+      "/privacy.html"
+    ],
+    "6. Intellectual property": [
+      "/terms-of-use.html"
+    ],
+    "7. Content you create": [
+      "/terms-of-use.html"
+    ],
+    "7. Copyright and intellectual property": [
+      "/terms-of-service.html"
+    ],
+    "7. Copyright and IP": [
+      "/terms-of-service.html"
+    ],
+    "7. How information is used": [
+      "/privacy.html"
+    ],
+    "8. Abuse and security": [
+      "/terms-of-service.html"
+    ],
+    "8. Third-party services and links": [
+      "/terms-of-use.html"
+    ],
+    "8. When information is shared": [
+      "/privacy.html"
+    ],
+    "9. Data security": [
+      "/privacy.html"
+    ],
+    "9. Service availability": [
+      "/terms-of-use.html"
+    ],
+    "9. Service changes": [
+      "/terms-of-service.html"
+    ],
+    "A community platform to share and discover, with real trust &amp; safety tooling behind it.": [
+      "/ecosystem.html"
+    ],
+    "A dedicated home for Atlas, separate from the ecosystem page.": [
+      "/ecosystem.html"
+    ],
+    "A dedicated home for NovaCut, separate from the ecosystem page.": [
+      "/ecosystem.html"
+    ],
+    "A desktop toolkit for customizing and modding your games.": [
+      "/ecosystem.html"
+    ],
+    "A local-first assistant with memory and context, reaching for your hardware first.": [
+      "/index.html"
+    ],
+    "A multi-track timeline built for cutting, not for demos.": [
+      "/ecosystem.html"
+    ],
+    "A photo editor sharing the same document model as the timeline.": [
+      "/ecosystem.html"
+    ],
+    "A search-first knowledge backend, with an AI layer on top of it.": [
+      "/ecosystem.html"
+    ],
+    "Accounts are not available": [
+      "extra.json"
+    ],
+    "All products": [
+      "/index.html"
+    ],
+    "Alpha": [
+      "/ecosystem.html",
+      "/index.html"
+    ],
+    "Also in the ecosystem": [
+      "/ecosystem.html"
+    ],
+    "Always-on capture, so the moment is already recorded.": [
+      "/ecosystem.html"
+    ],
+    "An account already uses that address. Sign in instead.": [
+      "extra.json"
+    ],
+    "An AI assistant designed around your own computer.": [
+      "/ecosystem.html"
+    ],
+    "Anything a Nova product stores locally stays until you delete it. Uninstalling a product, or clearing its data from within it, removes it.": [
+      "/privacy.html"
+    ],
+    "Architecture chosen for the codebase that exists in five years.": [
+      "/index.html"
+    ],
+    "Ask for another link": [
+      "extra.json"
+    ],
+    "Ask in your own words.": [
+      "/ecosystem.html"
+    ],
+    "Atlas": [
+      "/ecosystem.html",
+      "/index.html"
+    ],
+    "Atlas home: a greeting, recent activity and a message box.": [
+      "/ecosystem.html"
+    ],
+    "Atlas is a local-first assistant with memory and context — built to work wherever Nova software runs, not tied to any one app.": [
+      "/ecosystem.html"
+    ],
+    "Atlas listing what it can help with: search the web, open something, control the PC, find something, work with notes, get something done.": [
+      "/ecosystem.html"
+    ],
+    "Atlas listing what it can help with: search, open, control the PC, find, notes.": [
+      "/index.html"
+    ],
+    "Atlas Website": [
+      "/ecosystem.html"
+    ],
+    "Attack, overload, or attempt to gain unauthorised access to Nova systems or anyone else's.": [
+      "/terms-of-use.html"
+    ],
+    "Aware of the product it is inside, and able to drive it.": [
+      "/ecosystem.html"
+    ],
+    "Back to Nova": [
+      "/privacy.html",
+      "/terms-of-service.html",
+      "/terms-of-use.html"
+    ],
+    "Back to sign in": [
+      "extra.json"
+    ],
+    "Because so little is collected, the list is short. Information you do give us is used to:": [
+      "/privacy.html"
+    ],
+    "Break the law, or help someone else break it.": [
+      "/terms-of-service.html"
+    ],
+    "Build things<1/>": [
+      "/index.html"
+    ],
+    "Building software and experiences, within the terms of the relevant license.": [
+      "/terms-of-service.html"
+    ],
+    "Calm interfaces": [
+      "/index.html"
+    ],
+    "Change password": [
+      "extra.json"
+    ],
+    "Check the email address and password and try again. If you have never made a Nova Account, create one below.": [
+      "extra.json"
+    ],
+    "Check your email": [
+      "extra.json"
+    ],
+    "Choose a new password": [
+      "extra.json"
+    ],
+    "Choose a new password.": [
+      "extra.json"
+    ],
+    "Choose a password.": [
+      "extra.json"
+    ],
+    "Circumvent a technical limit, license check, or safety measure.": [
+      "/terms-of-service.html"
+    ],
+    "Color, transitions and treatments applied without leaving the edit.": [
+      "/ecosystem.html"
+    ],
+    "Coming soon": [
+      "/ecosystem.html"
+    ],
+    "Connected to": [
+      "/ecosystem.html"
+    ],
+    "Contact": [
+      "/privacy.html",
+      "/terms-of-service.html",
+      "/terms-of-use.html"
+    ],
+    "Content that breaks these terms may be removed.": [
+      "/terms-of-service.html"
+    ],
+    "Create a Nova Account": [
+      "extra.json"
+    ],
+    "Creating, editing and organizing your own work.": [
+      "/terms-of-service.html"
+    ],
+    "Creative software for editing and creating.": [
+      "/ecosystem.html"
+    ],
+    "Data on your own machine is protected by your machine. Please use the account security, disk encryption and backups your operating system provides.": [
+      "/privacy.html"
+    ],
+    "Dedicated sites are being built alongside the products themselves. Until they exist, every product on this page links to the one place that can already help with it — its section of <1>Nova.Help</1> — rather than to a <2>Learn more</2> that goes nowhere. One <3>Nova Account</3> works across all of them, and none of them require one.": [
+      "/ecosystem.html"
+    ],
+    "Depending on where you live, you may have rights over personal information held about you — to ask what is held, to have it corrected, or to have it deleted.": [
+      "/privacy.html"
+    ],
+    "Desktop video and photo editing that runs on your machine and keeps your files. A timeline that stays responsive, and exports that finish.": [
+      "/index.html"
+    ],
+    "Discord": [
+      "/ecosystem.html",
+      "/index.html",
+      "/privacy.html",
+      "/terms-of-service.html",
+      "/terms-of-use.html"
+    ],
+    "Distribute malware, or use Nova to deliver it.": [
+      "/terms-of-use.html"
+    ],
+    "Distribute malware, spyware, or code designed to damage or take control of someone's system.": [
+      "/terms-of-service.html"
+    ],
+    "Distribute pirated, leaked or stolen material, or anything else you do not hold the rights to.": [
+      "/terms-of-service.html"
+    ],
+    "Ecosystem": [
+      "/ecosystem.html",
+      "/index.html",
+      "/privacy.html",
+      "/terms-of-service.html",
+      "/terms-of-use.html"
+    ],
+    "Effective": [
+      "/privacy.html",
+      "/terms-of-service.html",
+      "/terms-of-use.html"
+    ],
+    "Effects": [
+      "/ecosystem.html"
+    ],
+    "Email and password": [
+      "extra.json"
+    ],
+    "Enter the email address you want on the account.": [
+      "extra.json"
+    ],
+    "Enter your email address.": [
+      "extra.json"
+    ],
+    "Enter your password.": [
+      "extra.json"
+    ],
+    "Every product built to stand on its own, and to be better because the others exist.": [
+      "/index.html"
+    ],
+    "Explore the ecosystem": [
+      "/index.html"
+    ],
+    "Exploring and learning.": [
+      "/terms-of-service.html"
+    ],
+    "Export": [
+      "/index.html"
+    ],
+    "Export to MP4 with the resolution, codec and quality set in one place.": [
+      "/ecosystem.html"
+    ],
+    "Featured": [
+      "/index.html"
+    ],
+    "Filters apply to the selected clip, and the inspector keeps the controls.": [
+      "/ecosystem.html"
+    ],
+    "Footer": [
+      "/ecosystem.html",
+      "/index.html",
+      "/privacy.html",
+      "/terms-of-service.html",
+      "/terms-of-use.html"
+    ],
+    "For a significant change we will make an effort to flag it rather than relying on you to notice. Continuing to use Nova after an update means you accept the updated terms.": [
+      "/terms-of-service.html"
+    ],
+    "For what does reach us — an email, a bug report — we take reasonable steps to protect it. No method of transmission or storage is completely secure, and we cannot guarantee absolute security.": [
+      "/privacy.html"
+    ],
+    "Forgotten your password?": [
+      "extra.json"
+    ],
+    "Four positions we hold to, and the reason the products look the way they do.": [
+      "/index.html"
+    ],
+    "Get help with this": [
+      "/ecosystem.html"
+    ],
+    "getnovasupport@gmail.com": [
+      "/privacy.html",
+      "/terms-of-service.html",
+      "/terms-of-use.html"
+    ],
+    "GitHub": [
+      "/ecosystem.html",
+      "/index.html",
+      "/privacy.html",
+      "/terms-of-service.html",
+      "/terms-of-use.html"
+    ],
+    "Give it a moment and try again.": [
+      "extra.json"
+    ],
+    "Harass, threaten, defame or stalk another person.": [
+      "/terms-of-service.html"
+    ],
+    "Home": [
+      "/ecosystem.html",
+      "/privacy.html",
+      "/terms-of-service.html",
+      "/terms-of-use.html"
+    ],
+    "If a future Nova service lets you upload or publish content, then for that service:": [
+      "/terms-of-service.html"
+    ],
+    "If a Nova product introduces accounts in the future, this section will describe how they work. At that point you would be responsible for keeping your login details private and for activity that happens under your account, and you should tell us promptly if you believe someone else has access to it.": [
+      "/terms-of-use.html"
+    ],
+    "If you do not agree, please do not use the site or the software. Individual Nova products may also have their own terms — where a product's own terms say something more specific, those apply to that product.": [
+      "/terms-of-use.html"
+    ],
+    "If you find a security vulnerability in a Nova product, please report it to <1>getnovasupport@gmail.com</1> rather than publishing it or exploiting it. We would rather hear about it early.": [
+      "/terms-of-service.html"
+    ],
+    "Impersonate Nova, or present modified software as though it were an official release.": [
+      "/terms-of-use.html"
+    ],
+    "In build today": [
+      "/index.html"
+    ],
+    "In development": [
+      "/ecosystem.html",
+      "/index.html"
+    ],
+    "Independent software studio": [
+      "/index.html"
+    ],
+    "Independent software studio <1>Two in build <2/></1>": [
+      "/index.html"
+    ],
+    "Investigate a bug, security issue or copyright report you raised.": [
+      "/privacy.html"
+    ],
+    "It detects the game, picks the encoder your graphics card actually has, and hands finished clips to <1>NovaCut</1> for editing.": [
+      "/ecosystem.html"
+    ],
+    "It is a session cookie and nothing else — it identifies your sign-in, and it is not used for analytics, advertising or tracking you between sites. Signing out deletes it and ends the session on our side, so a copy of it stops working too. There is no local storage, no session storage, and no other tracking technology.": [
+      "/privacy.html"
+    ],
+    "It may have been used already, replaced by a newer one, or copied incompletely from the email. Asking for another will fix it.": [
+      "extra.json"
+    ],
+    "It runs natively on your machine, keeps your media where you put it, and does not ask for a monthly fee to open a file you already made. Buy it once and it keeps working.": [
+      "/ecosystem.html"
+    ],
+    "Keep your own backups of work that matters to you.": [
+      "/terms-of-use.html"
+    ],
+    "Keeps what matters between sessions instead of starting over each time.": [
+      "/ecosystem.html"
+    ],
+    "Keyboard-first, undo you can trust, and projects that reopen cleanly.": [
+      "/ecosystem.html"
+    ],
+    "Layers": [
+      "/ecosystem.html",
+      "/index.html"
+    ],
+    "Legal": [
+      "/privacy.html",
+      "/terms-of-service.html",
+      "/terms-of-use.html"
+    ],
+    "Local first": [
+      "/index.html"
+    ],
+    "Local models": [
+      "/index.html"
+    ],
+    "Local-first architecture": [
+      "/ecosystem.html"
+    ],
+    "Make sure you have the rights to any content you bring into a Nova product.": [
+      "/terms-of-use.html"
+    ],
+    "Meet a legal obligation, where one applies.": [
+      "/privacy.html"
+    ],
+    "Memory": [
+      "/ecosystem.html",
+      "/index.html"
+    ],
+    "Misrepresent modified software as an official Nova release.": [
+      "/terms-of-service.html"
+    ],
+    "Modern workflow": [
+      "/ecosystem.html"
+    ],
+    "Natural commands": [
+      "/ecosystem.html"
+    ],
+    "No shortcuts": [
+      "/index.html"
+    ],
+    "Not configured": [
+      "extra.json"
+    ],
+    "Not found": [
+      "extra.json"
+    ],
+    "Not set — use “Forgotten your password?” to choose one": [
+      "extra.json"
+    ],
+    "Nothing here limits liability that cannot legally be limited.": [
+      "/terms-of-service.html"
+    ],
+    "NOVA": [
+      "/ecosystem.html",
+      "/index.html",
+      "/privacy.html",
+      "/terms-of-service.html",
+      "/terms-of-use.html"
+    ],
+    "Nova — back to top": [
+      "/index.html"
+    ],
+    "Nova — home": [
+      "/ecosystem.html",
+      "/index.html",
+      "/privacy.html",
+      "/terms-of-service.html",
+      "/terms-of-use.html"
+    ],
+    "Nova — Independent software studio": [
+      "/index.html"
+    ],
+    "Nova builds connected software for exploring, creating and building digital worlds. The products described on this site include:": [
+      "/terms-of-service.html"
+    ],
+    "Nova creates connected software for exploring, creating, and building digital worlds.": [
+      "/index.html"
+    ],
+    "Nova creates connected software for exploring, creating, and building digital worlds. NovaCut and Atlas, with more on the way.": [
+      "/index.html"
+    ],
+    "Nova does not knowingly host or distribute material that infringes someone else's copyright. If you believe something made available through a Nova service infringes your rights, contact <1>getnovasupport@gmail.com</1> with enough detail to identify the material and your claim, and we will look into it and remove infringing material where appropriate.": [
+      "/terms-of-service.html"
+    ],
+    "Nova Forge": [
+      "/ecosystem.html"
+    ],
+    "Nova Games": [
+      "/ecosystem.html"
+    ],
+    "Nova integration": [
+      "/ecosystem.html"
+    ],
+    "Nova is actively being built. Products, features and this website will change, and some things described here may be added, altered, or removed.": [
+      "/terms-of-use.html"
+    ],
+    "Nova is provided on an \"as is\" and \"as available\" basis, without warranties of any kind, whether express or implied, to the fullest extent permitted by law.": [
+      "/terms-of-use.html"
+    ],
+    "Nova is still being built, and this policy will be updated as the products change — particularly if a product ever adds accounts, uploads, or a hosted service.": [
+      "/privacy.html"
+    ],
+    "Nova is under active development. Features will be added, changed and sometimes removed, and products may move between alpha, development and release.": [
+      "/terms-of-service.html"
+    ],
+    "Nova on Discord": [
+      "/ecosystem.html",
+      "/index.html",
+      "/privacy.html",
+      "/terms-of-service.html",
+      "/terms-of-use.html"
+    ],
+    "Nova on GitHub": [
+      "/ecosystem.html",
+      "/index.html",
+      "/privacy.html",
+      "/terms-of-service.html",
+      "/terms-of-use.html"
+    ],
+    "Nova Privacy Policy": [
+      "/ecosystem.html",
+      "/index.html",
+      "/privacy.html",
+      "/terms-of-service.html",
+      "/terms-of-use.html"
+    ],
+    "Nova products and services are provided \"as is\" and \"as available\", without warranties of any kind, express or implied, to the fullest extent permitted by law.": [
+      "/terms-of-service.html"
+    ],
+    "Nova products are built to run on your own machine. Unless a specific product says otherwise, you do not need an account to use them, and using them does not require you to send us anything.": [
+      "/terms-of-use.html"
+    ],
+    "Nova products are designed to keep your work on your own machine, in formats you can open elsewhere. Where a future product lets you publish or share something publicly, you would be giving us only the permission needed to host and display it for that purpose — and you would keep ownership of it.": [
+      "/terms-of-use.html"
+    ],
+    "Nova products are designed to run on your own hardware. Where a product works without a network connection, we intend to keep it that way.": [
+      "/terms-of-service.html"
+    ],
+    "Nova products can work alongside services we do not control. Atlas, for example, can be connected to an external model provider using a key you supply — that connection is optional, off by default, and governed by that provider's own terms.": [
+      "/terms-of-service.html"
+    ],
+    "Nova products read information about your own computer where a feature needs it — for example, checking available disk space, listing installed applications so you can open one, or choosing a suitable graphics setting.": [
+      "/privacy.html"
+    ],
+    "Nova software that runs on your own machine keeps working whether or not this website is up. That is deliberate, and it is one of the reasons the products are built the way they are.": [
+      "/terms-of-use.html"
+    ],
+    "Nova Store": [
+      "/ecosystem.html"
+    ],
+    "Nova Terms of Service": [
+      "/ecosystem.html",
+      "/index.html",
+      "/privacy.html",
+      "/terms-of-service.html",
+      "/terms-of-use.html"
+    ],
+    "Nova Terms of Use": [
+      "/ecosystem.html",
+      "/index.html",
+      "/privacy.html",
+      "/terms-of-service.html",
+      "/terms-of-use.html"
+    ],
+    "Nova.Help": [
+      "/ecosystem.html"
+    ],
+    "Nova.Information": [
+      "/ecosystem.html"
+    ],
+    "Nova.Loom": [
+      "/ecosystem.html"
+    ],
+    "Nova's products are not directed at children, and we do not knowingly collect personal information from children.": [
+      "/privacy.html"
+    ],
+    "NovaCut": [
+      "/ecosystem.html",
+      "/index.html"
+    ],
+    "NovaCut is a desktop video and photo editor for real projects — a timeline that stays responsive as the project grows, and exports that finish.": [
+      "/ecosystem.html"
+    ],
+    "NovaCut Website": [
+      "/ecosystem.html"
+    ],
+    "NovaCut with a color filter applied to a clip, and its intensity in the inspector.": [
+      "/ecosystem.html"
+    ],
+    "NovaLegal": [
+      "/ecosystem.html"
+    ],
+    "On the way": [
+      "/index.html"
+    ],
+    "On this page": [
+      "/privacy.html",
+      "/terms-of-service.html",
+      "/terms-of-use.html"
+    ],
+    "One family of software.": [
+      "/index.html"
+    ],
+    "One family of software. Built to work together — NovaCut and Atlas, with more on the way.": [
+      "/ecosystem.html"
+    ],
+    "One family of software. Built to work together.": [
+      "/ecosystem.html"
+    ],
+    "One Nova Account, one password, everywhere. You never need a separate account for a Nova product — including Nova.Help, where you can already use this one.": [
+      "extra.json"
+    ],
+    "One place to find, get and update Nova software.": [
+      "/ecosystem.html"
+    ],
+    "Own the foundations": [
+      "/index.html"
+    ],
+    "Password": [
+      "extra.json"
+    ],
+    "Planned": [
+      "/ecosystem.html"
+    ],
+    "Please do not test the security of Nova systems in ways that could affect other people — that includes denial-of-service testing and automated attacks.": [
+      "/terms-of-service.html"
+    ],
+    "Please do not:": [
+      "/terms-of-use.html"
+    ],
+    "Please keep it under 80 characters.": [
+      "extra.json"
+    ],
+    "Please keep your own backups. Nothing in these terms limits liability that cannot legally be limited.": [
+      "/terms-of-use.html"
+    ],
+    "Primary": [
+      "/ecosystem.html",
+      "/index.html",
+      "/privacy.html",
+      "/terms-of-service.html",
+      "/terms-of-use.html"
+    ],
+    "Privacy Policy": [
+      "/privacy.html",
+      "/terms-of-service.html",
+      "/terms-of-use.html"
+    ],
+    "Privacy questions can be sent to <1>getnovasupport@gmail.com</1>, addressed to <2>[Company/Legal Entity Name]</2>.": [
+      "/privacy.html"
+    ],
+    "Probe, scan, overload or otherwise interfere with Nova services or the systems of others.": [
+      "/terms-of-service.html"
+    ],
+    "Produce, seek or share sexual content involving minors. This is prohibited absolutely, and any report of it is treated as a critical safety matter.": [
+      "/terms-of-service.html"
+    ],
+    "Products": [
+      "/index.html"
+    ],
+    "Products &amp; platforms": [
+      "/index.html"
+    ],
+    "Products are at different stages. Some are in alpha, some are still in development, and some are planned. A product being described here is not a promise that it will ship, or that it will work in the way described when it does.": [
+      "/terms-of-service.html"
+    ],
+    "Published by": [
+      "/privacy.html",
+      "/terms-of-service.html",
+      "/terms-of-use.html"
+    ],
+    "Questions about these terms can be sent to <1>getnovasupport@gmail.com</1>.": [
+      "/terms-of-use.html"
+    ],
+    "Questions, copyright reports and security reports can all be sent to <1>getnovasupport@gmail.com</1>.": [
+      "/terms-of-service.html"
+    ],
+    "Real capabilities it can invoke, not just answers about them.": [
+      "/ecosystem.html"
+    ],
+    "Remove or obscure copyright notices, licences, or attribution.": [
+      "/terms-of-use.html"
+    ],
+    "Replay.GG": [
+      "/ecosystem.html"
+    ],
+    "Replay.GG home: ready to capture, with record, instant replay and clip shortcuts.": [
+      "/ecosystem.html"
+    ],
+    "Replay.GG records your gameplay and holds the last few minutes in a rolling buffer, so a great play is saved by pressing one key after it happens, not before.": [
+      "/ecosystem.html"
+    ],
+    "Reply to a message you sent us.": [
+      "/privacy.html"
+    ],
+    "Resell or redistribute Nova software as your own product.": [
+      "/terms-of-use.html"
+    ],
+    "Reset links last an hour, so this one has lapsed. Ask for another and it will arrive with a fresh hour on it.": [
+      "extra.json"
+    ],
+    "Reset your password": [
+      "extra.json"
+    ],
+    "Respect other people's rights, including their privacy and their copyright.": [
+      "/terms-of-use.html"
+    ],
+    "Runs against models on your machine, with nothing leaving it by default.": [
+      "/ecosystem.html"
+    ],
+    "Save the play after it happens.": [
+      "/ecosystem.html"
+    ],
+    "Say what you want in a sentence; it works out the steps.": [
+      "/ecosystem.html"
+    ],
+    "Scrape or bulk-collect from Nova services in a way that degrades them for other people.": [
+      "/terms-of-service.html"
+    ],
+    "Scroll": [
+      "/index.html"
+    ],
+    "See the ecosystem": [
+      "/index.html"
+    ],
+    "Separately, when <1>you</1> choose to connect a Nova product to an outside service — see <2>Third-party services</2> — information goes to that service directly, on your instruction.": [
+      "/privacy.html"
+    ],
+    "Set": [
+      "extra.json"
+    ],
+    "Share sexual content involving minors, or anything that sexualises a child. This is never permitted, in any context.": [
+      "/terms-of-use.html"
+    ],
+    "Sign in": [
+      "/ecosystem.html",
+      "/index.html",
+      "/privacy.html",
+      "/terms-of-service.html",
+      "/terms-of-use.html"
+    ],
+    "Sign in to Nova": [
+      "extra.json"
+    ],
+    "Sign out": [
+      "extra.json"
+    ],
+    "Sign-in methods": [
+      "extra.json"
+    ],
+    "Signed in": [
+      "extra.json"
+    ],
+    "Skip to content": [
+      "/ecosystem.html",
+      "/index.html",
+      "/privacy.html",
+      "/terms-of-service.html",
+      "/terms-of-use.html"
+    ],
+    "Skip to the products": [
+      "/index.html"
+    ],
+    "Software should be owned, not rented.": [
+      "/index.html"
+    ],
+    "Some jurisdictions do not allow certain warranties to be excluded. Where that is the case, this section applies only as far as the law allows.": [
+      "/terms-of-use.html"
+    ],
+    "Some Nova products can be connected to outside services, by your choice. The clearest example is Atlas: it works fully with nothing connected, and can optionally be given a key for an external model provider. If you do that, whatever you send through that feature goes to the provider you chose, under that provider's terms and privacy policy.": [
+      "/privacy.html"
+    ],
+    "Some Nova products keep a local history so a feature can work — recently opened files, a command history, an assistant's memory of what you told it. That information stays on your machine, and you can delete it there.": [
+      "/privacy.html"
+    ],
+    "Support": [
+      "/ecosystem.html",
+      "/index.html",
+      "/privacy.html",
+      "/terms-of-service.html",
+      "/terms-of-use.html"
+    ],
+    "Take responsibility for the files, projects and data you create or open with it.": [
+      "/terms-of-use.html"
+    ],
+    "Terms of Service": [
+      "/privacy.html",
+      "/terms-of-service.html",
+      "/terms-of-use.html"
+    ],
+    "Terms of Use": [
+      "/privacy.html",
+      "/terms-of-service.html",
+      "/terms-of-use.html"
+    ],
+    "That did not sign you in": [
+      "extra.json"
+    ],
+    "That does not look like an email address.": [
+      "extra.json"
+    ],
+    "That information is used on your machine, for that feature, at that moment. It is not collected, aggregated, or transmitted to us.": [
+      "/privacy.html"
+    ],
+    "That is longer than 256 characters.": [
+      "extra.json"
+    ],
+    "that last.": [
+      "/index.html"
+    ],
+    "That link cannot be used": [
+      "extra.json"
+    ],
+    "That link has expired": [
+      "extra.json"
+    ],
+    "That page is not here.": [
+      "extra.json"
+    ],
+    "That password is one of the first anybody guesses. Please pick another.": [
+      "extra.json"
+    ],
+    "The ecosystem": [
+      "/ecosystem.html"
+    ],
+    "The effective date at the top shows when the current version took effect. If a change means we would start collecting something we do not collect today, we will say so plainly rather than burying it in an update.": [
+      "/privacy.html"
+    ],
+    "The launcher for Nova's games.": [
+      "/ecosystem.html"
+    ],
+    "The legal center for the Nova ecosystem — terms, privacy, one place to find both.": [
+      "/ecosystem.html"
+    ],
+    "The next step is in your inbox.": [
+      "extra.json"
+    ],
+    "The Nova Account system is not configured on this deployment yet.": [
+      "extra.json"
+    ],
+    "The Nova Ecosystem": [
+      "/ecosystem.html"
+    ],
+    "The Nova Ecosystem — NovaCut, Atlas": [
+      "/ecosystem.html"
+    ],
+    "The Nova name, logo, website and software are owned by <1>[Company/Legal Entity Name]</1> or its licensors. Where a component is released under an open-source license, that license governs it.": [
+      "/terms-of-service.html"
+    ],
+    "The Nova name, logo, website, written content and software are owned by <1>[Company/Legal Entity Name]</1> or its licensors, and are protected by copyright and trade mark law.": [
+      "/terms-of-use.html"
+    ],
+    "The NovaCut editor: a media library, live preview, inspector and a three-track timeline with a title applied.": [
+      "/ecosystem.html"
+    ],
+    "The NovaCut editor: media library, preview, inspector and a three-track timeline.": [
+      "/index.html"
+    ],
+    "The NovaCut export dialog with resolution, frame rate, codec and quality choices.": [
+      "/ecosystem.html"
+    ],
+    "The only personal information this site can collect is what somebody types into the Nova Account sign-up form. If you believe a child has provided us with information, please contact us and we will delete the account and everything held with it.": [
+      "/privacy.html"
+    ],
+    "The point is not a chat window. It is an assistant that understands what you are looking at, remembers what you were doing, and can act on it — reaching for a model on your own hardware before one somewhere else.": [
+      "/ecosystem.html"
+    ],
+    "The rest of this page explains that in more detail, and describes what would change if a future product needed more.": [
+      "/privacy.html"
+    ],
+    "The rules for using the Nova website and the software we make available.": [
+      "/terms-of-use.html"
+    ],
+    "The rules governing use of Nova's products and services — NovaCut and Atlas.": [
+      "/terms-of-service.html"
+    ],
+    "The rules governing use of Nova's products and services.": [
+      "/terms-of-service.html"
+    ],
+    "The rules that govern Nova's products and the services behind them.": [
+      "/terms-of-service.html"
+    ],
+    "The same account is used by Nova.Help when you file a support ticket while signed in. It is one account, not a copy per product, and it is the same record described here wherever you meet it.": [
+      "/privacy.html"
+    ],
+    "The same applies to any link you open from a Nova product or from this site. Once you leave, that destination's own policies apply. We are not responsible for how other services handle your information.": [
+      "/privacy.html"
+    ],
+    "The site follows your system's light or dark appearance setting. That preference is read from your browser as you view the page; it is not stored or sent anywhere.": [
+      "/privacy.html"
+    ],
+    "The strongest protection here is structural: information that is never collected cannot be leaked from us. Keeping your work on your own machine is the main privacy decision in every Nova product, and it is deliberate.": [
+      "/privacy.html"
+    ],
+    "The support center for every Nova product, and one place to file a ticket.": [
+      "/ecosystem.html"
+    ],
+    "The terms that apply when you use the Nova website and the software Nova makes available.": [
+      "/terms-of-use.html"
+    ],
+    "The two passwords do not match.": [
+      "extra.json"
+    ],
+    "These Terms of Use apply when you visit the Nova website or use software that Nova makes available. By using either, you agree to them.": [
+      "/terms-of-use.html"
+    ],
+    "These terms sit alongside the <1>Terms of Use</1>, which cover the Nova website more generally. Where an individual product publishes its own terms or license, that document governs that product.": [
+      "/terms-of-service.html"
+    ],
+    "This account works across Nova": [
+      "extra.json"
+    ],
+    "This one is ours, not yours.": [
+      "extra.json"
+    ],
+    "This website and Nova products may link to, or work alongside, services we do not control — an operating system, a hardware driver, a website you choose to open, or a model provider you choose to connect.": [
+      "/terms-of-use.html"
+    ],
+    "This website is provided as it is, and may be unavailable at times — for maintenance, for technical reasons, or for reasons outside our control.": [
+      "/terms-of-use.html"
+    ],
+    "Those services have their own terms and their own privacy practices. We are not responsible for them, and linking to something is not an endorsement of it.": [
+      "/terms-of-use.html"
+    ],
+    "Timeline": [
+      "/index.html"
+    ],
+    "To the fullest extent permitted by law, <1>[Company/Legal Entity Name]</1> is not liable for indirect, incidental, special or consequential losses arising from your use of Nova products or services — including lost profits, lost data, or lost work.": [
+      "/terms-of-service.html"
+    ],
+    "To the fullest extent permitted by law, <1>[Company/Legal Entity Name]</1> is not liable for indirect, incidental, special or consequential losses arising from your use of Nova, including lost profits, lost data, or lost work.": [
+      "/terms-of-use.html"
+    ],
+    "Today, in ordinary use:": [
+      "/privacy.html"
+    ],
+    "Today, Nova products store your work on your own machine. There is no upload step, and nothing is sent to us as part of ordinary use.": [
+      "/terms-of-service.html"
+    ],
+    "Too many attempts": [
+      "extra.json"
+    ],
+    "Tools": [
+      "/ecosystem.html",
+      "/index.html"
+    ],
+    "Tools appear when the moment calls for them, then step back.": [
+      "/index.html"
+    ],
+    "Two in build": [
+      "/index.html"
+    ],
+    "Two products, one foundation.": [
+      "/index.html"
+    ],
+    "Upload, share or distribute content you do not have the rights to.": [
+      "/terms-of-use.html"
+    ],
+    "Use at least 10 characters. A short sentence works well.": [
+      "extra.json"
+    ],
+    "Use it lawfully, and in the ways these terms describe.": [
+      "/terms-of-use.html"
+    ],
+    "Use Nova products for what they are for. In practice that means:": [
+      "/terms-of-service.html"
+    ],
+    "Use Nova to break the law, or to help anyone else break it.": [
+      "/terms-of-use.html"
+    ],
+    "Using material you own, or that you are licensed or permitted to use.": [
+      "/terms-of-service.html"
+    ],
+    "Using Nova does not transfer any of that ownership to you. Where a Nova product or component is released under an open-source license, that license governs what you may do with it, and it overrides this section for that component.": [
+      "/terms-of-use.html"
+    ],
+    "Video editing": [
+      "/ecosystem.html"
+    ],
+    "We do not promise that the website or the software will be uninterrupted, error-free, or fit for a particular purpose, and we do not promise that it will meet every requirement you have. Software in alpha or in development is especially likely to change and to contain defects.": [
+      "/terms-of-use.html"
+    ],
+    "We do not sell it, we do not profile you with it, and we do not use it to track you between sites. If you want it deleted, ask through <1>Nova.Help</1> and we will remove the account and everything listed above.": [
+      "/privacy.html"
+    ],
+    "We do not sell personal information, and we do not use it for advertising or profiling.": [
+      "/privacy.html"
+    ],
+    "We do not share personal information as part of normal operation, because we do not hold any. Where something is unavoidable, it would be limited to:": [
+      "/privacy.html"
+    ],
+    "We do not warrant that a product will be uninterrupted, error-free, or suitable for a particular purpose. Alpha and in-development software should be treated as exactly that: keep backups, and do not rely on it for anything you cannot afford to lose.": [
+      "/terms-of-service.html"
+    ],
+    "We keep correspondence only as long as it is useful for handling the matter it relates to, or as long as a legal obligation requires.": [
+      "/privacy.html"
+    ],
+    "We may also update these terms. When we do, we will change the effective date at the top of this page. If a change is significant, we will try to make that clear rather than leaving you to spot it. Continuing to use Nova after an update means you accept the updated terms.": [
+      "/terms-of-use.html"
+    ],
+    "We may suspend or end access to a hosted Nova service if it is being used in a way that breaks these terms, harms other users, or creates legal risk. Where possible we will say why, and where the breach is minor we would rather resolve it than remove access.": [
+      "/terms-of-service.html"
+    ],
+    "We may suspend or withdraw access to this website, or to a hosted service we run, if it is being used in a way that breaks these terms or puts other people at risk. Where a Nova product runs entirely on your own machine, this does not reach into it.": [
+      "/terms-of-use.html"
+    ],
+    "We may update these terms as the products change. The effective date at the top of the page shows when the current version took effect.": [
+      "/terms-of-service.html"
+    ],
+    "Welcome back.": [
+      "extra.json"
+    ],
+    "What information Nova collects, what it does not collect, and why the products are built to keep your work on your own machine.": [
+      "/privacy.html"
+    ],
+    "What information Nova collects, what it does not collect, and why.": [
+      "/privacy.html"
+    ],
+    "What is in it": [
+      "/ecosystem.html"
+    ],
+    "What Nova collects, what it does not, and why the answer is mostly \"nothing\".": [
+      "/privacy.html"
+    ],
+    "When you choose to use a third-party service, its terms and privacy practices apply to what it does. We are not responsible for those services.": [
+      "/terms-of-service.html"
+    ],
+    "When you create one, we hold: your <1>email address</1>; a <2>scrypt hash of your password</2>, never the password itself, from which the password cannot be recovered; an optional <3>display name</3> if you give one; a list of your <4>active sessions</4>, so that signing out actually ends them; and, for as long as one is outstanding, a <5>hashed password-reset token</5>, which is deleted the moment it is used or expires. We also record <6>which Nova products the account has been used with</6> — a product name and a date, nothing about what you did there.": [
+      "/privacy.html"
+    ],
+    "When you use Nova, you agree to:": [
+      "/terms-of-use.html"
+    ],
+    "Where a Nova product includes a feature for reporting a problem or a piece of content, we ask that you use it rather than working around it.": [
+      "/terms-of-use.html"
+    ],
+    "Where the law where you live does not allow a warranty to be excluded, this section applies only as far as the law allows.": [
+      "/terms-of-service.html"
+    ],
+    "Where the platform sets the ceiling, we build it ourselves.": [
+      "/index.html"
+    ],
+    "Where we can, we will give notice of a change that would break something you rely on. Software already installed on your machine keeps working as installed until you choose to update it.": [
+      "/terms-of-service.html"
+    ],
+    "Why we exist": [
+      "/index.html"
+    ],
+    "Working draft — Nova is a brand direction under review. Two renames have shipped: the engine (Open Engine is now Nova Engine) and the editor (Open Cut is now NovaCut). Every other name shown here is still a proposal.": [
+      "/ecosystem.html",
+      "/index.html",
+      "/privacy.html",
+      "/terms-of-service.html",
+      "/terms-of-use.html"
+    ],
+    "You are responsible for having the rights to whatever you bring into a Nova product or share through one.": [
+      "/terms-of-use.html"
+    ],
+    "You are signed in on this device. Everything else has been signed out, on Nova and on every Nova product. If you did not do this, change the password again immediately and secure your email account.": [
+      "extra.json"
+    ],
+    "You are signed in. This account works across every Nova product.": [
+      "extra.json"
+    ],
+    "You can exercise those rights by writing to <1>getnovasupport@gmail.com</1>. In practice the answer for most people will be that we hold nothing about them at all. For data held locally by a Nova product, you already have direct control: it is on your machine, and you can delete it yourself.": [
+      "/privacy.html"
+    ],
+    "You can stop using Nova at any time, and you can uninstall the software whenever you like.": [
+      "/terms-of-use.html"
+    ],
+    "You choose what is public, and what is not.": [
+      "/terms-of-service.html"
+    ],
+    "You confirm you have the rights, licences or permissions needed to share it.": [
+      "/terms-of-service.html"
+    ],
+    "You grant only the permission needed to store, display and deliver it for the purpose you chose.": [
+      "/terms-of-service.html"
+    ],
+    "You keep ownership of what you upload.": [
+      "/terms-of-service.html"
+    ],
+    "You may not use Nova products or services to:": [
+      "/terms-of-service.html"
+    ],
+    "You may read this website, and you may download, install and use Nova software that is offered for download, for your own personal or business purposes.": [
+      "/terms-of-use.html"
+    ],
+    "You may stop using Nova at any time, and you may uninstall the software whenever you like.": [
+      "/terms-of-service.html"
+    ],
+    "You must be old enough to enter into an agreement where you live in order to accept these terms. If you are using Nova on behalf of an organization, you are confirming you have the authority to accept these terms for it.": [
+      "/terms-of-service.html"
+    ],
+    "Your Nova Account": [
+      "extra.json"
+    ],
+    "Your Nova Account is ready": [
+      "extra.json"
+    ],
+    "Your password cannot be your email address.": [
+      "extra.json"
+    ],
+    "Your password has been changed": [
+      "extra.json"
+    ],
+    "Your password has not been changed and your account is untouched.": [
+      "extra.json"
+    ],
+    "Your project, your files, your machine.": [
+      "/ecosystem.html"
+    ],
+    "Your web hosting and network providers can still see that a request was made — that is how the internet works, and it is outside anything Nova controls. Where the provider serving this site keeps standard access logs, those logs are that provider's, kept under that provider's policy.": [
+      "/privacy.html"
+    ],
+    "Your work happens on your hardware, in formats you can open anywhere.": [
+      "/index.html"
+    ]
+  }
+}
