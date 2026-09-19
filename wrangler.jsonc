@@ -24,9 +24,9 @@
       // Bound as env.DB. The SAME database Nova.Help binds — one accounts table, one identity.
       "binding": "DB",
       "database_name": "nova-help",
-      // Placeholder, exactly as in NovaHelp/wrangler.jsonc. Replaced by the real id from
-      // `wrangler d1 create` when there is one. Nothing is deployed until then.
-      "database_id": "00000000-0000-0000-0000-000000000000"
+      // The real id of the shared nova-help database (from
+      // `wrangler d1 list`) - the same one Nova.Help binds.
+      "database_id": "60b37c5d-0992-4d35-831a-a1fa1bdceb7f"
     }
   ],
 
