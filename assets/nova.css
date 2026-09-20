@@ -1473,6 +1473,15 @@ html:not(.js) .masthead-nav a[aria-current="page"] {
 
 .entry-status { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
 
+/* a one-line caveat under an entry's actions, e.g. what a download needs */
+.entry-note {
+  margin: 14px 0 0;
+  max-width: 62ch;
+  font-size: .8125rem;
+  line-height: 1.55;
+  color: var(--ink-3);
+}
+
 .plate {
   margin: 0;
   border: 1px solid var(--rule);
