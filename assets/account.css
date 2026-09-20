@@ -288,3 +288,89 @@
 
 /* Hidden until the status check answers, so a cached page never shows the wrong state. */
 .account-chip[hidden] { display: none; }
+
+/* ── Managing an account ────────────────────────────────────── */
+
+.account-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .25rem .5rem;
+  margin: 0 0 .25rem;
+}
+
+.account-nav a {
+  padding: .4rem .75rem;
+  border-radius: 999px;
+  font-size: .875rem;
+  color: var(--ink-2);
+  text-decoration: none;
+  border: 1px solid transparent;
+}
+
+.account-nav a:hover { color: var(--ink); border-color: var(--line); }
+.account-nav a[aria-current="page"] { color: var(--ink); border-color: var(--line); background: var(--surface, transparent); }
+.account-nav a.is-danger { color: var(--danger, #C7343B); }
+
+.avatar-row { display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap; }
+.avatar-row--head { gap: .9rem; margin-bottom: 1rem; }
+.avatar-row--head .account-card-title { margin: 0; }
+.avatar-controls { flex: 1 1 14rem; min-width: 0; }
+.avatar-form { margin-bottom: .75rem; }
+
+.account-avatar {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--line);
+  color: var(--ink-2);
+  font-weight: 600;
+}
+.account-avatar--md { width: 3rem; height: 3rem; font-size: 1.15rem; }
+.account-avatar--lg { width: 6rem; height: 6rem; font-size: 2.25rem; }
+
+.session-list { margin: 0 0 1rem; padding: 0; list-style: none; }
+.session {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: .75rem 0;
+  border-bottom: 1px solid var(--line);
+}
+.session:last-child { border-bottom: 0; }
+.session-name { margin: 0; font-size: .9375rem; color: var(--ink); }
+.session-meta { margin: .15rem 0 0; font-size: .8125rem; color: var(--ink-3); }
+.session-badge {
+  margin-left: .4rem;
+  padding: .1rem .5rem;
+  border-radius: 999px;
+  font-size: .75rem;
+  color: var(--ok, #2F855A);
+  border: 1px solid currentColor;
+}
+
+.account-list { margin: 0 0 1.25rem; padding-left: 1.2rem; color: var(--ink-2); font-size: .9375rem; line-height: 1.6; }
+.account-list li { margin-bottom: .35rem; }
+
+.check { display: flex; align-items: flex-start; gap: .6rem; margin: 0 0 1rem; font-size: .9375rem; color: var(--ink-2); }
+.check input { margin-top: .25rem; }
+
+.account-card--danger { border-color: color-mix(in srgb, var(--danger, #C7343B) 45%, var(--line)); }
+
+.btn-danger {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .7rem 1.25rem;
+  border: 0;
+  border-radius: 999px;
+  font: inherit;
+  font-weight: 600;
+  color: #fff;
+  background: var(--danger, #C7343B);
+  cursor: pointer;
+}
+.btn-danger:hover { filter: brightness(1.08); }
+.btn-danger:focus-visible { outline: 2px solid var(--danger, #C7343B); outline-offset: 3px; }

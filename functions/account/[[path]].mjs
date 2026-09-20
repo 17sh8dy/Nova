@@ -26,6 +26,7 @@ import { SESSION_COOKIE, SESSION_TTL_SECONDS } from '../../packages/nova-account
 
 import { accountsFor } from '../_lib/accounts.mjs';
 import { ecosystemNote, esc, field, googleSoon, html, notice, page, redirect } from '../_lib/shell.mjs';
+import { avatarBadge, handleManage, manageNav } from '../_lib/manage.mjs';
 
 /** Sign-in and sign-up bodies are small; anything larger is not one of these forms. */
 const BODY_LIMIT = 16 * 1024;
@@ -169,10 +170,13 @@ const PRODUCTS = [
   { name: 'Atlas', note: 'Coming soon', href: null },
 ];
 
-const accountBody = (account, banner) => `
+const accountBody = (account, banner, reference = null) => `
   ${banner ?? ''}
   <div class="account-card">
-    <h2 class="account-card-title">Your Nova Account</h2>
+    <div class="avatar-row avatar-row--head">
+      ${avatarBadge(account, reference)}
+      <h2 class="account-card-title">Your Nova Account</h2>
+    </div>
     <dl class="account-facts">
       <div><dt>Email</dt><dd>${esc(account.email)}</dd></div>
       ${account.displayName ? `<div><dt>Name</dt><dd>${esc(account.displayName)}</dd></div>` : ''}
@@ -180,7 +184,10 @@ const accountBody = (account, banner) => `
       <div><dt>Sign-in methods</dt><dd>Email and password${account.identities.length ? `, ${account.identities.map((i) => esc(i.provider)).join(', ')}` : ''}</dd></div>
     </dl>
     <div class="account-actions">
-      <a class="btn btn-ghost" href="/account/forgot">Change password</a>
+      <a class="btn btn-ghost" href="/account/profile">Edit profile</a>
+      <a class="btn btn-ghost" href="/account/email">Change email</a>
+      <a class="btn btn-ghost" href="/account/password">Change password</a>
+      <a class="btn btn-ghost" href="/account/security">Security</a>
       <form method="post" action="/account/sign-out" class="inline-form">
         <button class="btn btn-ghost" type="submit">Sign out</button>
       </form>
@@ -289,6 +296,24 @@ export async function onRequest(context) {
 
   const account = await viewer(accounts, request);
 
+  /* ── Managing the account: profile, picture, email, password, security, deletion ───────────
+     Its own module (`_lib/manage.mjs`); this router only tells it who is here and hands over
+     the pieces only this file owns. It answers its own routes and returns null for the rest. */
+  const managed = await handleManage({
+    request,
+    env,
+    url,
+    path,
+    method,
+    accounts,
+    account,
+    token: readCookie(request, SESSION_COOKIE),
+    limiterFor,
+    tooMany,
+    clearSessionCookie: () => clearSessionCookie(env),
+  });
+  if (managed) return managed;
+
   /* ── GET /account/status — for the masthead on the static pages ──────────────────────── */
 
   if (path === '/account/status' && method === 'GET') {
@@ -328,9 +353,12 @@ export async function onRequest(context) {
                 'Your password has been changed',
                 '<p>You are signed in on this device. Everything else has been signed out, on Nova and on every Nova product. If you did not do this, change the password again immediately and secure your email account.</p>',
               )
-            : null;
+            : url.searchParams.get('updated') === 'email'
+              ? notice('ok', 'Your email address has been changed', '<p>Use the new address to sign in from now on. We have told the old address.</p>')
+              : null;
 
-    return html(page({ title: 'Your Nova Account', account, body: accountBody(account, banner) }));
+    const reference = await accounts.getAvatar(account.id);
+    return html(page({ title: 'Your Nova Account', account, body: `${manageNav('/account')}${accountBody(account, banner, reference)}` }));
   }
 
   /* ── Sign in ─────────────────────────────────────────────────────────────────────────── */

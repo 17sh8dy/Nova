@@ -30,6 +30,17 @@
     }
   ],
 
+  // Profile pictures. NO NEW BUCKET: this binds the bucket Nova.Help already uses for ticket
+  // attachments. Pictures live under `avatars/<accountId>/`, attachments under `tickets/<id>/`,
+  // and neither side reads or writes the other's prefix. See docs/ACCOUNT-MANAGEMENT.md.
+  // Locally, `wrangler pages dev` simulates this in .wrangler/ and never touches the real bucket.
+  "r2_buckets": [
+    {
+      "binding": "AVATARS",
+      "bucket_name": "nova-help-attachments"
+    }
+  ],
+
   // Rate limiting, by the same Durable Object class and the same windows Nova.Help uses.
   // Without this binding the site refuses to pretend it is throttling — see limiterFor().
   "durable_objects": {

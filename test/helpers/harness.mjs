@@ -21,7 +21,7 @@
  */
 import { createMemoryMailer } from '@nova/accounts';
 import { createSqliteD1 } from '../../../NovaHelp/server/store/sqliteD1.mjs';
-import { applyAccountSchema } from '../../../NovaHelp/server/store/migrate.mjs';
+import { applySchema } from '../../../NovaHelp/server/store/migrate.mjs';
 
 import { onRequest } from '../../functions/account/[[path]].mjs';
 
@@ -36,10 +36,15 @@ const CHEAP_N = '1024';
  * Passing another site's `db` is how the cross-product tests are written: two front doors, one
  * database, and therefore one account. That is the whole architecture in one parameter.
  */
-export async function createSite(t, { db: shared = null, mailer: sharedMailer = null } = {}) {
+export async function createSite(
+  t,
+  { db: shared = null, mailer: sharedMailer = null, bucket = true, limiter = false } = {},
+) {
   const db = shared ?? createSqliteD1();
   if (!shared) {
-    await applyAccountSchema(db);
+    /* The WHOLE shared schema, tickets included: in production the Nova site and Nova.Help share
+       one database, and deleting an account has to reach the tickets. */
+    await applySchema(db);
     t.after(() => db.close());
   }
 
@@ -51,9 +56,57 @@ export async function createSite(t, { db: shared = null, mailer: sharedMailer = 
     NOVA_PASSWORD_COST_N: CHEAP_N,
     // Cookies without Secure, so a plain http test client keeps them.
     NOVA_INSECURE_COOKIES: '1',
+    // R2, when asked for. `bucket: false` is a deployment without the binding.
+    ...(bucket ? { AVATARS: createFakeBucket() } : {}),
+    ...(limiter ? { RATE_LIMITER: createFakeLimiter() } : {}),
   };
 
   return { db, env, mailer, jar: new Map() };
+}
+
+/** The slice of R2 the site uses, over a Map. Keys and metadata are inspectable in tests. */
+export function createFakeBucket() {
+  const objects = new Map();
+  return {
+    objects,
+    async put(key, value, options = {}) {
+      const bytes = value instanceof Uint8Array ? value : new Uint8Array(await new Response(value).arrayBuffer());
+      objects.set(key, { bytes: new Uint8Array(bytes), httpMetadata: options.httpMetadata ?? {} });
+    },
+    async get(key) {
+      const held = objects.get(key);
+      if (!held) return null;
+      return {
+        body: new Blob([held.bytes]).stream(),
+        arrayBuffer: async () => held.bytes.slice().buffer,
+        httpMetadata: held.httpMetadata,
+      };
+    },
+    async delete(keys) {
+      for (const key of [].concat(keys)) objects.delete(key);
+    },
+    async list({ prefix = '' } = {}) {
+      return { objects: [...objects.keys()].filter((k) => k.startsWith(prefix)).sort().map((key) => ({ key })), truncated: false };
+    },
+  };
+}
+
+/** A Durable Object namespace that counts, so the router's limiter is genuinely enforced. */
+export function createFakeLimiter() {
+  const counts = new Map();
+  return {
+    idFromName: (name) => name,
+    get: (id) => ({
+      async hit(_windowMs, max) {
+        const n = (counts.get(id) ?? 0) + 1;
+        counts.set(id, n);
+        return n > max ? { ok: false, retryAfter: 60 } : { ok: true, retryAfter: 0 };
+      },
+      async clear() {
+        counts.delete(id);
+      },
+    }),
+  };
 }
 
 /**
@@ -103,6 +156,19 @@ export function browser(site, { mailerOverride = null } = {}) {
         body: new URLSearchParams(fields).toString(),
         ...init,
       }),
+    /** A file upload, as a browser sends one. `claimedType` is what the browser SAYS it is. */
+    upload: async (path, bytes, { name = 'avatar', filename = 'me.png', claimedType = 'image/png', headers = {} } = {}) => {
+      const form = new FormData();
+      form.set(name, new Blob([bytes], { type: claimedType }), filename);
+      /* Encoded here so the request carries a Content-Length, as every browser's does. */
+      const encoded = new Response(form);
+      const body = new Uint8Array(await encoded.arrayBuffer());
+      return call(path, {
+        method: 'POST',
+        body,
+        headers: { 'content-type': encoded.headers.get('content-type'), 'content-length': String(body.byteLength), ...headers },
+      });
+    },
   };
 }
 
