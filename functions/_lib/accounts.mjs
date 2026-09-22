@@ -46,7 +46,7 @@ export async function accountsFor(env) {
        with Nova.Help" are both true of one account rather than being two accounts. */
     product: 'nova',
     productName: 'Nova',
-    supportUrl: 'https://nova-help.17sh8dy.workers.dev/',
+    supportUrl: 'https://nova-help.shadylabs.workers.dev/',
     /* The transport, in order of preference: one supplied as a binding, then the development
        log transport when explicitly asked for, then nothing — which makes reset accept
        requests and send none, loudly. A binding is how a real transport arrives too, so the

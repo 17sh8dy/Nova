@@ -15,7 +15,7 @@ import { fileURLToPath } from 'node:url';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
 const DISCORD = 'https://discord.gg/XBhER9Z6EB';
-const SUPPORT = 'https://nova-help.17sh8dy.workers.dev/';
+const SUPPORT = 'https://nova-help.shadylabs.workers.dev/';
 
 async function pages() {
   const files = (await readdir(root)).filter((f) => f.endsWith('.html'));
@@ -70,7 +70,7 @@ test('the footer note no longer claims nothing has been renamed', async () => {
 test('the ecosystem page points at help that exists rather than sites that do not', async () => {
   const html = await readFile(path.join(root, 'ecosystem.html'), 'utf8');
 
-  assert.match(html, /nova-help\.17sh8dy\.workers\.dev/, 'Nova.Help covers every product on this page');
+  assert.match(html, /nova-help\.shadylabs\.workers\.dev/, 'Nova.Help covers every product on this page');
   assert.match(html, /\/account/, 'and one account works across them');
   /* Every "Learn more" on this page is deliberately inert until the product sites exist. This
      pins that: a placeholder href is how a dead link gets shipped. */

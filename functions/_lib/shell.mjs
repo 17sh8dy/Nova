@@ -90,7 +90,7 @@ export function page({ title, lede = '', body, account = null }) {
       <nav class="footer-links" aria-label="Footer">
         <a href="/ecosystem.html">Ecosystem</a>
         <a href="/#featured">Products</a>
-        <a href="https://nova-help.17sh8dy.workers.dev/">Support</a>
+        <a href="https://nova-help.shadylabs.workers.dev/">Support</a>
         <a href="https://discord.gg/XBhER9Z6EB" rel="noopener">Discord</a>
       </nav>
     </div>
@@ -173,7 +173,7 @@ export const googleSoon = () => `<div class="provider-row">
 
 /** The line that keeps the ecosystem promise honest on every account page. */
 export const ecosystemNote = `<p class="account-foot">
-  One Nova Account works across Nova, <a href="https://nova-help.17sh8dy.workers.dev/">Nova.Help</a>, and every Nova
+  One Nova Account works across Nova, <a href="https://nova-help.shadylabs.workers.dev/">Nova.Help</a>, and every Nova
   product as it arrives. You do not need a separate account for each.
 </p>`;
 
