@@ -54,6 +54,49 @@ const sessionCookie = (env, value, maxAge) => {
 
 const clearSessionCookie = (env) => sessionCookie(env, '', 0);
 
+/**
+ * The status-ping cookie — a SECOND copy of the session token, for exactly one purpose: letting
+ * `GET /account/status` answer a CROSS-SITE request from a Nova product on another origin
+ * (NovaLegal, today; anything else later). `sessionCookie` above is deliberately `SameSite=Lax`
+ * so that cookie is never attached to a cross-site request at all — the strongest CSRF defence
+ * an ecosystem this size has, and it stays exactly that strong. This cookie is `SameSite=None`
+ * instead, which is what makes it travel cross-site, and its blast radius is bounded on
+ * purpose:
+ *
+ *   · it is checked in exactly ONE place — the `/account/status` branch below — and nowhere
+ *     that changes state or returns anything beyond a signed-in boolean;
+ *   · a cross-origin caller only gets a response body at all if their Origin is in
+ *     `legalOrigins()`, checked server-side against an allowlist (never reflected wide open);
+ *   · same-origin callers (Nova's own pages) never needed this cookie and keep using the
+ *     `sessionCookie` / `viewer()` path unchanged.
+ *
+ * `SameSite=None` requires `Secure` unconditionally (the browser drops the cookie outright
+ * otherwise) — so on a `NOVA_INSECURE_COOKIES=1` dev server this cookie is simply never usable,
+ * which is fine: that only affects the cross-site ping, never sign-in itself.
+ */
+const STATUS_COOKIE = 'nova_status';
+
+const statusCookie = (env, value, maxAge) => {
+  const parts = [`${STATUS_COOKIE}=${encodeURIComponent(value)}`, 'Path=/account/status', 'HttpOnly', 'SameSite=None', 'Secure'];
+  if (env.NOVA_COOKIE_DOMAIN) parts.push(`Domain=${env.NOVA_COOKIE_DOMAIN}`);
+  parts.push(`Max-Age=${Math.floor(maxAge)}`);
+  return parts.join('; ');
+};
+
+const clearStatusCookie = (env) => statusCookie(env, '', 0);
+
+/**
+ * Which origins may read a cross-site `/account/status` response. `NOVA_LEGAL_ORIGINS` is a
+ * comma-separated list, set per deployment; `http://localhost:4500` (NovaLegal's own dev
+ * server, src/serve.mjs) is always included so this is exercisable without any config. Add
+ * NovaLegal's real deployed origin to the env var once it has one — see NovaLegal's own
+ * `data/site.js`, whose `origin` is `null` until that happens.
+ */
+const legalOrigins = (env) => [
+  'http://localhost:4500',
+  ...String(env.NOVA_LEGAL_ORIGINS ?? '').split(',').map((s) => s.trim()).filter(Boolean),
+];
+
 const readCookie = (request, name) => {
   const header = request.headers.get('cookie') ?? '';
   for (const pair of header.split(';')) {
@@ -289,7 +332,12 @@ export async function onRequest(context) {
   const openSession = async (accountId, destination) => {
     const started = await accounts.startSession(accountId, { ttlSeconds: SESSION_TTL_SECONDS });
     if (!started.ok) return html(page({ title: 'Sign in', body: signInBody({ failed: true }) }), { status: 403 });
-    return redirect(destination, { headers: { 'set-cookie': sessionCookie(env, started.token, SESSION_TTL_SECONDS) } });
+    return redirect(destination, {
+      setCookies: [
+        sessionCookie(env, started.token, SESSION_TTL_SECONDS),
+        statusCookie(env, started.token, SESSION_TTL_SECONDS),
+      ],
+    });
   };
 
   /* ── Who is here ─────────────────────────────────────────────────────────────────────── */
@@ -311,29 +359,55 @@ export async function onRequest(context) {
     limiterFor,
     tooMany,
     clearSessionCookie: () => clearSessionCookie(env),
+    clearStatusCookie: () => clearStatusCookie(env),
   });
   if (managed) return managed;
 
-  /* ── GET /account/status — for the masthead on the static pages ──────────────────────── */
+  /* ── GET /account/status — for the masthead on the static pages, AND for a cross-site
+     product like NovaLegal ──────────────────────────────────────────────────────────────
+     Same-origin, this answers from `account` (the Lax cookie) exactly as before. Cross-site,
+     the Lax cookie never arrived — see `statusCookie`'s comment — so this falls back to the
+     SameSite=None companion cookie instead, and the response is stripped down to the one bit
+     a different site is allowed to learn: whether this browser is signed in, nothing else.
+     `Access-Control-Allow-Origin` is only ever the ONE origin that asked, checked against
+     `legalOrigins()` — never `*`, which credentialed CORS refuses anyway, and never an
+     unchecked reflection of whatever Origin showed up. */
 
   if (path === '/account/status' && method === 'GET') {
-    /* Only ever the viewer's OWN account, and never cached: it is derived from their cookie.
-       An unauthenticated request gets `{ signedIn: false }` rather than an error, because that
-       is the ordinary case for a visitor and not a failure. */
-    return new Response(
-      JSON.stringify(
-        account
-          ? { signedIn: true, name: account.displayName || account.email }
-          : { signedIn: false },
-      ),
-      {
-        headers: {
-          'content-type': 'application/json; charset=utf-8',
-          'cache-control': 'no-store, private',
-          'x-content-type-options': 'nosniff',
-        },
-      },
-    );
+    const origin = request.headers.get('origin');
+    const crossSite = Boolean(origin) && origin !== url.origin;
+    const allowed = crossSite && legalOrigins(env).includes(origin);
+
+    let body;
+    if (crossSite) {
+      /* The Lax session cookie did not arrive on this request; the SameSite=None ping cookie
+         is what has to answer instead. A cross-site caller — even an allow-listed one — gets
+         only the boolean, never the display name. */
+      let signedIn = Boolean(account);
+      if (!signedIn) {
+        const pingToken = readCookie(request, STATUS_COOKIE);
+        if (pingToken) signedIn = Boolean(await accounts.resolveSession(pingToken));
+      }
+      body = { signedIn };
+    } else {
+      body = account ? { signedIn: true, name: account.displayName || account.email } : { signedIn: false };
+    }
+
+    const headers = {
+      'content-type': 'application/json; charset=utf-8',
+      'cache-control': 'no-store, private',
+      'x-content-type-options': 'nosniff',
+      vary: 'Origin',
+    };
+    if (allowed) {
+      headers['access-control-allow-origin'] = origin;
+      headers['access-control-allow-credentials'] = 'true';
+    }
+
+    /* A cross-site request from an origin NOT on the allowlist still gets an honest body —
+       CORS is what stops that caller's JavaScript from reading it, not this server hiding it
+       behind an error status, which would be indistinguishable from "down" for everyone else. */
+    return new Response(JSON.stringify(body), { headers });
   }
 
   /* ── /account ────────────────────────────────────────────────────────────────────────── */
@@ -460,7 +534,7 @@ export async function onRequest(context) {
        POST only, and the cookie is SameSite=Lax, so another site cannot sign you out. */
     const token = readCookie(request, SESSION_COOKIE);
     if (token) await accounts.signOut(token);
-    return redirect('/', { headers: { 'set-cookie': clearSessionCookie(env) } });
+    return redirect('/', { setCookies: [clearSessionCookie(env), clearStatusCookie(env)] });
   }
 
   /* ── Forgotten password ──────────────────────────────────────────────────────────────── */

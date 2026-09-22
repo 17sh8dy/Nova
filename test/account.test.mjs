@@ -172,8 +172,12 @@ test('a forged or altered cookie is not a session', async (t) => {
   const site = await createSite(t);
   const b = browser(site);
   await signUp(b, 'ann@example.com');
-  const real = b.cookieHeader();
-  const tampered = real.slice(0, -4) + 'AAAA';
+  /* Sign-up now sets a SECOND cookie too (`nova_status`, the cross-site status ping — see
+     [[path]].mjs's `statusCookie`), so the jar's OWN copy of the real session value is what
+     gets tampered, rather than slicing whatever the combined cookie header happens to end
+     with — which, since it now names two cookies, might not even land inside `nova_session`. */
+  const real = b.jar.get('nova_session');
+  const tampered = `nova_session=${real.slice(0, -4)}AAAA`;
 
   assert.equal((await browser(site).get('/account', { headers: { cookie: tampered } })).status, 303);
   assert.equal((await browser(site).get('/account', { headers: { cookie: 'nova_session=nonsense' } })).status, 303);
@@ -193,6 +197,64 @@ test('the status endpoint answers only about the person asking', async (t) => {
   assert.equal(body.signedIn, true);
   assert.equal(body.name, 'Ann');
   assert.match(signedIn.headers.get('cache-control'), /no-store/);
+});
+
+/* ── Cross-site status: NovaLegal's header chip ──────────────────────────────────────────────
+ *
+ * See [[path]].mjs's `statusCookie` comment for the reasoning. Three things earn their own
+ * test: the response never carries a name cross-site even when allow-listed, an origin NOT on
+ * the allowlist gets no CORS headers (so its own JavaScript cannot read the body — the browser
+ * enforces that, not this code, but the code has to actually leave the headers off), and
+ * signing out kills the cross-site answer too. */
+
+test('a cross-site request from an allow-listed origin gets signedIn only, with CORS headers', async (t) => {
+  const site = await createSite(t);
+  const b = browser(site);
+  await signUp(b, 'ann@example.com', { displayName: 'Ann' });
+
+  const res = await b.get('/account/status', { headers: { origin: 'http://localhost:4500' } });
+  assert.equal(res.status, 200);
+  assert.deepEqual(await res.json(), { signedIn: true }); // no `name` — see the file comment
+  assert.equal(res.headers.get('access-control-allow-origin'), 'http://localhost:4500');
+  assert.equal(res.headers.get('access-control-allow-credentials'), 'true');
+  assert.equal(res.headers.get('vary'), 'Origin');
+});
+
+test('a cross-site request from an origin NOT on the allowlist gets no CORS headers', async (t) => {
+  const site = await createSite(t);
+  const b = browser(site);
+  await signUp(b, 'ann@example.com', { displayName: 'Ann' });
+
+  const res = await b.get('/account/status', { headers: { origin: 'https://evil.example' } });
+  assert.equal(res.status, 200); // the body exists; CORS, not a 403, is what stops it being read
+  assert.equal(res.headers.get('access-control-allow-origin'), null);
+  assert.equal(res.headers.get('access-control-allow-credentials'), null);
+});
+
+test('a signed-out cross-site caller gets signedIn: false', async (t) => {
+  const site = await createSite(t);
+  const anon = await browser(site).get('/account/status', { headers: { origin: 'http://localhost:4500' } });
+  assert.deepEqual(await anon.json(), { signedIn: false });
+});
+
+test('signing out ends the cross-site answer too, not only the same-site one', async (t) => {
+  const site = await createSite(t);
+  const b = browser(site);
+  await signUp(b, 'ann@example.com');
+  assert.equal(b.jar.has('nova_status'), true);
+  const stolenStatusCookie = b.jar.get('nova_status');
+
+  const before = await b.get('/account/status', { headers: { origin: 'http://localhost:4500' } });
+  assert.equal((await before.json()).signedIn, true);
+
+  await b.post('/account/sign-out', {});
+  assert.equal(b.jar.has('nova_status'), false); // the cookie itself was cleared
+
+  // Even a copy of the OLD token, taken before sign-out, no longer resolves to a live session.
+  const replay = await browser(site).get('/account/status', {
+    headers: { origin: 'http://localhost:4500', cookie: `nova_status=${stolenStatusCookie}` },
+  });
+  assert.deepEqual(await replay.json(), { signedIn: false });
 });
 
 /* ── Password reset ──────────────────────────────────────────────────────────────────────── */

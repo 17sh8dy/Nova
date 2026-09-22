@@ -177,17 +177,36 @@ export const ecosystemNote = `<p class="account-foot">
   product as it arrives. You do not need a separate account for each.
 </p>`;
 
-export const html = (markup, { status = 200, headers = {} } = {}) =>
-  new Response(markup, {
-    status,
-    headers: {
-      'content-type': 'text/html; charset=utf-8',
-      'cache-control': 'no-store',
-      'x-content-type-options': 'nosniff',
-      'referrer-policy': 'same-origin',
-      ...headers,
-    },
-  });
+/**
+ * `setCookies`: a Response's `headers` init only holds ONE value per key, so a plain
+ * `headers: { 'set-cookie': a }` object can never carry both the session cookie and the
+ * cross-origin status-ping cookie (see [[path]].mjs's `statusCookie`) on the same response —
+ * whichever was assigned last would silently win and the other would never reach the browser.
+ * `.headers.append()` on the constructed Response is the one way to emit two real, separate
+ * `Set-Cookie` lines (never comma-join cookies: `Expires` contains a comma).
+ */
+const withCookies = (response, setCookies) => {
+  for (const cookie of setCookies) response.headers.append('set-cookie', cookie);
+  return response;
+};
 
-export const redirect = (location, { headers = {} } = {}) =>
-  new Response(null, { status: 303, headers: { location, 'cache-control': 'no-store', ...headers } });
+export const html = (markup, { status = 200, headers = {}, setCookies = [] } = {}) =>
+  withCookies(
+    new Response(markup, {
+      status,
+      headers: {
+        'content-type': 'text/html; charset=utf-8',
+        'cache-control': 'no-store',
+        'x-content-type-options': 'nosniff',
+        'referrer-policy': 'same-origin',
+        ...headers,
+      },
+    }),
+    setCookies,
+  );
+
+export const redirect = (location, { headers = {}, setCookies = [] } = {}) =>
+  withCookies(
+    new Response(null, { status: 303, headers: { location, 'cache-control': 'no-store', ...headers } }),
+    setCookies,
+  );

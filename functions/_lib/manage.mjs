@@ -267,7 +267,7 @@ const deletedPage = () =>
  * token, the rate limiter, and the cookie helper.
  */
 export async function handleManage(ctx) {
-  const { request, env, url, path, method, accounts, account, token, limiterFor, tooMany, clearSessionCookie } = ctx;
+  const { request, env, url, path, method, accounts, account, token, limiterFor, tooMany, clearSessionCookie, clearStatusCookie } = ctx;
 
   if (path === '/account/deleted' && method === 'GET') return deletedPage();
 
@@ -438,7 +438,7 @@ export async function handleManage(ctx) {
       // The account and its rows are gone. The objects are not rows, so they are removed by
       // prefix afterwards; a failure here leaves an orphan object, never a live account.
       await purgeAvatars(env, account.id).catch((error) => console.error('[nova] avatar purge failed', error));
-      return redirect('/account/deleted', { headers: { 'set-cookie': clearSessionCookie() } });
+      return redirect('/account/deleted', { setCookies: [clearSessionCookie(), clearStatusCookie()] });
     }
   }
 
