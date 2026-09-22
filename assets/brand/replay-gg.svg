@@ -1,4 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="14" fill="#44D62C"/>
-  <path transform="translate(8 8) scale(2)" d="M13 3 5 13.5h6L11 21l8-10.5h-6z" fill="#06210B" stroke="#06210B" stroke-width="1" stroke-linejoin="round"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="92.8 109.2 319.8 319.8" role="img" aria-label="Replay.GG">
+  <rect x="92.8" y="109.2" width="319.8" height="319.8" rx="70" fill="#080808"/>
+  <g>
+    <path fill="#FFFFFF" d="M160.4 180H315A54.25 54.25 0 0 1 323.3 287.9L374.6 358.2H319.5L271.9 291.2V251.7H307.2A18.45 18.45 0 0 0 307.2 214.8H184.2Z"/>
+    <path fill="#E6293F" d="M133.26 268.3L185.04 225.25Q187.5 223.2 187.5 226.4L187.5 314.3Q187.5 317.5 185.04 315.45L133.26 272.4Q130.8 270.35 133.26 268.3ZM187.46 268.3L239.24 225.25Q241.7 223.2 241.7 226.4L241.7 314.3Q241.7 317.5 239.24 315.45L187.46 272.4Q185 270.35 187.46 268.3Z"/>
+  </g>
 </svg>
