@@ -149,28 +149,64 @@ export const notice = (kind, title, body) => `<div class="notice notice--${esc(k
   <div class="notice-body">${body}</div>
 </div>`;
 
-/**
- * The Google control.
- *
- * DELIBERATELY NOT A LINK AND NOT A FORM. It is a disabled button that posts nowhere and has
- * no route behind it, because a "coming soon" that is secretly wired up is how a half-finished
- * OAuth integration reaches production. When Google sign-in is configured, this becomes a link
- * to the flow Nova.Help already implements in the shared package — the account model does not
- * change, only this control does.
- */
-export const googleSoon = () => `<div class="provider-row">
-  <button class="btn btn-ghost provider-btn" type="button" disabled aria-disabled="true">
-    <svg class="provider-glyph" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+const GOOGLE_GLYPH = `<svg class="provider-glyph" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
       <path d="M21.6 12.23c0-.71-.06-1.4-.18-2.05H12v3.88h5.38a4.6 4.6 0 0 1-2 3.02v2.5h3.24c1.9-1.74 2.98-4.3 2.98-7.35Z"/>
       <path d="M12 22c2.7 0 4.96-.9 6.62-2.42l-3.24-2.5c-.9.6-2.05.96-3.38.96-2.6 0-4.8-1.76-5.59-4.12H3.06v2.59A10 10 0 0 0 12 22Z"/>
       <path d="M6.41 13.92a6 6 0 0 1 0-3.84V7.49H3.06a10 10 0 0 0 0 9.02l3.35-2.59Z"/>
       <path d="M12 5.98c1.47 0 2.79.5 3.83 1.5l2.87-2.87C16.95 2.99 14.7 2 12 2a10 10 0 0 0-8.94 5.49l3.35 2.59C7.2 7.72 9.4 5.98 12 5.98Z"/>
-    </svg>
+    </svg>`;
+
+/**
+ * The Google control.
+ *
+ * TWO RENDER PATHS, PICKED BY THE CALLER FROM `accounts.providers.enabled` — never guessed
+ * here. Unconfigured (`enabled: false`, which is every dev/preview environment today) this is
+ * DELIBERATELY NOT A LINK AND NOT A FORM: a disabled button that posts nowhere and has no route
+ * behind it, because a "coming soon" that is secretly wired up is how a half-finished OAuth
+ * integration reaches production. Configured, it is a plain link to the flow Nova.Help already
+ * implements in the shared package (`/account/auth/google`) — the account model does not
+ * change, only this control does.
+ */
+export const googleControl = ({ enabled = false, next = '', verb = 'Continue with' } = {}) => {
+  if (!enabled) {
+    return `<div class="provider-row">
+  <button class="btn btn-ghost provider-btn" type="button" disabled aria-disabled="true">
+    ${GOOGLE_GLYPH}
     Continue with Google
     <span class="provider-soon">Coming soon</span>
   </button>
 </div>
 <p class="provider-note">Google sign-in is not available yet. Use an email address and password for now.</p>`;
+  }
+
+  const href = `/account/auth/google${next && next !== '/account' ? `?next=${encodeURIComponent(next)}` : ''}`;
+  return `<div class="provider-row">
+  <a class="btn btn-ghost provider-btn" href="${esc(href)}">
+    ${GOOGLE_GLYPH}
+    ${esc(verb)} Google
+  </a>
+</div>`;
+};
+
+/** The one-message explanation for a federated sign-in that did not go through. */
+const OAUTH_MESSAGES = {
+  failed: ['That did not work', 'Something went wrong talking to Google. Try again, or use an email address and password.'],
+  cancelled: ['Sign-in was cancelled', 'Use an email address and password instead, or try Google again.'],
+  unverified: ['Google would not vouch for that address', 'Verify the address on your Google Account, or use an email address and password for now.'],
+  'email-has-account': [
+    'That address already has a Nova Account',
+    'Sign in with your password instead. Google is not silently linked to an existing account, even when the address matches.',
+  ],
+  'identity-taken': ['That Google Account is already connected elsewhere', 'Sign in with the Nova Account it is connected to, or use an email address and password.'],
+};
+
+/** The banner on `/account/sign-in?oauth=…`. The set is closed, so nothing a caller invents is echoed. */
+export const oauthNotice = (code) => {
+  const message = OAUTH_MESSAGES[code];
+  if (!message) return '';
+  const [title, body] = message;
+  return notice('error', title, `<p>${esc(body)}</p>`);
+};
 
 /** The line that keeps the ecosystem promise honest on every account page. */
 export const ecosystemNote = `<p class="account-foot">

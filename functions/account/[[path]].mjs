@@ -22,10 +22,10 @@
  * rate limiter; splitting them across Pages Functions files would mean re-importing and
  * re-deciding those seven times, and the routing table is easier to check when it is a list.
  */
-import { SESSION_COOKIE, SESSION_TTL_SECONDS } from '../../packages/nova-accounts/index.mjs';
+import { OAUTH_COOKIE, OAUTH_TTL_SECONDS, SESSION_COOKIE, SESSION_TTL_SECONDS } from '../../packages/nova-accounts/index.mjs';
 
 import { accountsFor } from '../_lib/accounts.mjs';
-import { ecosystemNote, esc, field, googleSoon, html, notice, page, redirect } from '../_lib/shell.mjs';
+import { ecosystemNote, esc, field, googleControl, html, notice, oauthNotice, page, redirect } from '../_lib/shell.mjs';
 import { avatarBadge, handleManage, manageNav } from '../_lib/manage.mjs';
 
 /** Sign-in and sign-up bodies are small; anything larger is not one of these forms. */
@@ -84,6 +84,26 @@ const statusCookie = (env, value, maxAge) => {
 };
 
 const clearStatusCookie = (env) => statusCookie(env, '', 0);
+
+/**
+ * The OAuth state envelope — `@nova/accounts`' `providers.begin()`/`consume()` pair, carried as
+ * this one cookie. Short-lived, `SameSite=Lax` (the callback arrives as a top-level navigation
+ * FROM Google, which `Strict` would withhold the cookie on), and never scoped to
+ * NOVA_COOKIE_DOMAIN — it never needs to travel beyond the single round trip that mints and
+ * reads it on this origin. See providers/index.mjs for what is actually inside it and why a
+ * cookie, rather than the query string, is what makes the callback trustworthy at all.
+ */
+const oauthCookie = (env, value, maxAge) => {
+  const parts = [`${OAUTH_COOKIE}=${encodeURIComponent(value)}`, 'Path=/', 'HttpOnly', 'SameSite=Lax'];
+  if (env.NOVA_INSECURE_COOKIES !== '1') parts.push('Secure');
+  parts.push(`Max-Age=${Math.floor(maxAge)}`);
+  return parts.join('; ');
+};
+
+const clearOauthCookie = (env) => oauthCookie(env, '', 0);
+
+/** Where Google sends the browser back to. MUST be registered in Google Cloud Console exactly. */
+const redirectUriFor = (url, providerId) => `${url.origin}/account/auth/${encodeURIComponent(providerId)}/callback`;
 
 /**
  * Which origins may read a cross-site `/account/status` response. `NOVA_LEGAL_ORIGINS` is a
@@ -173,10 +193,11 @@ const tooMany = (retryAfter, title = 'Too many attempts') =>
 
 /* ── Pages ───────────────────────────────────────────────────────────────────────────────── */
 
-const signInBody = ({ values = {}, errors = {}, failed = false, next = '' }) => `
+const signInBody = ({ values = {}, errors = {}, failed = false, next = '', providersEnabled = false, oauth = null }) => `
+  ${oauthNotice(oauth)}
   ${failed ? notice('error', 'That did not sign you in', '<p>Check the email address and password and try again. If you have never made a Nova Account, create one below.</p>') : ''}
   <form class="account-card" method="post" action="/account/sign-in" novalidate>
-    ${googleSoon()}
+    ${googleControl({ enabled: providersEnabled, next })}
     <div class="or-rule"><span>or</span></div>
     ${nextField(next)}
     ${field({ id: 'email', label: 'Email address', type: 'email', value: values.email ?? '', error: errors.email, autocomplete: 'email', maxLength: 254 })}
@@ -189,9 +210,9 @@ const signInBody = ({ values = {}, errors = {}, failed = false, next = '' }) => 
   </form>
   ${ecosystemNote}`;
 
-const createBody = ({ values = {}, errors = {}, next = '' }) => `
+const createBody = ({ values = {}, errors = {}, next = '', providersEnabled = false }) => `
   <form class="account-card" method="post" action="/account/new" novalidate>
-    ${googleSoon()}
+    ${googleControl({ enabled: providersEnabled, next, verb: 'Sign up with' })}
     <div class="or-rule"><span>or</span></div>
     ${nextField(next)}
     ${field({ id: 'email', label: 'Email address', type: 'email', value: values.email ?? '', error: errors.email, autocomplete: 'email', maxLength: 254 })}
@@ -328,12 +349,19 @@ export async function onRequest(context) {
   const registerLimiter = limiterFor(env, 'register', 60 * 60 * 1000, 5);
   const resetLimiter = limiterFor(env, 'passwordReset', 60 * 60 * 1000, 6);
   const resetEmailLimiter = limiterFor(env, 'passwordResetEmail', 60 * 60 * 1000, 4);
+  // The same window Nova.Help uses for the same reason: the redirect out and back is the
+  // expensive part of a sign-in attempt, so it gets its own budget rather than sharing signIn's.
+  const oauthLimiter = limiterFor(env, 'oauth', 15 * 60 * 1000, 30);
 
-  const openSession = async (accountId, destination) => {
+  const openSession = async (accountId, destination, { extraCookies = [] } = {}) => {
     const started = await accounts.startSession(accountId, { ttlSeconds: SESSION_TTL_SECONDS });
-    if (!started.ok) return html(page({ title: 'Sign in', body: signInBody({ failed: true }) }), { status: 403 });
+    if (!started.ok)
+      return html(page({ title: 'Sign in', body: signInBody({ failed: true, providersEnabled: accounts.providers.enabled }) }), {
+        status: 403,
+      });
     return redirect(destination, {
       setCookies: [
+        ...extraCookies,
         sessionCookie(env, started.token, SESSION_TTL_SECONDS),
         statusCookie(env, started.token, SESSION_TTL_SECONDS),
       ],
@@ -427,9 +455,11 @@ export async function onRequest(context) {
                 'Your password has been changed',
                 '<p>You are signed in on this device. Everything else has been signed out, on Nova and on every Nova product. If you did not do this, change the password again immediately and secure your email account.</p>',
               )
-            : url.searchParams.get('updated') === 'email'
-              ? notice('ok', 'Your email address has been changed', '<p>Use the new address to sign in from now on. We have told the old address.</p>')
-              : null;
+            : welcome === 'linked'
+              ? notice('ok', 'Connected', '<p>You can now sign in with it. It is the same Nova Account, not a second one.</p>')
+              : url.searchParams.get('updated') === 'email'
+                ? notice('ok', 'Your email address has been changed', '<p>Use the new address to sign in from now on. We have told the old address.</p>')
+                : null;
 
     const reference = await accounts.getAvatar(account.id);
     return html(page({ title: 'Your Nova Account', account, body: `${manageNav('/account')}${accountBody(account, banner, reference)}` }));
@@ -444,7 +474,11 @@ export async function onRequest(context) {
         page({
           title: 'Sign in to Nova',
           lede: 'One Nova Account, for every Nova product.',
-          body: signInBody({ next: safeNext(url.searchParams.get('next')) }),
+          body: signInBody({
+            next: safeNext(url.searchParams.get('next')),
+            providersEnabled: accounts.providers.enabled,
+            oauth: url.searchParams.get('oauth'),
+          }),
         }),
       );
     }
@@ -454,7 +488,10 @@ export async function onRequest(context) {
       if (!bySource.ok) return tooMany(bySource.retryAfter);
 
       const fields = await formFields(request);
-      if (!fields) return html(page({ title: 'Sign in to Nova', body: signInBody({ failed: true }) }), { status: 413 });
+      if (!fields)
+        return html(page({ title: 'Sign in to Nova', body: signInBody({ failed: true, providersEnabled: accounts.providers.enabled }) }), {
+          status: 413,
+        });
 
       const next = safeNext(fields.next);
       const email = accounts.normalizeEmail(fields.email);
@@ -476,6 +513,7 @@ export async function onRequest(context) {
               errors: incomplete ? attempt.errors : {},
               failed: !incomplete,
               next,
+              providersEnabled: accounts.providers.enabled,
             }),
           }),
           { status: incomplete ? 422 : 401 },
@@ -499,7 +537,7 @@ export async function onRequest(context) {
         page({
           title: 'Create a Nova Account',
           lede: 'One account for Nova, Nova.Help, and everything that follows.',
-          body: createBody({ next: safeNext(url.searchParams.get('next')) }),
+          body: createBody({ next: safeNext(url.searchParams.get('next')), providersEnabled: accounts.providers.enabled }),
         }),
       );
     }
@@ -509,7 +547,10 @@ export async function onRequest(context) {
       if (!gate.ok) return tooMany(gate.retryAfter);
 
       const fields = await formFields(request);
-      if (!fields) return html(page({ title: 'Create a Nova Account', body: createBody({}) }), { status: 413 });
+      if (!fields)
+        return html(page({ title: 'Create a Nova Account', body: createBody({ providersEnabled: accounts.providers.enabled }) }), {
+          status: 413,
+        });
 
       const next = safeNext(fields.next);
       const created = await accounts.register(fields);
@@ -517,7 +558,7 @@ export async function onRequest(context) {
         return html(
           page({
             title: 'Create a Nova Account',
-            body: createBody({ values: created.values, errors: created.errors, next }),
+            body: createBody({ values: created.values, errors: created.errors, next, providersEnabled: accounts.providers.enabled }),
           }),
           { status: 422 },
         );
@@ -525,6 +566,128 @@ export async function onRequest(context) {
 
       return openSession(created.account.id, next === '/account' ? '/account?welcome=created' : next);
     }
+  }
+
+  /* ── Federated sign-in (Google, today) ──────────────────────────────────────────────────
+     Two routes, reused for whichever providers get configured later. `/account/auth/:id`
+     begins a flow; signed out it signs somebody in, signed in it links `:id` to the account
+     already in the session cookie — which of those happens is decided HERE, from that cookie,
+     never from a request parameter, and is sealed into the state envelope so it cannot change
+     between this redirect and the callback that completes it. `/account/auth/:id/callback` is
+     where Google sends the browser back; it opens that envelope, exchanges the code, and asks
+     `@nova/accounts` — never this file — what it means. This is the exact flow Nova.Help runs,
+     against the exact same package; nothing about the account model is reimplemented here. */
+
+  const authBegin = /^\/account\/auth\/([a-z0-9-]+)$/i.exec(path);
+  if (authBegin && (method === 'GET' || method === 'POST')) {
+    const providerId = authBegin[1];
+
+    const notFoundAuth = () =>
+      html(page({ title: 'Sign in to Nova', body: signInBody({ failed: true, providersEnabled: accounts.providers.enabled }) }), {
+        status: 404,
+      });
+
+    if (!accounts.providers.has(providerId)) return notFoundAuth();
+
+    const gate = await oauthLimiter.hit(ip);
+    if (!gate.ok) return tooMany(gate.retryAfter);
+
+    const next =
+      method === 'POST' ? safeNext((await formFields(request))?.next) : safeNext(url.searchParams.get('next'));
+
+    const started = accounts.providers.begin({
+      provider: providerId,
+      mode: account ? 'link' : 'signin',
+      next,
+      redirectUri: redirectUriFor(url, providerId),
+    });
+    if (!started) return notFoundAuth();
+
+    return redirect(started.url, { setCookies: [oauthCookie(env, started.cookie, OAUTH_TTL_SECONDS)] });
+  }
+
+  const authCallback = /^\/account\/auth\/([a-z0-9-]+)\/callback$/i.exec(path);
+  if (authCallback && method === 'GET') {
+    const providerId = authCallback[1];
+    const params = url.searchParams;
+
+    /* Whatever happens, the envelope is spent — this goes on every response below. */
+    const spent = [clearOauthCookie(env)];
+
+    /* Resolved up front so a failure lands somewhere useful: somebody already signed in who
+       hits a stale or replayed callback wants their account page, not a sign-in form. */
+    const home = account ? '/account' : '/account/sign-in';
+    const back = (code, next = home) => redirect(`${next}${next.includes('?') ? '&' : '?'}oauth=${code}`, { setCookies: spent });
+
+    if (!accounts.providers.has(providerId)) return back('failed');
+
+    // The person pressed "cancel" on Google's own screen. Not an error.
+    if (params.get('error')) {
+      console.warn(`[nova] ${providerId} returned ${params.get('error')}`);
+      return back(params.get('error') === 'access_denied' ? 'cancelled' : 'failed');
+    }
+
+    /* THE STATE ENVELOPE IS OPENED AND CLEARED BEFORE THE CODE IS EXCHANGED, so a callback URL
+       that leaks — a shared screen, a referrer, shell history — cannot be replayed even once. */
+    const opened = accounts.providers.consume(readCookie(request, OAUTH_COOKIE), {
+      state: params.get('state'),
+      provider: providerId,
+    });
+    if (!opened.ok) {
+      // The reason is for the log; the page says one thing for all of them, because the
+      // difference between "expired" and "forged" is information the forger supplied.
+      console.warn(`[nova] ${providerId} callback rejected: ${opened.reason}`);
+      return back('failed');
+    }
+
+    const { flow } = opened;
+    const code = params.get('code');
+    if (!code) return back('failed');
+
+    let identity;
+    try {
+      identity = await flow.provider.identify({
+        code,
+        codeVerifier: flow.codeVerifier,
+        nonce: flow.nonce,
+        redirectUri: redirectUriFor(url, providerId),
+      });
+    } catch (error) {
+      console.warn(`[nova] ${providerId} identity check failed: ${error.message}`);
+      return back('failed');
+    }
+
+    /* The mode was sealed in at the start and must still agree with reality: a flow begun
+       signed out must not complete as a link, and a link must belong to a live session. */
+    if (flow.mode === 'link' && !account) return back('failed');
+    if (flow.mode === 'signin' && account) return redirect('/account', { setCookies: spent });
+
+    const result = await accounts.withProviderIdentity(identity, {
+      currentAccountId: flow.mode === 'link' ? account.id : null,
+    });
+
+    if (!result.ok) {
+      // THIS IS THE "NO SILENT LINKING" POLICY, ENFORCED BY THE SHARED PACKAGE, NOT HERE — see
+      // service.mjs's withProviderIdentity. An address match is never enough on its own; a
+      // password account and a Google identity on the same address stay two separate ways in
+      // until somebody holds both and links them on purpose, signed in.
+      console.warn(`[nova] ${providerId} sign-in refused: ${result.reason}`);
+      if (flow.mode === 'link') {
+        return back(result.reason === 'identity-on-another-account' ? 'identity-taken' : 'failed', '/account');
+      }
+      if (result.reason === 'email-has-account') return back('email-has-account');
+      if (result.reason === 'provider-email-unverified') return back('unverified');
+      return back('failed');
+    }
+
+    if (flow.mode === 'link') {
+      return redirect('/account?welcome=linked', { setCookies: spent });
+    }
+
+    const destination =
+      flow.next && flow.next !== '/account' ? flow.next : `/account?welcome=${result.outcome === 'created' ? 'created' : 'signed-in'}`;
+
+    return openSession(result.account.id, destination, { extraCookies: spent });
   }
 
   /* ── Sign out ────────────────────────────────────────────────────────────────────────── */
