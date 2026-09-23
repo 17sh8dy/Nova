@@ -393,12 +393,26 @@ test('Google is offered as coming soon, and is not wired to anything', async (t)
   }
 });
 
-test('there is no Google route to reach', async (t) => {
+test('with no provider configured, starting a flow finds nothing to start', async (t) => {
   const site = await createSite(t);
-  for (const path of ['/account/auth/google', '/account/auth/google/callback', '/account/google']) {
-    const response = await browser(site).get(path);
-    assert.equal(response.status, 404, `${path} must not exist`);
-  }
+
+  // Beginning a flow for a provider nobody configured is a plain 404 — the same answer
+  // Nova.Help gives (see registerAccountRoutes's notFoundAuth), not a redirect anywhere.
+  const started = await browser(site).get('/account/auth/google');
+  assert.equal(started.status, 404, '/account/auth/google must not exist');
+  assert.equal((started.headers.getSetCookie() ?? []).some((c) => c.startsWith('nova_oauth=')), false);
+
+  // A path nobody registered at all.
+  assert.equal((await browser(site).get('/account/google')).status, 404);
+
+  /* The callback route itself is generic — `/account/auth/:id/callback` — and always exists so
+     ANY provider's callback lands somewhere; it is what decides, per request, whether `:id` is
+     one Nova configured. With no envelope cookie and no provider, it fails exactly like any
+     other invalid callback: a redirect carrying `oauth=failed`, never a session. */
+  const hit = await browser(site).get('/account/auth/google/callback?code=x&state=y');
+  assert.equal(hit.status, 303);
+  assert.match(hit.headers.get('location'), /^\/account\/sign-in\?oauth=failed$/);
+  assert.equal((hit.headers.getSetCookie() ?? []).some((c) => c.startsWith('nova_session=')), false);
 });
 
 /* ── ONE identity, two front doors ───────────────────────────────────────────────────────── */
