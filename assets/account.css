@@ -374,3 +374,55 @@
 }
 .btn-danger:hover { filter: brightness(1.08); }
 .btn-danger:focus-visible { outline: 2px solid var(--danger, #C7343B); outline-offset: 3px; }
+
+/* ── Hold-to-confirm (account deletion) ─────────────────────── */
+
+/* A deliberate extra gate on top of the password + typed-address + tick above it: the
+   button must be genuinely HELD, not clicked, before the form submits. `--hold-ms` is set
+   once by hold-button.js from its one constant -- nothing here hardcodes a duration; the
+   fallback below only covers the instant before that script runs (or if it never does). */
+.hold-btn {
+  --hold-ms: 1800ms;
+  padding-inline: 1.5rem;
+}
+
+.hold-btn__fill {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: rgba(255, 255, 255, .28);
+  transform: scaleX(0);
+  transform-origin: left center;
+  /* Early release: a quick, fixed snap back to empty. */
+  transition: transform .2s var(--ease);
+  pointer-events: none;
+}
+
+/* Held: the fill takes the WHOLE hold duration to rise, linearly, so its pace is an honest
+   read of how much longer is left -- not eased, which would lie about the remaining time. */
+.hold-btn.is-holding .hold-btn__fill {
+  transform: scaleX(1);
+  transition: transform var(--hold-ms) linear;
+}
+
+.hold-btn__label {
+  position: relative;
+  z-index: 1;
+  transition: filter .18s var(--ease), opacity .18s var(--ease);
+}
+
+/* The label swaps through a blur once the hold completes, instead of jumping straight to
+   "Deleting...". hold-button.js toggles this class, waits it out, then changes the text. */
+.hold-btn.is-swapping .hold-btn__label { filter: blur(6px); opacity: 0; }
+
+.hold-btn:disabled { cursor: progress; opacity: .85; }
+
+@media (prefers-reduced-motion: reduce) {
+  /* The hold itself is a functional requirement, not decoration, so the TIMER in
+     hold-button.js is unchanged -- only the visual transitions collapse to instant. */
+  .hold-btn__fill,
+  .hold-btn.is-holding .hold-btn__fill,
+  .hold-btn__label {
+    transition-duration: .01ms;
+  }
+}

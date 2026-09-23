@@ -107,6 +107,7 @@ export function page({ title, lede = '', body, account = null }) {
 </footer>
 
 <script src="/assets/nova.js"></script>
+<script src="/assets/hold-button.js"></script>
 <script src="/assets/nova-i18n.js" data-base="/i18n/" defer></script>
 </body>
 </html>`;

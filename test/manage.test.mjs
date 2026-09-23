@@ -359,6 +359,43 @@ test('deleting an account refuses without the password, the typed address, or th
   assert.equal((await b.get('/account')).status, 200, 'still signed in');
 });
 
+test('the hold-to-confirm button is a UI layer only -- the form still POSTs the same fields, and the server still refuses deletion without the password, the typed address, or the tick', async (t) => {
+  const site = await createSite(t);
+  const { b } = await signUp(site);
+
+  const markup = await (await b.get('/account/delete')).text();
+
+  // The hold button lives INSIDE the same form, posting to the same place, alongside the
+  // existing password/typed-address/tick fields -- not a second form, not a different action.
+  const formStart = markup.indexOf('action="/account/delete"');
+  assert.ok(formStart !== -1, 'the delete form is still there');
+  const formMarkup = markup.slice(formStart, markup.indexOf('</form>', formStart));
+  assert.match(formMarkup, /name="confirmEmail"/, 'the typed-address field is still required in the form');
+  assert.match(formMarkup, /name="currentPassword"/, 'the password field is still required in the form');
+  assert.match(formMarkup, /name="understand"/, 'the tick is still required in the form');
+  assert.match(formMarkup, /data-hold-button/, 'the delete control is the hold button');
+  assert.match(formMarkup, /type="submit"/, 'still a real submit control, not a script-only action');
+  assert.match(formMarkup, /Hold to permanently delete/i, 'the label says what holding it does');
+  assert.match(formMarkup, /data-hold-fill/, 'the fill element the hold progress animates is present');
+  assert.match(formMarkup, /aria-describedby="delete-hold-status"/, 'the button names its live status region');
+  assert.match(markup, /id="delete-hold-status"[^>]*aria-live="polite"/, 'a polite live region exists for the hold status');
+
+  // The hold button carries no name/value of its own, so it cannot add or change a field in
+  // the POST body no matter how the client-side hold interaction ends up submitting the form.
+  const holdButtonStart = formMarkup.lastIndexOf('<button', formMarkup.indexOf('data-hold-button'));
+  const holdButtonTag = formMarkup.slice(holdButtonStart, formMarkup.indexOf('</button>', holdButtonStart));
+  assert.ok(!/\bname="/.test(holdButtonTag), 'the hold button contributes no field to the submission');
+
+  // Whatever the client does with the hold gesture, the only thing that ever reaches the
+  // server is a POST with these field names -- exactly what the pre-existing safeguards check.
+  // These are the same assertions as the refusal test above, re-proven with the new markup in
+  // place, so a change to the button can never quietly loosen what the router requires.
+  assert.equal((await b.post('/account/delete', { ...deletionForm(), currentPassword: 'wrong' })).status, 403, 'wrong password still refused');
+  assert.equal((await b.post('/account/delete', { ...deletionForm('someone@else.com') })).status, 400, 'wrong typed address still refused');
+  assert.equal((await b.post('/account/delete', { confirmEmail: 'ann@example.com', currentPassword: PASSWORD })).status, 400, 'missing tick still refused');
+  assert.equal((await b.post('/account/delete', {})).status, 400, 'an empty submission still refused');
+});
+
 test('a deleted account is gone from every product, its cookie is dead, and its address is free', async (t) => {
   const site = await createSite(t);
   const { b, id, email } = await signUp(site);

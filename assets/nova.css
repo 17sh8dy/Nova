@@ -194,6 +194,20 @@ a { color: inherit; }
 
 .skip-link:focus { top: 12px; }
 
+/* Present to assistive tech, invisible and out of the flow for everybody else -- for status
+   text an aria-live region announces but a sighted visitor does not need to see written out. */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .wrap { width: min(1140px, 91vw); margin-inline: auto; }
 
 /* the sticky bar must not land on top of whatever you jumped to */

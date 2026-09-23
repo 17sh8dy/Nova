@@ -242,8 +242,15 @@ const deleteBody = ({ account, errors = {} }) => `
     <label class="check"><input type="checkbox" name="understand" value="yes" required /> I understand this is permanent.</label>
     ${errors.understand ? `<p class="field-error" role="alert">${esc(errors.understand)}</p>` : ''}
     <div class="account-actions">
-      <button class="btn btn-danger" type="submit">Delete my account permanently</button>
+      <button
+        class="btn btn-danger hold-btn"
+        type="submit"
+        data-hold-button
+        data-hold-armed-label="Deleting your account…"
+        aria-describedby="delete-hold-status"
+      ><span class="hold-btn__fill" data-hold-fill aria-hidden="true"></span><span class="hold-btn__label" data-hold-label>Hold to permanently delete my account</span></button>
       <a class="btn btn-ghost" href="/account">Keep my account</a>
+      <p class="visually-hidden" id="delete-hold-status" role="status" aria-live="polite" data-hold-status></p>
     </div>`
         : noPasswordNote
     }
