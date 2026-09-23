@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Slide Commit demo — Nova</title>
+<meta name="description" content="An internal UI prototype. Not connected to any real purchase -- Nova has no subscription system yet." />
+<meta name="robots" content="noindex, nofollow" />
+
+<link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+
+<meta name="theme-color" content="#F5F6FB" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#090B12" media="(prefers-color-scheme: dark)" />
+
+<script>document.documentElement.classList.add("js");</script>
+<link rel="stylesheet" href="/assets/nova.css" />
+<link rel="stylesheet" href="/assets/account.css" />
+<link rel="stylesheet" href="/assets/slide-commit.css" />
+</head>
+<body>
+
+<a class="skip-link" href="#top">Skip to content</a>
+
+<header class="masthead">
+  <div class="wrap masthead-inner">
+    <a class="wordmark" href="/" aria-label="Nova — home">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M12 .8c.62 6.5 4.7 10.58 11.2 11.2-6.5.62-10.58 4.7-11.2 11.2-.62-6.5-4.7-10.58-11.2-11.2C7.3 11.38 11.38 7.3 12 .8Z" />
+      </svg>
+      <span>NOVA</span>
+    </a>
+    <nav class="masthead-nav" aria-label="Primary">
+      <a href="/">Back to Nova</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <section class="account-shell">
+    <div class="wrap account-wrap">
+      <header class="account-head rise">
+        <p class="account-eyebrow">Internal UI prototype</p>
+        <h1 class="account-title">Slide Commit</h1>
+        <p class="account-lede">
+          A vanilla-JS reimplementation of the React Bits "slide to confirm" interaction: a
+          handle that plants and spins while an action runs, then unfurls into a done pill on
+          success or springs home with a squash and a shake on failure.
+        </p>
+      </header>
+
+      <div class="notice notice--warning">
+        <p class="notice-title">This is a demo, not a real purchase flow</p>
+        <div class="notice-body">
+          <p>
+            Nova has no subscription or billing system yet. Sliding the handle below never
+            contacts a server and never charges anything — it calls a mocked async function
+            (<code>createMockSubscription</code> in <code>assets/slide-commit.js</code>) that
+            resolves or rejects on a timer, standing in for the real payment call this component
+            would eventually make. This page exists only at this direct URL and is not linked
+            from the site's navigation.
+          </p>
+        </div>
+      </div>
+
+      <div class="account-card">
+        <h2 class="account-card-title">Try it</h2>
+        <p class="account-card-lede">Slide the handle to the end of the track to commit. Use the controls below to choose which outcome the mock call produces.</p>
+
+        <div class="slide-commit" data-slide-commit data-force="random">
+          <div class="slide-commit__track" data-slide-track>
+            <div class="slide-commit__fill" data-slide-fill aria-hidden="true"></div>
+            <p class="slide-commit__hint" data-slide-hint>Slide to subscribe (demo)</p>
+            <button type="button" class="slide-commit__handle" data-slide-handle aria-describedby="slide-commit-status">
+              <span class="slide-commit__handle-icon" aria-hidden="true">→</span>
+              <span class="slide-commit__handle-label" data-slide-handle-label></span>
+            </button>
+          </div>
+          <p class="slide-commit__status-line" data-slide-line aria-hidden="true"></p>
+          <p class="visually-hidden" id="slide-commit-status" role="status" aria-live="polite"></p>
+        </div>
+
+        <div class="account-actions" data-slide-controls>
+          <button class="btn btn-ghost" type="button" data-force-choice="random">Random outcome</button>
+          <button class="btn btn-ghost" type="button" data-force-choice="success">Force success</button>
+          <button class="btn btn-ghost" type="button" data-force-choice="error">Force failure</button>
+          <button class="btn btn-ghost" type="button" data-slide-reset>Reset</button>
+        </div>
+        <p class="account-fineprint" data-force-readout>Next slide's outcome: random.</p>
+
+        <p class="account-fineprint">
+          Keyboard: focus the handle and press Enter or Space to commit, the same path a
+          completed drag takes. Reduced-motion visitors get the same states with the decorative
+          transitions and the failure animation switched off.
+        </p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p class="account-foot">Internal prototype for the "Slide Commit" pattern. Not part of the live Nova site's navigation, and not wired to any real purchase.</p>
+  </div>
+</footer>
+
+<script type="module" src="/assets/slide-commit.js"></script>
+<script type="module">
+  const root = document.querySelector('[data-slide-commit]');
+  const readout = document.querySelector('[data-force-readout]');
+
+  document.querySelectorAll('[data-force-choice]').forEach((button) => {
+    button.addEventListener('click', () => {
+      const choice = button.getAttribute('data-force-choice');
+      root.setAttribute('data-force', choice);
+      if (readout) readout.textContent = `Next slide's outcome: ${choice}.`;
+    });
+  });
+
+  const resetButton = document.querySelector('[data-slide-reset]');
+  if (resetButton) {
+    resetButton.addEventListener('click', () => {
+      if (root.novaSlideCommit) root.novaSlideCommit.reset();
+    });
+  }
+</script>
+</body>
+</html>

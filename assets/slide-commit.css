@@ -1,0 +1,161 @@
+/* ─────────────────────────────────────────────────────────────
+   Nova — the Slide Commit component (DEMO ONLY)
+
+   Nova has no subscription or billing system yet -- see
+   demo/slide-commit.html and assets/slide-commit.js. This is the
+   visual half of a prototype, built from the same tokens as the
+   rest of the site (nova.css): the same radii, ease curves, shadows
+   and the --ok / --danger fallback convention account.css already
+   uses, not a palette of its own.
+   ───────────────────────────────────────────────────────────── */
+
+.slide-commit {
+  --slide-h: 3.5rem;
+  max-width: 23rem;
+}
+
+.slide-commit__track {
+  position: relative;
+  height: var(--slide-h);
+  border-radius: var(--r-pill);
+  border: 1px solid var(--rule-strong);
+  background: var(--card);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: var(--shadow-1);
+  overflow: hidden;
+  /* the handle drags itself; the browser must not also try to pan/scroll the page */
+  touch-action: none;
+}
+
+.slide-commit__fill {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  background: linear-gradient(90deg, transparent, var(--brand-soft) 55%, color-mix(in srgb, var(--brand-graphic) 30%, transparent));
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform .2s var(--ease);
+  pointer-events: none;
+}
+
+.slide-commit.is-dragging .slide-commit__fill { transition: none; }
+
+.slide-commit__hint {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding-inline: calc(var(--slide-h) + .5rem) .75rem;
+  font-size: .9rem;
+  font-weight: 600;
+  letter-spacing: .01em;
+  color: var(--ink-2);
+  pointer-events: none;
+  user-select: none;
+  transition: opacity .2s var(--ease);
+}
+
+.slide-commit.is-pending .slide-commit__hint,
+.slide-commit.is-success .slide-commit__hint,
+.slide-commit.is-error .slide-commit__hint { opacity: 0; }
+
+.slide-commit__handle {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  z-index: 2;
+  width: calc(var(--slide-h) - 6px);
+  height: calc(var(--slide-h) - 6px);
+  border: 0;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .4rem;
+  font: inherit;
+  font-weight: 600;
+  font-size: .875rem;
+  color: var(--on-brand);
+  background: var(--brand-solid);
+  box-shadow: var(--shadow-2);
+  cursor: grab;
+  transform: translateX(var(--slide-x, 0px));
+  transition: transform .32s var(--ease-soft), width .38s var(--ease-soft), background-color .3s var(--ease);
+  touch-action: none;
+}
+
+/* while the pointer is actually moving it, the transform must track the pointer with no
+   lag -- transitions are for every OTHER moment (release, success, failure) */
+.slide-commit.is-dragging .slide-commit__handle { transition: none; cursor: grabbing; }
+
+.slide-commit__handle-icon { font-size: 1rem; line-height: 1; transition: opacity .15s var(--ease); }
+
+.slide-commit__handle-label {
+  max-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  opacity: 0;
+  transition: max-width .3s var(--ease-soft), opacity .2s var(--ease);
+}
+
+/* ── Pending: the handle plants and spins ───────────────────── */
+
+.slide-commit.is-pending .slide-commit__handle { cursor: wait; }
+.slide-commit.is-pending .slide-commit__handle-icon { animation: slide-spin .8s linear infinite; }
+
+@keyframes slide-spin { to { transform: rotate(360deg); } }
+
+/* ── Success: the handle unfurls into a done pill ───────────── */
+
+.slide-commit.is-success .slide-commit__track { border-color: color-mix(in srgb, var(--ok, #2F855A) 45%, var(--rule-strong)); }
+
+.slide-commit.is-success .slide-commit__handle {
+  width: calc(100% - 6px);
+  border-radius: var(--r-pill);
+  background: var(--ok, #2F855A);
+  cursor: default;
+}
+
+.slide-commit.is-success .slide-commit__handle-icon { opacity: 0; width: 0; }
+.slide-commit.is-success .slide-commit__handle-label { max-width: 16rem; opacity: 1; }
+
+/* ── Failure: springs home with a squash and a shake ────────── */
+
+.slide-commit.is-error .slide-commit__track { border-color: color-mix(in srgb, var(--danger, #C7343B) 45%, var(--rule-strong)); }
+.slide-commit.is-error .slide-commit__handle { background: var(--danger, #C7343B); animation: slide-fail .55s var(--ease); }
+
+@keyframes slide-fail {
+  0%   { transform: translateX(var(--slide-x-from, 0px)) scale(1, 1); }
+  28%  { transform: translateX(0px) scaleX(1.22) scaleY(.8); }
+  46%  { transform: translateX(0px) scaleX(.85) scaleY(1.14); }
+  58%  { transform: translateX(7px) scaleX(1.04) scaleY(.97); }
+  70%  { transform: translateX(-6px); }
+  81%  { transform: translateX(3px); }
+  91%  { transform: translateX(-2px); }
+  100% { transform: translateX(0px) scale(1, 1); }
+}
+
+.slide-commit__status-line {
+  margin: .6rem 0 0;
+  font-size: .8125rem;
+  color: var(--ink-3);
+  min-height: 1.2em;
+}
+
+.slide-commit.is-error .slide-commit__status-line { color: var(--danger, #C7343B); }
+.slide-commit.is-success .slide-commit__status-line { color: var(--ok, #2F855A); }
+
+@media (prefers-reduced-motion: reduce) {
+  .slide-commit__handle,
+  .slide-commit__fill,
+  .slide-commit__hint,
+  .slide-commit__handle-label {
+    transition-duration: .01ms;
+  }
+  .slide-commit.is-error .slide-commit__handle { animation: none; }
+}
