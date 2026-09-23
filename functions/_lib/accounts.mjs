@@ -20,9 +20,17 @@
  * says, and sends nothing — announced loudly rather than failing quietly. See
  * NovaHelp/docs/PASSWORD-RESET.md; when a transport is chosen it is configured in both places
  * and the shared package does the rest.
+ *
+ * GOOGLE SIGN-IN is the same pattern again: `NOVA_GOOGLE_CLIENT_ID` / `NOVA_GOOGLE_SECRET`,
+ * read straight off `env` exactly as Nova.Help's Worker reads them (server/worker.mjs). A
+ * provider is only ever built when BOTH are set — one alone is a misconfiguration, and a
+ * "Continue with Google" button that leads to an error page is worse than no button, so it is
+ * logged loudly and ignored rather than half-offered. Leave both unset, as every dev/preview
+ * environment does today, and Nova Accounts is exactly what it was: email and password.
  */
 import { createAccounts, createLogMailer } from '../../packages/nova-accounts/index.mjs';
 import { createD1AccountStore } from '../../packages/nova-accounts/d1Store.mjs';
+import { createGoogleProvider } from '../../packages/nova-accounts/providers/google.mjs';
 
 /**
  * Build the account service for one request.
@@ -39,6 +47,30 @@ export async function accountsFor(env) {
     throw new Error('NOVA_SECRET must be set to at least 16 characters, and must MATCH Nova.Help.');
   }
 
+  /* A provider is built only when it is fully configured — the same rule server/app.mjs applies
+     for Nova.Help. `endpoints` is never set by a real deployment; it exists so a test can point
+     the whole flow at a local server that mints real RSA-signed tokens (see
+     packages/nova-accounts/providers/google.mjs's own doc comment). */
+  const providers = [];
+  for (const [id, factory, settings] of [
+    [
+      'google',
+      createGoogleProvider,
+      {
+        clientId: env.NOVA_GOOGLE_CLIENT_ID,
+        clientSecret: env.NOVA_GOOGLE_SECRET,
+        ...(env.NOVA_GOOGLE_ENDPOINTS ? { endpoints: env.NOVA_GOOGLE_ENDPOINTS } : {}),
+      },
+    ],
+  ]) {
+    if (!settings.clientId && !settings.clientSecret) continue;
+    if (!settings.clientId || !settings.clientSecret) {
+      console.warn(`[nova] ${id} sign-in is half-configured (needs a client id AND secret). Ignoring it.`);
+      continue;
+    }
+    providers.push(factory(settings));
+  }
+
   return createAccounts({
     secret: env.NOVA_SECRET,
     store: createD1AccountStore({ db: env.DB }),
@@ -47,6 +79,7 @@ export async function accountsFor(env) {
     product: 'nova',
     productName: 'Nova',
     supportUrl: 'https://nova-help.shadylabs.workers.dev/',
+    providers,
     /* The transport, in order of preference: one supplied as a binding, then the development
        log transport when explicitly asked for, then nothing — which makes reset accept
        requests and send none, loudly. A binding is how a real transport arrives too, so the
