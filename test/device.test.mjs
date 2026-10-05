@@ -180,3 +180,14 @@ test('typing codes is rate-limited, because the code is short', async (t) => {
   for (let i = 0; i < 16; i += 1) last = await person.post('/account/device/check', { code: `AAAA-${String(i).padStart(4, '0')}` });
   assert.equal(last.status, 429);
 });
+
+test('once a grant is decided the page offers no code field (it must not look like it asks twice)', async (t) => {
+  const { person, started } = await setup(t);
+  await person.post('/account/device', { code: started.userCode, action: 'approve', confirm: started.userCode });
+  for (const done of ['approved', 'denied']) {
+    const text = await (await person.get(`/account/device?done=${done}`)).text();
+    assert.doesNotMatch(text, /name="code"/);
+    assert.doesNotMatch(text, /Code from the app/);
+    assert.match(text, done === 'approved' ? /That app is connected/ : /Nothing was connected/);
+  }
+});

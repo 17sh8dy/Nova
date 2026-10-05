@@ -81,18 +81,19 @@ const shell = (title, lede, account, body, status = 200) =>
 
 /* ── Pages ───────────────────────────────────────────────────────────────────────────────── */
 
+const doneBanner = (done) =>
+  done
+    ? notice(
+        done === 'approved' ? 'ok' : 'warning',
+        done === 'approved' ? 'That app is connected.' : 'Nothing was connected.',
+        done === 'approved'
+          ? '<p>You can go back to it now. Sign it out again whenever you like, from <a href="/account/security">your account’s security page</a>.</p>'
+          : '<p>The app was not given access to your account.</p>',
+      )
+    : '';
+
 const codeFormBody = ({ code = '', error = null, account = null, done = null }) => `
-  ${
-    done
-      ? notice(
-          done === 'approved' ? 'ok' : 'warning',
-          done === 'approved' ? 'That app is connected.' : 'Nothing was connected.',
-          done === 'approved'
-            ? '<p>You can go back to it now. Sign it out again whenever you like, from <a href="/account/security">your account’s security page</a>.</p>'
-            : '<p>The app was not given access to your account.</p>',
-        )
-      : ''
-  }
+  ${doneBanner(done)}
   ${
     error
       ? notice(
@@ -194,6 +195,18 @@ export async function handleDevice(ctx) {
   if (path === '/account/device' && method === 'GET') {
     const code = codeFrom(url.searchParams.get('code'));
     const done = ['approved', 'denied'].includes(url.searchParams.get('done')) ? url.searchParams.get('done') : null;
+
+    /* A FINISHED GRANT GETS A FINISHED PAGE, with no code field. Showing the form under "That
+       app is connected" reads as the site asking for the code a second time. */
+    if (done) {
+      return shell(
+        done === 'approved' ? 'You’re connected' : 'Nothing was connected',
+        done === 'approved' ? 'You can close this tab and go back to the app.' : 'The app was not given access.',
+        account,
+        `${doneBanner(done)}
+        <div class="account-actions"><a class="btn btn-ghost" href="/account">Go to your Nova Account</a></div>`,
+      );
+    }
 
     if (!account) {
       /* Signed out with a code in hand: sign in, then come back to it. With no code, still
