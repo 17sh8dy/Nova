@@ -27,6 +27,7 @@ import { OAUTH_COOKIE, OAUTH_TTL_SECONDS, SESSION_COOKIE, SESSION_TTL_SECONDS } 
 import { accountsFor } from '../_lib/accounts.mjs';
 import { ecosystemNote, esc, field, googleControl, html, notice, oauthNotice, page, redirect } from '../_lib/shell.mjs';
 import { avatarBadge, handleManage, manageNav } from '../_lib/manage.mjs';
+import { handleDevice } from '../_lib/device.mjs';
 
 /** Sign-in and sign-up bodies are small; anything larger is not one of these forms. */
 const BODY_LIMIT = 16 * 1024;
@@ -390,6 +391,12 @@ export async function onRequest(context) {
     clearStatusCookie: () => clearStatusCookie(env),
   });
   if (managed) return managed;
+
+  /* ── Connecting an installed app: /account/device, /account/device/check ──────────────────
+     The approval half of the device grant (`_lib/device.mjs`). The app's own endpoints stay on
+     Nova.Help; this decides a grant Nova.Help created, through the shared database. */
+  const connected = await handleDevice({ request, env, url, path, method, accounts, account, limiterFor, tooMany, ip });
+  if (connected) return connected;
 
   /* ── GET /account/status — for the masthead on the static pages, AND for a cross-site
      product like NovaLegal ──────────────────────────────────────────────────────────────
