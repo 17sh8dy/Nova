@@ -8,7 +8,7 @@
     {name:'Replay.GG', category:categories[1], description:'Every great moment deserves a replay. Capture your best plays.', icon:'assets/brand/replay-gg.svg', status:'soon'},
     {name:'NovaGames', category:categories[2], description:'Experience Nova’s games. New worlds, new adventures, and more to discover.', glyph:'✧', status:'soon'},
     {name:'Nova.Donate', category:categories[3], description:'Help shape what comes next. Support the projects you believe in.', glyph:'♡', status:'soon'},
-    {name:'Nova.Review', category:categories[3], description:'Your voice matters. Share ideas, leave reviews, and help Nova grow.', glyph:'★', status:'soon'},
+    {name:'Nova.Review', category:categories[3], description:'Your voice matters. Share ideas, leave reviews, and help Nova grow.', glyph:'★', url:'https://nova-review.shadylabs.workers.dev/', status:'available'},
     {name:'Nova.Help', category:categories[4], description:'Guides, answers, and support for Nova products.', glyph:'?', url:'https://nova-help.shadylabs.workers.dev/', status:'available'}
   ];
   const grid=document.getElementById('nova-product-grid');
