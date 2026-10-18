@@ -5,7 +5,7 @@
     {name:'Atlas', category:categories[0], description:'Your AI assistant, built to help you get things done.', icon:'assets/brand/atlas.svg', url:'https://atlas-website.shadylabs.workers.dev/', status:'available'},
     {name:'NovaOS', category:categories[0], description:'A fresh way to experience your desktop. Your space, your workflow.', glyph:'◈', status:'soon'},
     {name:'NovaCut', category:categories[1], description:'Your vision, your timeline. Create and edit without the clutter.', icon:'assets/brand/novacut.svg', status:'soon'},
-    {name:'Replay.GG', category:categories[1], description:'Every great moment deserves a replay. Capture your best plays.', icon:'assets/brand/replay-gg.svg', status:'soon'},
+    {name:'Replay.GG', category:categories[1], description:'Every great moment deserves a replay. Capture your best plays.', icon:'assets/brand/replay-gg.svg', url:'https://replay-gg-site.shadylabs.workers.dev/', status:'available'},
     {name:'NovaGames', category:categories[2], description:'Experience Nova’s games. New worlds, new adventures, and more to discover.', glyph:'✧', status:'soon'},
     {name:'Nova.Donate', category:categories[3], description:'Help shape what comes next. Support the projects you believe in.', glyph:'♡', status:'soon'},
     {name:'Nova.Review', category:categories[3], description:'Your voice matters. Share ideas, leave reviews, and help Nova grow.', glyph:'★', url:'https://nova-review.shadylabs.workers.dev/', status:'available'},
