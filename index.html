@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Nova — Independent software studio</title>
-<meta name="description" content="Nova creates connected software for exploring, creating, and building digital worlds. NovaCut and Atlas, with more on the way." />
+<title>Nova — Create what’s next</title>
+<meta name="description" content="Meet Nova: thoughtful software for creating, playing, and building. Explore Atlas and discover what’s on the horizon." />
 
 <link rel="icon" href="favicon.ico" sizes="16x16 32x32 48x48" />
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
@@ -24,6 +24,9 @@
 <link rel="stylesheet" href="assets/nova-i18n.css" />
 <link rel="stylesheet" href="assets/nova.css" />
 <link rel="stylesheet" href="assets/account.css" />
+<link rel="stylesheet" href="assets/nova-directory.css" />
+<link rel="stylesheet" href="assets/nova-v2.css" />
+<link rel="stylesheet" href="assets/nova-v3.css" />
 </head>
 <body>
 
@@ -38,7 +41,19 @@
       <span>NOVA</span>
     </a>
     <nav class="masthead-nav" aria-label="Primary">
-      <a href="#featured" data-spy="featured">Products</a>
+      <details class="nova-nav-products">
+        <summary>Products <svg class="nova-chevron" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="m5 7.5 5 5 5-5"/></svg></summary>
+        <div class="nova-nav-panel">
+          <div class="nova-nav-panel-head"><span>Explore the ecosystem</span><a href="#explore">All products →</a></div>
+          <div class="nova-nav-panel-grid">
+            <a href="#explore" data-nova-category="AI &amp; Computing"><span>✧</span><strong>AI &amp; Computing</strong><small>Atlas · NovaOS</small></a>
+            <a href="#explore" data-nova-category="Creative Tools"><span>✦</span><strong>Creative Tools</strong><small>NovaCut · Replay.GG</small></a>
+            <a href="#explore" data-nova-category="Gaming"><span>◇</span><strong>Gaming</strong><small>NovaGames</small></a>
+            <a href="#explore" data-nova-category="Community &amp; Engagement"><span>♡</span><strong>Community</strong><small>Nova.Donate · Nova.Review</small></a>
+            <a href="#explore" data-nova-category="Help &amp; Support"><span>?</span><strong>Help &amp; Support</strong><small>Nova.Help</small></a>
+          </div>
+        </div>
+      </details>
       <a href="ecosystem.html">Ecosystem</a>
       <a class="is-optional" href="#why" data-spy="why">Why we exist</a>
       <span class="masthead-lang" data-nova-lang-slot></span>
@@ -47,6 +62,7 @@
         <a href="https://github.com/17sh8dy?tab=repositories" rel="noopener" class="social-link" aria-label="Nova on GitHub" title="GitHub"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
       </span>
       <a class="account-chip account-chip--guest" href="/account/sign-in" data-account-chip>Sign in</a>
+      <div class="nova-theme-control"><button class="nova-theme-toggle" type="button" aria-label="Choose website theme" aria-expanded="false" aria-controls="nova-theme-panel" title="Appearance"><span aria-hidden="true">◐</span><span class="nova-theme-label">Theme</span></button><div class="nova-theme-panel" id="nova-theme-panel" hidden><p class="nova-theme-heading">Make Nova yours ✦</p><button type="button" data-nova-theme="default"><span class="nova-swatch nova-swatch--violet"></span><span>Nova Violet<small>Original · follows your device</small></span><span class="nova-theme-check" aria-hidden="true">✓</span></button><button type="button" data-nova-theme="aurora"><span class="nova-swatch nova-swatch--aurora"></span><span>Midnight Aurora<small>Obsidian · teal · electric lilac</small></span><span class="nova-theme-check" aria-hidden="true">✓</span></button></div></div>
     </nav>
   </div>
 </header>
@@ -60,25 +76,24 @@
       <a class="pill rise" href="ecosystem.html">
         <span class="pill-dot" aria-hidden="true"></span>
         Independent software studio
-        <span class="pill-tag">Six in build <span aria-hidden="true">→</span></span>
+        <span class="pill-tag">Explore Nova <span aria-hidden="true">→</span></span>
       </a>
 
-      <h1 class="display rise">Build things<br /><span class="soft">that last.</span></h1>
+      <h1 class="display rise">Create what’s<br /><span class="soft">next.</span></h1>
 
       <p class="hero-lede rise">
-        Nova creates connected software for exploring, creating, and building
-        digital worlds.
+        Thoughtful tools for big ideas. Create, explore, and make more possible — all in one growing universe.
       </p>
 
       <div class="actions rise">
-        <a class="btn btn-primary" href="ecosystem.html" data-magnetic>Explore the ecosystem <span class="arrow" aria-hidden="true">→</span></a>
+        <a class="btn btn-primary" href="ecosystem.html" data-magnetic>Discover Nova <span class="arrow" aria-hidden="true">→</span></a>
         <a class="btn btn-ghost" href="#why" data-magnetic>Why we exist</a>
       </div>
 
       <ul class="hero-facts rise">
-        <li><b>12</b><span>Products &amp; platforms</span></li>
-        <li><b>06</b><span>In build today</span></li>
-        <li><b>06</b><span>On the way</span></li>
+        <li><b>05</b><span>Product categories</span></li>
+        <li><b>02</b><span>Public destinations</span></li>
+        <li><b>06</b><span>More to come</span></li>
       </ul>
 
     </div>
@@ -94,52 +109,21 @@
 
       <div class="section-head reveal">
         <div>
-          <p class="label">Featured</p>
-          <h2 class="section-title">Two products, one foundation.</h2>
+          <p class="label">Available now ✦</p>
+          <h2 class="section-title">Meet Nova, ready today.</h2>
         </div>
-        <a class="link-more" href="ecosystem.html">All products <span aria-hidden="true">→</span></a>
+        <a class="link-more" href="#explore">Explore products <span aria-hidden="true">→</span></a>
       </div>
 
       <div class="cards reveal stagger">
 
-        <a class="card card-lead" href="ecosystem.html#nova-cut" data-spot>
-          <div class="card-main">
-            <div class="card-top">
-              <span class="card-icon card-icon--brand">
-                <img class="brand" src="assets/brand/novacut.svg" alt="" width="44" height="44" />
-              </span>
-              <span class="status status-dev">In development</span>
-            </div>
-            <div class="card-body">
-              <h3>NovaCut</h3>
-              <p>
-                Desktop video and photo editing that runs on your machine and keeps your
-                files. A timeline that stays responsive, and exports that finish.
-              </p>
-            </div>
-            <div class="card-foot">
-              <ul class="tags">
-                <li>Timeline</li>
-                <li>Layers</li>
-                <li>Export</li>
-              </ul>
-              <span class="card-go" aria-hidden="true">→</span>
-            </div>
-          </div>
-          <div class="card-plate card-plate--shot">
-            <img src="assets/shots/novacut-editor.webp" width="2400" height="1500"
-                 alt="The NovaCut editor: media library, preview, inspector and a three-track timeline."
-                 loading="lazy" decoding="async" />
-          </div>
-        </a>
-
-        <a class="card card-lead" href="ecosystem.html#atlas" data-spot>
+        <a class="card card-lead" href="https://atlas-website.shadylabs.workers.dev/" data-spot>
           <div class="card-main">
             <div class="card-top">
               <span class="card-icon card-icon--brand">
                 <img class="brand" src="assets/brand/atlas.svg" alt="" width="44" height="44" />
               </span>
-              <span class="status status-alpha">Alpha</span>
+              <span class="status status-alpha">Available</span>
             </div>
             <div class="card-body">
               <h3>Atlas</h3>
@@ -157,7 +141,93 @@
           </div>
         </a>
 
+        <a class="card card-lead" href="https://nova-help.shadylabs.workers.dev/" data-spot>
+          <div class="card-main">
+            <div class="card-top"><span class="card-icon card-icon--brand nova-help-mark" aria-hidden="true">?</span><span class="status status-alpha">Available</span></div>
+            <div class="card-body"><h3>Nova.Help</h3><p>Answers when you need them. Find guides, get support, and keep creating.</p></div>
+            <div class="card-foot"><ul class="tags"><li>Support</li><li>Guides</li><li>Answers</li></ul><span class="card-go" aria-hidden="true">→</span></div>
+          </div>
+          <div class="card-plate nova-help-plate" aria-hidden="true"><span class="nova-help-plate-symbol">✦</span><span>Here to help.</span></div>
+        </a>
       </div>
+    </div>
+  </section>
+
+  <section class="nova-upcoming-feature" aria-labelledby="upcoming-feature-title">
+    <div class="wrap">
+      <div class="section-head reveal"><div><p class="label">On the horizon ✦</p><h2 class="section-title" id="upcoming-feature-title">The next chapter.</h2></div><p class="nova-explore-intro">A glimpse of what we're building next.</p></div>
+      <div class="cards reveal stagger">
+        <article class="card card-upcoming" data-spot>
+          <div class="card-main">
+            <div class="card-top">
+              <span class="card-icon card-icon--brand">
+                <img class="brand" src="assets/brand/novacut.svg" alt="" width="44" height="44" />
+              </span>
+              <span class="status status-dev">Coming soon</span>
+            </div>
+            <div class="card-body">
+              <h3>NovaCut</h3>
+              <p>
+                Desktop video and photo editing that runs on your machine and keeps your
+                files. A timeline that stays responsive, and exports that finish.
+              </p>
+            </div>
+            <div class="card-foot">
+              <ul class="tags">
+                <li>Timeline</li>
+                <li>Layers</li>
+                <li>Export</li>
+              </ul>
+              <span class="card-go" aria-hidden="true">✦</span>
+            </div>
+          </div>
+          <div class="card-plate card-plate--shot">
+            <img src="assets/shots/novacut-editor.webp" width="2400" height="1500"
+                 alt="The NovaCut editor: media library, preview, inspector and a three-track timeline."
+                 loading="lazy" decoding="async" />
+          </div>
+        </article>
+
+        <article class="card card-upcoming" data-spot>
+          <div class="card-main">
+            <div class="card-top">
+              <span class="card-icon nova-os-mark" aria-hidden="true">✧</span>
+              <span class="status status-dev">Coming soon</span>
+            </div>
+            <div class="card-body">
+              <h3>NovaOS</h3>
+              <p>Your desktop, reimagined. A fresh, connected workspace designed to make everyday computing feel extraordinary.</p>
+            </div>
+            <div class="card-foot">
+              <ul class="tags"><li>Desktop</li><li>Workspace</li><li>Personalize</li></ul>
+              <span class="card-go" aria-hidden="true">✦</span>
+            </div>
+          </div>
+          <div class="card-plate nova-os-plate" aria-label="Abstract concept artwork for NovaOS" role="img">
+            <div class="nova-os-orbit nova-os-orbit--outer"></div>
+            <div class="nova-os-orbit nova-os-orbit--inner"></div>
+            <span class="nova-os-symbol" aria-hidden="true">✧</span>
+            <span class="nova-os-plate-caption" aria-hidden="true">A new perspective on your desktop.</span>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="nova-explore" id="explore" aria-labelledby="explore-title">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div><p class="label">Explore Nova ✦</p><h2 class="section-title" id="explore-title">Made for what’s next.</h2></div>
+        <p class="nova-explore-intro">Everything in its place. Discover what's ready and what's coming next.</p>
+      </div>
+      <div class="nova-directory-controls">
+        <label class="nova-search-label" for="nova-product-search"><span aria-hidden="true">⌕</span><input id="nova-product-search" type="search" placeholder="Search Nova products" autocomplete="off" /></label>
+        <div class="nova-category-filters" id="nova-category-filters" role="group" aria-label="Filter products by category"></div>
+      </div>
+      <p class="nova-result-count" id="nova-result-count" role="status" aria-live="polite"></p>
+      <div class="nova-product-grid" id="nova-product-grid"></div>
+      <p class="nova-directory-note">On the horizon ✦ — These products are not publicly available yet.</p>
     </div>
   </section>
 
@@ -225,16 +295,15 @@
       </a>
       <nav class="footer-links" aria-label="Footer">
         <a href="ecosystem.html">Ecosystem</a>
-        <a href="#featured">Products</a>
+        <a href="#explore">Products</a>
         <a href="#why">Why we exist</a>
         <a href="https://nova-help.shadylabs.workers.dev/">Support</a>
+        <a href="https://nova-legal.shadylabs.workers.dev/">Nova Legal</a>
         <a href="https://discord.gg/XBhER9Z6EB" rel="noopener">Discord</a>
       </nav>
     </div>
     <p class="footer-note">
-      Working draft — Nova is a brand direction under review. Two renames have shipped:
-      the engine (Open Engine is now Nova Engine) and the editor (Open Cut is now NovaCut).
-      Every other name shown here is still a proposal.
+      Independently built. Always evolving. Explore what’s available today and what’s coming next.
     </p>
     <div class="footer-legal">
       <span class="footer-legal-links">
@@ -245,10 +314,14 @@
         <a href="privacy.html">Nova Privacy Policy</a>
       </span>
     </div>
+    <p class="footer-copyright">© 2026 Nova · v1.1.0</p>
   </div>
 </footer>
 
 <script src="assets/nova.js"></script>
+<script src="assets/nova-directory.js" defer></script>
+<script src="assets/nova-v2.js" defer></script>
+<script src="assets/nova-v3.js" defer></script>
 <script src="assets/account.js"></script>
 
 <script src="assets/nova-i18n.js" data-base="/i18n/" defer></script>

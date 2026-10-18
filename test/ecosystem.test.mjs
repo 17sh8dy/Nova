@@ -63,7 +63,7 @@ test('the footer note no longer claims nothing has been renamed', async () => {
       false,
       `${file} still carries the stale claim`,
     );
-    assert.match(html, /Open Engine is now Nova Engine/, `${file} should say what did change`);
+    assert.match(html, /Independently built|Open Engine is now Nova Engine/, `${file} should carry an accurate footer note`);
   }
 });
 
@@ -77,18 +77,19 @@ test('the ecosystem page points at help that exists rather than sites that do no
   assert.equal(/href="#"/.test(html), false, 'no placeholder links');
 });
 
-test('the homepage numbers add up to the statuses on the ecosystem page', async () => {
-  const eco = await readFile(path.join(root, 'ecosystem.html'), 'utf8');
+test('homepage product directory has the approved categories and public statuses', async () => {
+  const directory = await readFile(path.join(root, 'assets/nova-directory.js'), 'utf8');
   const home = await readFile(path.join(root, 'index.html'), 'utf8');
-  const count = (cls) => (eco.match(new RegExp(`class="status status-${cls}"`, 'g')) ?? []).length;
-
-  const inBuild = count('alpha') + count('dev') + count('production');
-  const onTheWay = count('planned');
-  const fact = (label) => Number(new RegExp(`<b>([0-9]+)</b><span>${label}`).exec(home)?.[1]);
-
-  assert.equal(fact('In build today'), inBuild, 'in build');
-  assert.equal(fact('On the way'), onTheWay, 'on the way');
-  assert.equal(fact('Products &amp; platforms'), inBuild + onTheWay, 'total');
+  for (const category of ['AI & Computing', 'Creative Tools', 'Gaming', 'Community & Engagement', 'Help & Support']) {
+    assert.ok(directory.includes(category), `missing ${category}`);
+  }
+  for (const product of ['Atlas', 'NovaOS', 'NovaCut', 'Replay.GG', 'NovaGames', 'Nova.Donate', 'Nova.Review', 'Nova.Help']) {
+    assert.ok(directory.includes(`name:'${product}'`), `missing ${product}`);
+  }
+  for (const hidden of ['NovaForge', 'NovaLoom', 'NovaEngine', 'Online Earth']) {
+    assert.ok(!directory.includes(hidden), `hidden product ${hidden} exposed`);
+  }
+  assert.match(home, /id="nova-product-grid"/);
 });
 
 test('the support link resolves to a real address, not the unregistered nova.help', async () => {
@@ -101,4 +102,16 @@ test('the site uses American spelling', async () => {
   for (const { file, html } of await pages()) {
     assert.equal(/\b(centre|colour|customis\w+|licence|organis\w+|authorised)\b/i.test(html), false, file);
   }
+});
+
+test('the homepage numbers match the product directory', async () => {
+  const directory = await readFile(path.join(root, 'assets/nova-directory.js'), 'utf8');
+  const home = await readFile(path.join(root, 'index.html'), 'utf8');
+  const count = (status) => (directory.match(new RegExp(`status:'${status}'`, 'g')) ?? []).length;
+  const categories = /const categories = \[([^\]]*)\]/.exec(directory)[1].split(',').length;
+  const fact = (label) => Number(new RegExp(`<b>([0-9]+)</b><span>${label}`).exec(home)?.[1]);
+
+  assert.equal(fact('Product categories'), categories, 'categories');
+  assert.equal(fact('Public destinations'), count('available'), 'public destinations');
+  assert.equal(fact('More to come'), count('soon'), 'more to come');
 });

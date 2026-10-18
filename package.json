@@ -1,6 +1,6 @@
 {
   "name": "nova-site",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "description": "The Nova site — the front door to the Nova ecosystem, and to a Nova Account.",
   "type": "module",

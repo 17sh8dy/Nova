@@ -1,0 +1,36 @@
+/* Nova product discovery: isolated styles to preserve the existing design system. */
+.nova-explore{padding:clamp(76px,9vw,132px) 0;background:radial-gradient(ellipse at 82% 0%,rgba(124,92,255,.085),transparent 52%)}
+.nova-explore-intro{max-width:320px;color:var(--ink-2);line-height:1.65;margin:0}
+.nova-directory-controls{display:grid;gap:22px;margin:34px 0 16px}
+.nova-search-label{display:flex;align-items:center;gap:12px;padding:0 18px;max-width:520px;border:1px solid var(--rule);border-radius:16px;background:var(--card);color:var(--ink-2);transition:border-color .2s}
+.nova-search-label:focus-within{border-color:var(--brand)}
+.nova-search-label>span{font-size:27px;line-height:1}
+.nova-search-label input{width:100%;min-height:52px;border:0;outline:0;background:transparent;color:var(--ink);font:inherit}
+.nova-search-label input::placeholder{color:var(--ink-3)}
+.nova-category-filters{display:flex;flex-wrap:wrap;gap:9px}
+.nova-filter{font:inherit;font-size:.83rem;font-weight:600;color:var(--ink-2);background:transparent;border:1px solid var(--rule);border-radius:999px;padding:10px 15px;cursor:pointer;transition:background .2s,color .2s,border-color .2s}
+.nova-filter:hover{border-color:var(--brand)}
+.nova-filter[aria-pressed=true]{background:var(--ink);color:var(--ground);border-color:var(--ink)}
+.nova-filter:focus-visible,.nova-product:focus-visible{outline:3px solid var(--brand);outline-offset:3px}
+.nova-result-count{color:var(--ink-3);font-size:.8rem;margin:0 0 18px}
+.nova-product-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.nova-product{display:flex;flex-direction:column;min-height:265px;min-width:0;padding:23px;border-radius:22px;border:1px solid var(--card-edge);background:var(--card);color:var(--ink);text-decoration:none;box-shadow:var(--shadow-1);transition:transform .25s var(--ease),border-color .25s,box-shadow .25s}
+a.nova-product:hover{transform:translateY(-4px);border-color:var(--card-edge-hi);box-shadow:var(--shadow-2)}
+.nova-product--soon{opacity:.86}
+.nova-product-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:24px}
+.nova-product-icon{width:48px;height:48px;display:grid;place-items:center;border-radius:14px;background:var(--brand-soft);overflow:hidden}
+.nova-product-icon img{max-width:42px;max-height:42px;object-fit:contain}
+.nova-product-glyph{font-size:27px;color:var(--brand)}
+.nova-product-status{font-size:.68rem;font-weight:700;white-space:nowrap;color:var(--ink-3);padding:6px 9px;border:1px solid var(--rule);border-radius:99px}
+.nova-product-status.is-available{color:var(--brand);border-color:var(--brand-soft);background:var(--brand-soft)}
+.nova-product-category{font-size:.7rem;color:var(--ink-3);margin-bottom:7px}
+.nova-product-name{font-size:1.24rem;letter-spacing:-.035em}
+.nova-product-description{font-size:.85rem;line-height:1.55;color:var(--ink-2);margin:10px 0 20px}
+.nova-product-action{font-size:.79rem;font-weight:650;color:var(--brand);margin-top:auto}
+.nova-product--soon .nova-product-action{color:var(--ink-3)}
+.nova-directory-note{margin:22px 0 0;font-size:.79rem;color:var(--ink-3)}
+.nova-empty{grid-column:1/-1;color:var(--ink-2);padding:35px 0}
+@media(max-width:1080px){.nova-product-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:760px){.nova-product-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.nova-explore .section-head{display:block}.nova-explore-intro{margin-top:16px}}
+@media(max-width:500px){.nova-product-grid{grid-template-columns:1fr}.nova-product{min-height:220px}.nova-category-filters{flex-wrap:nowrap;overflow-x:auto;padding-bottom:7px}.nova-filter{flex:none}}
+@media(prefers-reduced-motion:reduce){.nova-product,.nova-filter{transition:none}}

@@ -1911,3 +1911,5 @@ html:not(.js) .masthead-nav a[aria-current="page"] {
 @media (max-width: 560px) {
   .masthead-nav > a:not(.account-chip) { display: none; }
 }
+
+.footer-copyright { margin: 14px 0 0; font-size: .78rem; color: var(--ink-3); }
