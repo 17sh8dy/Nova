@@ -230,9 +230,10 @@ const createBody = ({ values = {}, errors = {}, next = '', providersEnabled = fa
 const PRODUCTS = [
   { name: 'Nova', note: 'This site', href: '/' },
   { name: 'Nova.Help', note: 'Support for every Nova product', href: 'https://nova-help.shadylabs.workers.dev/' },
-  { name: 'NovaCut', note: 'Coming soon', href: null },
-  { name: 'Replay.GG', note: 'Coming soon', href: null },
-  { name: 'Atlas', note: 'Coming soon', href: null },
+  { name: 'Nova.Review', note: 'Reviews and suggestions', href: 'https://nova-review.shadylabs.workers.dev/' },
+  { name: 'NovaCut', note: 'Video and photo editor', href: 'https://nova-cut-site.shadylabs.workers.dev/' },
+  { name: 'Replay.GG', note: 'Record and clip gameplay', href: 'https://replay-gg-site.shadylabs.workers.dev/' },
+  { name: 'Atlas', note: 'Your desktop assistant', href: 'https://atlas-website.shadylabs.workers.dev/' },
 ];
 
 const accountBody = (account, banner, reference = null) => `
