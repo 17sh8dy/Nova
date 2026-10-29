@@ -194,9 +194,8 @@ const tooMany = (retryAfter, title = 'Too many attempts') =>
 
 /* ── Pages ───────────────────────────────────────────────────────────────────────────────── */
 
-const signInBody = ({ values = {}, errors = {}, failed = false, next = '', providersEnabled = false, oauth = null, resetDone = false }) => `
+const signInBody = ({ values = {}, errors = {}, failed = false, next = '', providersEnabled = false, oauth = null }) => `
   ${oauthNotice(oauth)}
-  ${resetDone ? notice('ok', 'Your password has been changed', '<p>Sign in with the new one. Everything else was signed out, on Nova and on every Nova product.</p>') : ''}
   ${failed ? notice('error', 'That did not sign you in', '<p>Check the email address and password and try again. If you have never made a Nova Account, create one below.</p>') : ''}
   <form class="account-card" method="post" action="/account/sign-in" novalidate>
     ${googleControl({ enabled: providersEnabled, next })}
@@ -211,23 +210,6 @@ const signInBody = ({ values = {}, errors = {}, failed = false, next = '', provi
     <p class="account-fineprint"><a href="/account/forgot">Forgotten your password?</a></p>
   </form>
   ${ecosystemNote}`;
-
-/* The second step of signing in. The ticket proves the password was right a moment ago and
-   nothing more; it is useless without the code, and it lapses in five minutes. */
-const secondStepBody = ({ ticket = '', next = '', error = '', expired = false }) =>
-  expired
-    ? `${notice('error', 'That took too long', '<p>The sign-in expired before a code was entered. Start again — it only takes a moment.</p>')}
-  <div class="account-card"><div class="account-actions"><a class="btn btn-primary" href="/account/sign-in${next && next !== '/account' ? `?next=${encodeURIComponent(next)}` : ''}">Start again</a></div></div>`
-    : `<form class="account-card" method="post" action="/account/sign-in/verify" novalidate>
-    <p class="account-card-lede">Open your authenticator app and enter the 6-digit code it shows for Nova.</p>
-    <input type="hidden" name="ticket" value="${esc(ticket)}" />
-    ${nextField(next)}
-    ${field({ id: 'code', label: 'Authentication code', autocomplete: 'one-time-code', error, hint: 'Lost your phone? Type one of your recovery codes instead.', maxLength: 24 })}
-    <div class="account-actions">
-      <button class="btn btn-primary" type="submit">Verify <span class="arrow" aria-hidden="true">→</span></button>
-      <a class="btn btn-ghost" href="/account/sign-in">Cancel</a>
-    </div>
-  </form>`;
 
 const createBody = ({ values = {}, errors = {}, next = '', providersEnabled = false }) => `
   <form class="account-card" method="post" action="/account/new" novalidate>
@@ -372,9 +354,6 @@ export async function onRequest(context) {
   // The same window Nova.Help uses for the same reason: the redirect out and back is the
   // expensive part of a sign-in attempt, so it gets its own budget rather than sharing signIn's.
   const oauthLimiter = limiterFor(env, 'oauth', 15 * 60 * 1000, 30);
-  // Guessing at the second step. The ACCOUNT also locks after five wrong codes (in the package), so
-  // this is the cheap outer fence, not the only one.
-  const mfaLimiter = limiterFor(env, 'mfaCode', 15 * 60 * 1000, 20);
 
   const openSession = async (accountId, destination, { extraCookies = [] } = {}) => {
     const started = await accounts.startSession(accountId, { ttlSeconds: SESSION_TTL_SECONDS });
@@ -507,7 +486,6 @@ export async function onRequest(context) {
             next: safeNext(url.searchParams.get('next')),
             providersEnabled: accounts.providers.enabled,
             oauth: url.searchParams.get('oauth'),
-            resetDone: url.searchParams.get('reset') === 'done',
           }),
         }),
       );
@@ -531,19 +509,6 @@ export async function onRequest(context) {
       }
 
       const attempt = await accounts.signIn(fields);
-
-      /* The password was right and the account has two-step on. No session yet, and the counters
-         are NOT cleared - that happens when the code is accepted. */
-      if (!attempt.ok && attempt.reason === 'mfa-required') {
-        return html(
-          page({
-            title: 'Two-step verification',
-            lede: 'One more step to sign in.',
-            body: secondStepBody({ ticket: attempt.ticket, next }),
-          }),
-        );
-      }
-
       if (!attempt.ok) {
         /* A missing field is a typo and gets a per-field message; everything else gets the one
            generic failure, so the form cannot say which addresses have accounts. */
@@ -568,51 +533,6 @@ export async function onRequest(context) {
       await signInEmailLimiter.clear?.(`email:${email}`);
 
       return openSession(attempt.account.id, next === '/account' ? '/account?welcome=signed-in' : next);
-    }
-  }
-
-  /* ── Sign in, second step ────────────────────────────────────────────────────────────── */
-
-  if (path === '/account/sign-in/verify') {
-    if (method === 'GET') return redirect('/account/sign-in');
-
-    if (method === 'POST') {
-      const gate = await mfaLimiter.hit(ip);
-      if (!gate.ok) return tooMany(gate.retryAfter);
-
-      const fields = await formFields(request);
-      if (!fields) return html(page({ title: 'Two-step verification', body: secondStepBody({ expired: true }) }), { status: 413 });
-
-      const next = safeNext(fields.next);
-      const ticket = String(fields.ticket ?? '');
-      const done = await accounts.completeMfaSignIn({ ticket, code: String(fields.code ?? '') });
-
-      if (!done.ok) {
-        if (done.reason === 'expired') {
-          return html(page({ title: 'Two-step verification', body: secondStepBody({ expired: true, next }) }), { status: 401 });
-        }
-        const locked = done.reason === 'locked';
-        return html(
-          page({
-            title: 'Two-step verification',
-            lede: 'One more step to sign in.',
-            body: secondStepBody({
-              ticket,
-              next,
-              error: locked
-                ? 'Too many wrong codes. For your safety this is paused for a few minutes. Try again then.'
-                : 'That code is not right. Check the app, or use a recovery code.',
-            }),
-          }),
-          locked
-            ? { status: 429, headers: { 'retry-after': String(done.retryAfter ?? 900) } }
-            : { status: 401 },
-        );
-      }
-
-      await signInLimiter.clear?.(ip);
-      await mfaLimiter.clear?.(ip);
-      return openSession(done.account.id, next === '/account' ? '/account?welcome=signed-in' : next);
     }
   }
 
@@ -754,19 +674,6 @@ export async function onRequest(context) {
       currentAccountId: flow.mode === 'link' ? account.id : null,
     });
 
-    /* Google vouched for the person, but the account has two-step on: ask for the code. The
-       spent OAuth cookie is cleared now; the rest of the flow is the ordinary second step. */
-    if (!result.ok && result.reason === 'mfa-required') {
-      return html(
-        page({
-          title: 'Two-step verification',
-          lede: 'One more step to sign in.',
-          body: secondStepBody({ ticket: result.ticket, next: flow.next && flow.next !== '/account' ? flow.next : '' }),
-        }),
-        { setCookies: spent },
-      );
-    }
-
     if (!result.ok) {
       // THIS IS THE "NO SILENT LINKING" POLICY, ENFORCED BY THE SHARED PACKAGE, NOT HERE — see
       // service.mjs's withProviderIdentity. An address match is never enough on its own; a
@@ -899,12 +806,6 @@ export async function onRequest(context) {
           status: 400,
         });
       }
-
-      /* The link proves access to the MAILBOX, not to the authenticator. With two-step on, a reset
-         changes the password and signs everything out but does not sign anyone in - the next
-         sign-in asks for the code like any other. Otherwise an email takeover would walk straight
-         past the second factor, which is the attack it exists to stop. */
-      if ((await accounts.mfaStatus(result.account.id)).enabled) return redirect('/account/sign-in?reset=done');
 
       return openSession(result.account.id, '/account?welcome=password-reset');
     }

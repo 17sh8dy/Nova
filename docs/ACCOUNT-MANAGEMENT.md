@@ -126,56 +126,12 @@ finds it. **Untouched:** guest tickets (never linked to an account) and every ot
 npx wrangler d1 execute nova-help --remote --file packages/nova-accounts/migrations/0001_account_avatars.sql
 ```
 
-## Two-step verification (authenticator app)
-
-**Status: built and tested locally. NOT DEPLOYED, NOT PUSHED.** Settings → Security → *Set up two-step
-verification* (`/account/security/two-step`).
-
-**The flow.** Password (fresh auth) → *Secure your Nova Account* page with the compatible apps → QR code (drawn
-server-side as inline SVG by `packages/nova-accounts/qr.mjs`; the secret never goes to a third-party QR service)
-plus the key to type by hand → first 6-digit code → **only then** is it on, and ten recovery codes are shown once.
-Signing in: email + password → second-step page → code (or a recovery code) → session.
-
-**Where the rules live** (all in the shared package, not the pages): `totp.mjs` (RFC 6238, SHA-1/6/30 — what every
-app assumes), `mfa.mjs` (secret sealing, recovery-code hashing, sign-in ticket), `service.mjs` (the flow),
-`store.mjs`/`d1Store.mjs` (`getMfa`/`updateMfa`, an atomic compare-and-swap).
-
-**What it guarantees (each is a test):**
-
-- `signIn` **never returns `ok` for an enrolled account** — it returns `{ reason: 'mfa-required', ticket }`. A caller
-  that predates this fails closed ("that did not sign you in") instead of skipping the code.
-- Not on until a real code from the app has been shown. An abandoned setup expires after 15 minutes; 5 wrong first
-  codes discard it.
-- TOTP secret: **AES-256-GCM**, key derived from `NOVA_SECRET`, account id bound in as associated data (a dump yields
-  nothing; a sealed secret copied to another account will not open). Recovery codes: keyed HMAC-SHA-256 digests, each
-  works once.
-- A TOTP code works **once** (the last accepted step is kept; replays are refused).
-- Guessing is counted **on the account**, atomically: 5 wrong codes lock the second step for 15 minutes whatever
-  ticket, session or IP the guesses came from. The ticket is HMAC-signed, 5 minutes, and worthless without the code.
-- **Turning it off, or replacing recovery codes, needs the password AND a current code** (a session cookie is not
-  enough). Every change is mailed to the address on the account.
-- A **password-reset link does not sign an enrolled account in** — the mailbox is not the second factor — on both Nova
-  and Nova.Help. The password changes, everything is signed out, and the next sign-in asks for the code.
-- The setup and recovery-code pages are `no-store`; nothing secret appears anywhere else.
-
-**Deliberately not covered:** Google sign-in (Google performs its own verification; a federated sign-in is not asked for
-a Nova code). **Device grant (Atlas etc.) is covered indirectly** — approving an app needs a web session, and a web
-session now needs the code. Accounts with no password cannot enrol (they have nothing to prove with).
-
-**Migration:** `packages/nova-accounts/migrations/0002_account_mfa.sql` — one new table, additive, safe to run against
-the live shared database, a missing table reads as "nobody enrolled".
-
-⚠ **DEPLOY ORDER MATTERS FOR SAFETY (unlike the avatar migration).** An enrolled account is only protected on a front
-door that runs the new package. **Deploy Nova.Help with the new package before — or at the same time as — the Nova
-site, and before anyone can enrol.** If the Nova site (with enrolment) went live while the old Nova.Help Worker still
-ran, an enrolled account could still sign in to Nova.Help with the password alone.
-
 ## Known gaps (stated, not hidden)
 
 - **No email verification.** A changed address starts unverified. Nothing gates on verification today, and
   ticket access follows the account id, never a matching address — so this is not an access hole — but
   "verified" means nothing yet.
-- **Google sign-in** is shown on the Security page as "Not available yet" until it is configured. Two-step verification is built (see above) but not deployed.
+- **Google sign-in and two-step verification** are shown on the Security page as "Not available yet".
 - An account with **no password** (a future Google-only account) cannot change its address or delete
   itself; it is told to choose a password through the reset flow first.
 - The **mail transport** is still the placeholder. Notifications (old address on email change, password
@@ -188,13 +144,11 @@ ran, an enrolled account could still sign in to Nova.Help with the password alon
 
 ## Deployment checklist (do NOT do until asked)
 
-0. **Two-step verification:** deploy **Nova.Help** with the new package FIRST (see the warning in that section), then
-   apply `0002_account_mfa.sql`: `npx wrangler d1 execute nova-help --remote --file packages/nova-accounts/migrations/0002_account_mfa.sql`.
 1. Apply `0001_account_avatars.sql` to the shared `nova-help` database (or deploy first; see order above).
 2. Deploy the Nova site **with Functions**, bindings: `DB` (nova-help), `AVATARS` (`nova-help-attachments`),
    `RATE_LIMITER` (Nova.Help's DO), secret `NOVA_SECRET` = Nova.Help's `NOVA_HELP_SECRET`.
-3. Nova.Help **must** carry the new package code (it enforces the second step on its own sign-in and reset routes).
-   The package is byte-identical in both repos; the source of truth is NovaHelp.
+3. Copy the package to NovaHelp's deployment only if Nova.Help should also carry the new package code (it is
+   not required: Nova.Help does not call the new methods).
 4. Smoke test: sign up, upload a picture, change name/email/password, sign out elsewhere, delete a **test**
    account and check its test ticket was anonymised.
 5. Point Atlas's `NOVA_ACCOUNT_URL` at `/account`.
