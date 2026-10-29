@@ -1,8 +1,172 @@
 # Nova Account management
 
-**Status: built and tested locally. NOT DEPLOYED.** The live site (`nova-780.pages.dev`) is still the
-static build with no Functions, and the shared production database has not been touched. Deploying
-is a separate, deliberate step; the checklist is at the bottom.
+**Status (updated 2026-10-29): the account pages ARE deployed on `nova-780.pages.dev`** (profile, email, password,
+security, delete), on the shared `nova-help` D1 database. Two-step verification was built, deployed, and then
+**reverted the same day** (see below). Nothing in this file is a launch announcement; Nova has effectively no users.
+
+> ## ⛔ PRODUCTION LAUNCH BLOCKER — password sign-in is not reliable on the Cloudflare Workers Free plan
+>
+> **Do not launch a Nova product that requires an account, and do not invite people to depend on Nova Accounts,
+> until this is resolved and reliable authentication has been verified.**
+>
+> Password checks use scrypt at N=2^17 (128 MiB, about 240 ms of CPU). The Workers **Free** plan allows about 10 ms of
+> CPU per request, so hashing a password is far over budget. Cloudflare does not kill every over-budget request,
+> which is why sign-in has *seemed* to work, but it fails unpredictably (`Error 1101`, outcome `exceededCpu`).
+>
+> **Measured 2026-10-29 on Cloudflare's real edge** (`wrangler dev --remote`, nothing deployed), same sign-in code,
+> isolated from every other part of the site:
+>
+> | Code | Sign-ins that succeeded |
+> | --- | --- |
+> | Accounts package before 2FA | 13 of 25 (about 50%) |
+> | Accounts package with 2FA | 4 of 20 (20%) |
+>
+> - **This predates 2FA.** The old code failed about half the time. 2FA made it worse because it adds startup work.
+>   A single successful sign-in in the logs (379 ms CPU, `ok`) was luck, not proof the limit is not enforced.
+> - It affects **everything that checks a password**: sign-in, sign-up, change password/email, delete account,
+>   and any future step that re-asks for the password. Nova.Help runs the same package, so it is exposed too (its own
+>   sign-in was not captured in the logs, so treat that as unconfirmed rather than known-good).
+> - **Do not weaken password security to fit the Free plan.** Lowering the scrypt cost to something that fits in
+>   ~10 ms makes new hashes too weak to be a real password hash, and existing hashes carry their own cost and would
+>   still fail. This is an infrastructure problem and gets an infrastructure fix.
+> - **Not a problem today** only because nobody depends on it. That is the only reason it is acceptable to wait.
+>
+> See *Hosting options* and *When to upgrade* below.
+
+## Where two-step verification stands
+
+Built, tested (NovaHelp 744/745 with one unrelated flaky rate-limit test that passes alone; Nova 131/131), deployed,
+found to push sign-in over the Free-plan CPU limit more often, and **reverted** on 2026-10-29. **The work is intact in git
+history and is meant to be re-applied**, not rewritten:
+
+| Repo | Feature commit | Revert commit |
+| --- | --- | --- |
+| Nova | `a4e6df7` | `7865ac0` |
+| NovaHelp | `3adcc2a` | `e63a2c5` |
+
+To bring it back: `git revert 7865ac0` in Nova and `git revert e63a2c5` in NovaHelp (a revert of the revert), then deploy
+**NovaHelp first**, apply `0002_account_mfa.sql`, then the Nova site. Only do that **after** sign-in is reliable (Workers
+Paid, or the Nova-owned option below), and verify in the live logs before telling anyone to enrol.
+
+Notes on restoring (checked 2026-10-29):
+
+- **Commit or stash local edits first.** `git revert` refuses to run over uncommitted changes to a file it touches, and the
+  feature commit also edits this document. If this file is still uncommitted when you restore, commit it first, then expect
+  a small conflict in this file and keep the *current* text of the sections above.
+- The feature commits are complete, self-contained and on `origin/main` (Nova 15 files, NovaHelp 14 files, tests included).
+  Each revert commit is an exact inverse: Nova `HEAD` was verified byte-identical to pre-2FA `1d91e03`, and NovaHelp `HEAD` to
+  pre-2FA `a8c41a0`. Nothing authentication-related was lost or left half-reverted.
+- Deployed state at that check: Nova Pages production = `7865ac0` (deployment `d9352999`); Nova.Help Worker = version
+  `cfcc6450`, deployed from the reverted tree. The two-step URLs return 404 on both. The shared D1 database holds the empty
+  `account_mfa` table (0 rows) and 1 account.
+
+What is already in production from it: only the **empty `account_mfa` table** in the shared D1 database (additive,
+harmless, nothing reads it). Nobody was ever enrolled.
+
+What it does, in one paragraph, so the design is not lost: authenticator-app TOTP (RFC 6238) with a QR code drawn
+server-side (no third-party QR service); secrets sealed with AES-256-GCM under a key derived from `NOVA_SECRET`,
+recovery codes stored only as keyed hashes and each single-use (redeemed atomically); not enabled until a real code is
+shown; `signIn` never returns success for an enrolled account (it returns a short-lived ticket), so older callers fail
+closed; five wrong codes lock the second step for 15 minutes per account; a code cannot be replayed; turning it off or
+replacing recovery codes needs the password **and** a code; a password-reset link and a Google sign-in both still require
+the second step; enabling/disabling signs out every other device. Not yet verified: behaviour on real D1 under concurrent
+requests (only the local SQLite stand-in was used), and the Google-callback route change has no automated test.
+
+## Hosting options for Nova Accounts
+
+Nova Accounts is Node-style code (`node:crypto`, scrypt) behind two small seams: a **store** (JSON files or D1) and a
+**mailer**. That is what keeps it movable. Costs are approximate and for planning, not quotes.
+
+### 1. Cloudflare Workers Free — development and limited testing
+
+- **Good:** $0; already set up; fine for building, local-style testing and the static marketing pages.
+- **Bad:** password hashing exceeds the CPU limit, so sign-in is unreliable (the launch blocker above); lower request
+  and Durable Object/D1 quotas.
+- **Security:** nothing wrong with the design; the platform just cannot run a strong password hash reliably.
+- **Scale / maintenance:** nothing to maintain; not suitable as the public sign-in path.
+- **Verdict:** keep using it for development. Not for public authentication.
+
+### 2. Cloudflare Workers Paid — the simplest reliable fix
+
+- **Cost:** $5/month base (usage beyond generous included amounts is billed; sign-in volume at Nova's size is far below it).
+- **Good:** 30 s CPU per request (raisable), so scrypt at full strength fits with huge margin; **no code or security
+  change**; same D1, R2, Durable Objects, Pages; global edge; no servers to run.
+- **Bad:** recurring cost; deeper dependency on Cloudflare (D1, Durable Objects, Pages Functions).
+- **Security:** unchanged; Cloudflare patches the platform. Secrets live in Cloudflare.
+- **Scale / maintenance:** scales without effort; almost no maintenance.
+- **Verdict:** the default plan when public authentication becomes necessary. Cheapest in time.
+
+### 3. Nova-owned servers — host Nova Accounts on your own Linux machines
+
+- **Cost:** hardware you already own plus power and a stable connection; a static IP or tunnel; possibly a small VPS for a
+  public front. Cloudflare Tunnel (free) can expose a home server without opening ports.
+- **Good:** no per-request CPU limit; full control; scrypt at any strength; data stays with you; no platform lock-in; the
+  existing Node entry point (`npm start`, file store or SQLite/Postgres behind the store seam) already runs this way.
+- **Bad:** **you are the on-call.** Uptime depends on your power, your ISP and your hardware; backups, OS and TLS
+  updates, monitoring, DDoS exposure and abuse handling are yours. A residential outage means nobody can sign in. A
+  password database on a machine at home needs real hardening (disk encryption, firewall, minimal exposed surface,
+  tested restores).
+- **Security:** can be excellent or poor depending on discipline; the database of password hashes is a high-value target.
+- **Scale:** vertical; a single box handles far more than Nova needs, but there is no automatic redundancy.
+- **Maintenance:** continuous (patching, backups, monitoring). Highest ongoing effort.
+- **Verdict:** a sensible long-term option, and a good fit if you enjoy running servers. Not a free option once your time
+  is counted.
+
+### 4. Hybrid — Cloudflare in front, Nova-owned servers behind
+
+- **Shape:** Cloudflare serves the static sites, caching, TLS and DDoS protection; only the heavy or sensitive pieces
+  (password hashing, the accounts database, selected backends) run on your servers, reached over Cloudflare Tunnel or
+  an authenticated API. For example: the Nova site stays on Pages; `/account/*` sign-in calls an accounts service you host.
+- **Cost:** mostly Free-tier Cloudflare plus your servers; can avoid Workers Paid.
+- **Good:** removes the CPU problem without paying per month; keeps Cloudflare's protection in front of your hardware;
+  you can move one piece at a time; fails more gracefully (static pages stay up if the server is down).
+- **Bad:** most moving parts; two places to secure and debug; a network hop between the edge and the service; sessions
+  and cookies must work across both (already true: one `NOVA_SECRET`, one cookie domain plan); you still own the uptime of
+  the hosted part.
+- **Security:** keep the origin reachable only through the tunnel, and treat the service as internet-facing.
+- **Scale / maintenance:** scales the stateless edge for free; the hosted service is on you.
+- **Verdict:** the likely end state if you want to avoid recurring costs *and* keep a public front door.
+
+### Comparison at a glance
+
+| | Free | Paid | Own servers | Hybrid |
+| --- | --- | --- | --- | --- |
+| Reliable password sign-in | **No** | **Yes** | Yes | Yes |
+| Recurring cost | $0 | ~$5/mo | power + connection | low |
+| Effort to run | none | none | **high** | medium-high |
+| Cloudflare lock-in | high | high | **none** | medium |
+| Single point of failure | no | no | **yes (your site)** | partial |
+| Code changes needed | — | none | small (new store/entry) | medium |
+
+## Keeping Nova Accounts portable (a design note, not a task)
+
+This is a **future consideration. Do not rewrite the authentication architecture for portability, and do not start a
+migration.** The existing structure already helps; the aim is only to avoid making a later move harder:
+
+- `packages/nova-accounts` takes its storage (`store`) and mail transport (`mailer`) as injected objects and may not import
+  from the rest of the repo (a test enforces it). A new database means one new store file with the same methods, not a
+  rewrite. Keep it that way.
+- Keep Cloudflare-specific things at the edges: D1, R2 (`AVATARS`), the Durable Object rate limiter and Pages Functions
+  glue live in `functions/` and `d1Store.mjs`, not in the account rules. Do not push account *decisions* into Cloudflare
+  features.
+- Keep account state in the database, not in platform-specific features (no logic that only works because of a Worker
+  KV/Queue quirk).
+- Keep `NOVA_SECRET` the single root for derived keys, so moving hosts means moving one secret.
+- New dependencies: prefer the platform-neutral option (`node:crypto`, plain SQL) over a Cloudflare-only API when the cost
+  is equal.
+
+## When to upgrade (or move)
+
+Revisit hosting **when a real need appears, not at an arbitrary user count**. Any one of these is the trigger:
+
+1. A Nova product **requires** an account (today none does; accounts must stay optional per the ecosystem rules).
+2. We start **inviting real users to register** or sign in.
+3. **Reliable public authentication** becomes necessary for any reason.
+4. Infrastructure needs **outgrow what Free can safely support** (CPU, D1/Durable Object limits, request volume).
+
+**Before any of those happen:** choose Paid or the Nova-owned/hybrid route, re-apply two-step verification, and verify in
+the live logs that password sign-in succeeds reliably (not "worked once"). Until then, accounts stay a developer feature.
+
 
 ## What lives where
 

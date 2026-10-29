@@ -31,6 +31,13 @@ const WORDMARK = `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
       <span>NOVA</span>`;
 
 /**
+ * A standing, deliberately quiet notice on every account page. Accounts are optional and still
+ * in development; sign-in can fail on the current hosting plan (see docs/ACCOUNT-MANAGEMENT.md).
+ * Remove this when reliable authentication has been verified in the live logs.
+ */
+const LIMITED_NOTE = `<p class="account-limited" role="note"><strong>⚠️ Nova Accounts — Limited Reliability.</strong> Nova Accounts are currently in development and may experience sign-in issues. Please do not rely on them for important access at this time.</p>`;
+
+/**
  * The whole document.
  *
  * `noindex` on every account page: a sign-in form and a person's account are not things for a
@@ -78,6 +85,7 @@ export function page({ title, lede = '', body, account = null }) {
         <h1 class="account-title">${esc(title)}</h1>
         ${lede ? `<p class="account-lede">${esc(lede)}</p>` : ''}
       </header>
+      ${LIMITED_NOTE}
       ${body}
     </div>
   </section>

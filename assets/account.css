@@ -171,6 +171,23 @@
   text-align: center;
 }
 
+/* A quiet, standing notice: same family as the fine print, never a banner. */
+.account-limited {
+  margin: 0 0 1.25rem;
+  padding: .55rem .8rem;
+  font-size: .8125rem;
+  line-height: 1.55;
+  color: var(--ink-3);
+  border-left: 2px solid var(--warn-graphic, var(--rule-strong));
+  background: var(--brand-soft, transparent);
+  border-radius: 0 .375rem .375rem 0;
+}
+.account-limited strong { color: var(--ink-2); font-weight: 600; }
+
+/* The same notice as one small line in the homepage footer. */
+.footer-note--accounts { font-size: .8125rem; max-width: 46rem; }
+.footer-note--accounts strong { font-weight: 600; }
+
 /* ── Provider (Google) ───────────────────────────────────────── */
 
 .provider-row { display: grid; }
