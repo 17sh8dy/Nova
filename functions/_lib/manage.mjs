@@ -22,7 +22,7 @@
  *      for anyone who has a session.
  *   5. NOTHING IS ECHOED BACK THAT WAS A PASSWORD.
  */
-import { AVATAR_LIMITS, validateAvatar } from '../../packages/nova-accounts/index.mjs';
+import { AVATAR_LIMITS, qrSvg, validateAvatar } from '../../packages/nova-accounts/index.mjs';
 
 import { available as avatarsAvailable, avatarResponse, purgeAvatars, removeAvatar, saveAvatar } from './avatars.mjs';
 import { ecosystemNote, esc, field, html, notice, page, redirect } from './shell.mjs';
@@ -79,6 +79,8 @@ const DONE = {
   password: 'Your password has been changed. Every other device has been signed out.',
   'signed-out-others': 'Every other device has been signed out.',
   revoked: 'That sign-in has been ended.',
+  'two-step-on': 'Two-step verification is on. You will be asked for a code from your authenticator app each time you sign in.',
+  'two-step-off': 'Two-step verification has been turned off.',
 };
 
 const doneBanner = (url) => {
@@ -175,8 +177,22 @@ const passwordBody = ({ account, errors = {} }) => `
 
 const day = (iso) => String(iso ?? '').slice(0, 10);
 
-const securityBody = ({ account, sessions, url }) => `
+const securityBody = ({ account, sessions, mfa, url }) => `
   ${doneBanner(url)}
+  <div class="account-card">
+    <h2 class="account-card-title">Two-step verification</h2>
+    <p class="account-card-lede">
+      ${
+        mfa.enabled
+          ? `Your account is protected by an authenticator app. You have <strong>${mfa.recoveryRemaining}</strong> recovery code${mfa.recoveryRemaining === 1 ? '' : 's'} left.`
+          : 'Add an extra layer of protection to your account using an authenticator app. After your password, Nova asks for a 6-digit code from your phone.'
+      }
+    </p>
+    <div class="account-actions">
+      <a class="btn ${mfa.enabled ? 'btn-ghost' : 'btn-primary'}" href="/account/security/two-step">${mfa.enabled ? 'Manage two-step verification' : 'Set up two-step verification'}</a>
+    </div>
+  </div>
+
   <div class="account-card">
     <h2 class="account-card-title">Where you are signed in</h2>
     <p class="account-card-lede">Every browser and app that is signed in to this account. If you do not recognise one, end it and change your password.</p>
@@ -215,10 +231,103 @@ const securityBody = ({ account, sessions, url }) => `
       <div><dt>Password</dt><dd>${account.hasPassword ? 'Set — <a href="/account/password">change it</a>' : 'Not set — <a href="/account/forgot">choose one</a>'}</dd></div>
       <div><dt>Email</dt><dd>${esc(account.email)} — <a href="/account/email">change it</a></dd></div>
       <div><dt>Google</dt><dd>${account.identities.some((i) => i.provider === 'google') ? 'Linked' : 'Not available yet'}</dd></div>
-      <div><dt>Two-step verification</dt><dd>Not available yet</dd></div>
+      <div><dt>Two-step verification</dt><dd>${mfa.enabled ? 'On — authenticator app' : 'Off'}</dd></div>
+      <div><dt>Recovery codes</dt><dd>${mfa.enabled ? `${mfa.recoveryRemaining} left` : 'Created when you turn two-step verification on'}</dd></div>
     </dl>
-    <p class="account-fineprint">We will add the last two here as they are built. Nothing on this page pretends they exist.</p>
   </div>`;
+
+/* ── Two-step verification ───────────────────────────────────────────────────────────────── */
+
+const APPS = ['Google Authenticator', 'Apple Passwords', 'Microsoft Authenticator', 'Samsung-compatible authenticator apps', 'Any other TOTP-compatible app'];
+
+const twoStepIntroBody = ({ account, errors = {} }) => `
+  <form class="account-card" method="post" action="/account/security/two-step/start" novalidate>
+    <h2 class="account-card-title">Secure your Nova Account</h2>
+    <p class="account-card-lede">
+      Add an extra layer of protection to your account using an authenticator app. Nova shows you
+      a QR code, your app turns it into a 6-digit code that changes about every 30 seconds, and
+      you type that code after your password when you sign in.
+    </p>
+    <p class="account-card-lede">Compatible options include:</p>
+    <ul class="account-list">${APPS.map((app) => `<li>${esc(app)}</li>`).join('')}</ul>
+    ${
+      account.hasPassword
+        ? `${field({ id: 'currentPassword', label: 'Current password', type: 'password', error: errors.currentPassword, autocomplete: 'current-password', hint: 'To make sure it is you.', maxLength: 256 })}
+    <div class="account-actions">
+      <button class="btn btn-primary" type="submit">Continue <span class="arrow" aria-hidden="true">→</span></button>
+      <a class="btn btn-ghost" href="/account/security">Not now</a>
+    </div>`
+        : notice('warning', 'This account has no password yet', '<p>Two-step verification protects the password sign-in, so set a password first with <a href="/account/forgot">Forgotten your password?</a>.</p>')
+    }
+  </form>`;
+
+const twoStepSetupBody = ({ setup, errors = {} }) => `
+  <div class="account-card">
+    <h2 class="account-card-title">Scan the QR code</h2>
+    <ol class="account-list account-list--steps">
+      <li>Open your authenticator app and choose to add an account.</li>
+      <li>Scan this code with it. The app will start showing a 6-digit code for <strong>Nova</strong>.</li>
+      <li>Type that code below to finish. Two-step verification is not on until you do.</li>
+    </ol>
+    <div class="qr-plate">${qrSvg(setup.uri, { label: 'QR code to add your Nova Account to an authenticator app' })}</div>
+    <details class="qr-manual">
+      <summary>Can’t scan it? Enter the key by hand</summary>
+      <p class="account-card-lede">Choose “time-based” in your app and type this key:</p>
+      <p><code class="qr-key">${esc(setup.secret)}</code></p>
+    </details>
+  </div>
+  <form class="account-card" method="post" action="/account/security/two-step/confirm" novalidate>
+    ${field({ id: 'code', label: 'Enter the 6-digit code from your authenticator app', error: errors.code, autocomplete: 'one-time-code', maxLength: 12 })}
+    <div class="account-actions">
+      <button class="btn btn-primary" type="submit">Turn on <span class="arrow" aria-hidden="true">→</span></button>
+    </div>
+  </form>
+  <form method="post" action="/account/security/two-step/cancel" class="inline-form">
+    <button class="btn btn-ghost" type="submit">Cancel setup</button>
+  </form>`;
+
+const recoveryCodesBody = ({ codes, replaced }) => `
+  ${notice(
+    'warning',
+    'Save these recovery codes now',
+    '<p>Each one works once, and they cannot be shown again. Keep them somewhere safe and separate from your phone, such as a password manager or a printout.</p>',
+  )}
+  <div class="account-card">
+    <h2 class="account-card-title">${replaced ? 'Your new recovery codes' : 'Two-step verification is on'}</h2>
+    <p class="account-card-lede">
+      ${replaced ? '' : 'Every other device was signed out. '}If you lose your phone, type one of these instead of the 6-digit code to sign in.
+      ${replaced ? 'The old codes no longer work.' : ''}
+    </p>
+    <ul class="recovery-codes">${codes.map((code) => `<li><code>${esc(code)}</code></li>`).join('')}</ul>
+    <div class="account-actions">
+      <a class="btn btn-primary" href="/account/security?done=two-step-on">I have saved them <span class="arrow" aria-hidden="true">→</span></a>
+    </div>
+  </div>`;
+
+const twoStepManageBody = ({ mfa, url, errors = {}, which = '' }) => `
+  ${doneBanner(url)}
+  <div class="account-card">
+    <h2 class="account-card-title">Two-step verification is on</h2>
+    <dl class="account-facts">
+      <div><dt>Method</dt><dd>Authenticator app</dd></div>
+      <div><dt>Turned on</dt><dd>${esc(day(mfa.enabledAt))}</dd></div>
+      <div><dt>Recovery codes</dt><dd>${mfa.recoveryRemaining} left${mfa.recoveryRemaining <= 2 ? ' — make some more below' : ''}</dd></div>
+    </dl>
+  </div>
+  <form class="account-card" method="post" action="/account/security/two-step/recovery" novalidate>
+    <h2 class="account-card-title">Make new recovery codes</h2>
+    <p class="account-card-lede">This replaces all ten. The old ones stop working.</p>
+    ${field({ id: 'currentPassword', label: 'Current password', type: 'password', error: which === 'recovery' ? errors.currentPassword : '', autocomplete: 'current-password', maxLength: 256 })}
+    ${field({ id: 'code', label: 'Code from your app', error: which === 'recovery' ? errors.code : '', autocomplete: 'one-time-code', maxLength: 24 })}
+    <div class="account-actions"><button class="btn btn-ghost" type="submit">Make new codes</button></div>
+  </form>
+  <form class="account-card account-card--danger" method="post" action="/account/security/two-step/disable" novalidate>
+    <h2 class="account-card-title">Turn off two-step verification</h2>
+    <p class="account-card-lede">Your account will be protected by your password alone. Every other device will be signed out.</p>
+    ${field({ id: 'currentPassword', label: 'Current password', type: 'password', error: which === 'disable' ? errors.currentPassword : '', autocomplete: 'current-password', maxLength: 256 })}
+    ${field({ id: 'code', label: 'Code from your app, or a recovery code', error: which === 'disable' ? errors.code : '', autocomplete: 'one-time-code', maxLength: 24 })}
+    <div class="account-actions"><button class="btn btn-danger" type="submit">Turn off</button></div>
+  </form>`;
 
 /* ── Delete ──────────────────────────────────────────────────────────────────────────────── */
 
@@ -281,6 +390,8 @@ export async function handleManage(ctx) {
   const mine = [
     '/account/profile', '/account/avatar', '/account/avatar/remove', '/account/email', '/account/password',
     '/account/security', '/account/security/sign-out-others', '/account/security/revoke', '/account/delete',
+    '/account/security/two-step', '/account/security/two-step/start', '/account/security/two-step/confirm',
+    '/account/security/two-step/cancel', '/account/security/two-step/disable', '/account/security/two-step/recovery',
   ];
   if (!mine.includes(path)) return null;
 
@@ -404,7 +515,87 @@ export async function handleManage(ctx) {
 
   if (path === '/account/security' && method === 'GET') {
     const sessions = await accounts.listSessions(account.id, { currentToken: token });
-    return html(shellFor('Security', path, account, securityBody({ account, sessions, url })));
+    const mfa = await accounts.mfaStatus(account.id);
+    return html(shellFor('Security', path, account, securityBody({ account, sessions, mfa, url })));
+  }
+
+  /* ── Two-step verification ───────────────────────────────────────────────────────────────
+     Every decision - is the code right, is it locked, may it be turned off - is the package's;
+     these routes carry a request in and render what came back. Anything that changes state is
+     POST-only and rate-limited per account, and anything that weakens protection (off, new
+     recovery codes) was asked for the password AND a code inside the package, not here. */
+
+  const twoStep = '/account/security/two-step';
+  const twoStepPage = (body, status = 200) => html(shellFor('Two-step verification', '/account/security', account, body), { status });
+  const tooLarge = () => twoStepPage(notice('error', 'That was too large', ''), 413);
+
+  if (path === twoStep && method === 'GET') {
+    const mfa = await accounts.mfaStatus(account.id);
+    if (mfa.enabled) return twoStepPage(twoStepManageBody({ mfa, url }));
+    const setup = mfa.pending ? await accounts.pendingMfaSetup(account.id) : null;
+    return twoStepPage(setup ? twoStepSetupBody({ setup }) : twoStepIntroBody({ account }));
+  }
+
+  if (path === `${twoStep}/start` && method === 'POST') {
+    const fields = await formFields(request);
+    if (!fields) return tooLarge();
+    const wait = await limited();
+    if (wait) return wait;
+
+    const result = await accounts.beginMfaEnrollment(account.id, { currentPassword: asString(fields.currentPassword) });
+    if (result.ok || result.reason === 'already-enabled') return redirect(twoStep);
+    return twoStepPage(twoStepIntroBody({ account, errors: result.errors ?? {} }), result.reason === 'wrong-password' ? 403 : 400);
+  }
+
+  if (path === `${twoStep}/confirm` && method === 'POST') {
+    const fields = await formFields(request);
+    if (!fields) return tooLarge();
+    const wait = await limited();
+    if (wait) return wait;
+
+    const result = await accounts.confirmMfaEnrollment(account.id, asString(fields.code));
+    if (result.ok) {
+      /* A security change is exactly when to end anything that is not this browser: if the
+         password was already stolen, the thief's session must not outlive the protection. */
+      await accounts.signOutOthers(account.id, { keepToken: token });
+      return twoStepPage(recoveryCodesBody({ codes: result.recoveryCodes, replaced: false }));
+    }
+
+    if (result.reason === 'wrong-code') {
+      const setup = await accounts.pendingMfaSetup(account.id);
+      if (setup) return twoStepPage(twoStepSetupBody({ setup, errors: result.errors }), 400);
+    }
+    return twoStepPage(
+      notice('warning', 'Start again', '<p>That setup has expired or was used up. Nothing was changed.</p>') + twoStepIntroBody({ account }),
+      400,
+    );
+  }
+
+  if (path === `${twoStep}/cancel` && method === 'POST') {
+    await accounts.cancelMfaEnrollment(account.id);
+    return redirect(twoStep);
+  }
+
+  if ((path === `${twoStep}/disable` || path === `${twoStep}/recovery`) && method === 'POST') {
+    const which = path.endsWith('/disable') ? 'disable' : 'recovery';
+    const fields = await formFields(request);
+    if (!fields) return tooLarge();
+    const wait = await limited();
+    if (wait) return wait;
+
+    const proof = { currentPassword: asString(fields.currentPassword), code: asString(fields.code) };
+    const result = which === 'disable' ? await accounts.disableMfa(account.id, proof) : await accounts.regenerateRecoveryCodes(account.id, proof);
+
+    if (result.ok) {
+      if (which === 'disable') await accounts.signOutOthers(account.id, { keepToken: token });
+      return which === 'disable'
+        ? redirect('/account/security?done=two-step-off')
+        : twoStepPage(recoveryCodesBody({ codes: result.recoveryCodes, replaced: true }));
+    }
+    if (result.reason === 'not-enabled') return redirect(twoStep);
+    const mfa = await accounts.mfaStatus(account.id);
+    const status = result.reason === 'locked' ? 429 : result.reason === 'no-password' ? 400 : 403;
+    return twoStepPage(twoStepManageBody({ mfa, url, errors: result.errors ?? {}, which }), status);
   }
 
   if (path === '/account/security/sign-out-others' && method === 'POST') {
